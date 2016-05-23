@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_abastecimentos"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Abastecimentos"/>
+
+    </group>
+
+    <item android:title="Abastecimentos">
+        <menu>
+            <item
+                android:id="@+id/nav_mensal"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Mensal"/>
+            <item
+                android:id="@+id/nav_bimestral"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Bimestral"/>
+            <item
+                android:id="@+id/nav_trimestral"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Trimestral"/>
+            <item
+                android:id="@+id/nav_semestral"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Semestral"/>
+            <item
+                android:id="@+id/nav_anual"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Anual"/>
+        </menu>
+    </item>
+
+</menu>
