@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -75,9 +76,11 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
                     etVlr_litro.getText().toString(),
                     etVlr_tota.getText().toString());
             if (umAbastecimento.isCalculou) {
-                etQtde_litros.setText(String.valueOf(umAbastecimento.qtde_litros));
-                etVlr_litro.setText(String.valueOf(umAbastecimento.vlr_litro));
-                etVlr_tota.setText(String.valueOf(umAbastecimento.vlr_total));
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setMaximumFractionDigits(2);
+                etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
+                etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
+                etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
             }
         }
     }
@@ -105,11 +108,11 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         switch (operacao) {
             case "inserir":
                 if (abastecimentoDAO.inserir(umAbastecimento) > 0) {
-                    Toast.makeText(this,"Salvo!!!", Toast.LENGTH_SHORT).show();
                     etVlr_litro.setText("");
                     etVlr_tota.setText("");
                     etQtde_litros.setText("");
                     etQtde_litros.requestFocus();
+                    Toast.makeText(this,"Salvo!!!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "alterar":

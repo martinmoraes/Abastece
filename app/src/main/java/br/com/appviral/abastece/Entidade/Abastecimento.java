@@ -1,5 +1,6 @@
 package br.com.appviral.abastece.Entidade;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,31 +28,52 @@ public class Abastecimento {
     public boolean isCalculou = false;
 
 
+    private float retornaFloat(String s) {
+        String novoValor = s;
+        int ultimaVirgula = s.lastIndexOf(',');
+        int ultimoPonto = s.lastIndexOf('.');
+
+        if (ultimaVirgula > -1) {
+            //Vírgula no decimal
+            if (ultimoPonto > -1)
+                novoValor = s.replace(".", "");
+            novoValor = novoValor.replace(",", ".");
+        }
+        return Float.valueOf(novoValor);
+    }
+
     public void calculaTerceiro(String qtde_litrosS, String vlr_litroS, String vlr_totalS) {
         if (!qtde_litrosS.equals(""))
-            qtde_litros = Float.valueOf(qtde_litrosS);
+            qtde_litros = retornaFloat(qtde_litrosS);
         if (!vlr_litroS.equals(""))
-            vlr_litro = Float.valueOf(vlr_litroS);
+            vlr_litro = retornaFloat(vlr_litroS);
         if (!vlr_totalS.equals(""))
-            vlr_total = Float.valueOf(vlr_totalS);
+            vlr_total = retornaFloat(vlr_totalS);
 
         isCalculou = false;
+        DecimalFormat df = new DecimalFormat("0.00");
 
         //Calcula vlr_Total
         if (qtde_litros > 0 && vlr_litro > 0) {
             vlr_total = qtde_litros * vlr_litro;
+            String vlr = df.format(vlr_total).replace(",", ".");
+            vlr_total = Float.parseFloat(vlr);
             isCalculou = true;
         }
 
         //Calcula vlr do litro
         if (qtde_litros > 0 && vlr_total > 0) {
             vlr_litro = vlr_total / qtde_litros;
+            String vlr = df.format(vlr_litro).replace(",", ".");
+            vlr_litro = Float.parseFloat(vlr);
             isCalculou = true;
         }
 
         //Calcula Qtde litros
         if (vlr_total > 0 && vlr_litro > 0) {
             qtde_litros = vlr_total / vlr_litro;
+            String vlr = df.format(qtde_litros).replace(",", ".");
+            qtde_litros = Float.parseFloat(vlr);
             isCalculou = true;
         }
 
@@ -82,7 +104,6 @@ public class Abastecimento {
                 this.combustivel = tipo_combustivel.diesel;
                 break;
         }
-
 
 
     }
