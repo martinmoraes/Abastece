@@ -2,19 +2,26 @@ package br.com.appviral.abastece;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import java.util.ArrayList;
+
+import br.com.appviral.abastece.Entidade.Abastecimento;
+import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
+
+@SuppressWarnings("deprecation")
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    AbastecimentoDAO abastecimentoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,31 +30,24 @@ public class PrincipalActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-//            }
-//        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.setDrawerListener(toggle);
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        abastecimentoDAO = new AbastecimentoDAO(this);
+        //abastecimentoDAO.excluirTudo();
     }
 
 
-    public void abre_RegistraAbastecimento(View view){
-        Intent intent = new Intent(this,RegistraAbastecimentoActivity.class);
+    public void abre_RegistraAbastecimento(View view) {
+        Intent intent = new Intent(this, RegistraAbastecimentoActivity.class);
         intent.putExtra("OPERACAO", "inserir");
         startActivity(intent);
     }
@@ -107,8 +107,18 @@ public class PrincipalActivity extends AppCompatActivity
 
         }
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
-        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayList<Abastecimento> listaAbastecimentos = abastecimentoDAO.listar();
+        for (Abastecimento umAbastecimento : listaAbastecimentos) {
+            Log.d("MEUAPP", umAbastecimento.toString());
+        }
+
+    }
+}

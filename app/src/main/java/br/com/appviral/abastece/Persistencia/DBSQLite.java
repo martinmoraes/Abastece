@@ -12,7 +12,7 @@ import br.com.appviral.abastece.Entidade.Abastecimento;
  */
 public class DBSQLite extends SQLiteOpenHelper {
     private static final String NOME_BASE = "base.db";
-    private static final int VERSAO = 1;
+    private static final int VERSAO = 2;
 
     public DBSQLite(Context context) {
         super(context, NOME_BASE, null, VERSAO);
@@ -24,8 +24,8 @@ public class DBSQLite extends SQLiteOpenHelper {
                 + Abastecimento.CAMPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
                 + Abastecimento.CAMPO_QTDE_LITROS + " REAL, "
                 + Abastecimento.CAMPO_VLR_LITRO + " REAL, "
-                + Abastecimento.CAMPO_VLR_TOTAL + " REAL )"
-                + Abastecimento.CAMPO_DATA + " TEXT )"
+                + Abastecimento.CAMPO_VLR_TOTAL + " REAL, "
+                + Abastecimento.CAMPO_DATA + " TEXT, "
                 + Abastecimento.CAMPO_COMBUSTIVEL + " TEXT )";
         db.execSQL(CRIA_TABELA_PESSOA);
 
@@ -36,6 +36,7 @@ public class DBSQLite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
 
     }
 }
