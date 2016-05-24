@@ -45,11 +45,18 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etVlr_litro.setOnFocusChangeListener(this);
         etVlr_tota.setOnFocusChangeListener(this);
 
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
+        preparaUmAbastecimetno();
+    }
+
+    private void preparaUmAbastecimetno(){
+        etVlr_litro.setText("");
+        etVlr_tota.setText("");
+        etQtde_litros.setText("");
+        etData.setText(sdf.format(data.getTime()));
+        etQtde_litros.requestFocus();
         umAbastecimento = new Abastecimento();
         umAbastecimento.combustivel = Abastecimento.tipo_combustivel.gasolina;
-
-        sdf = new SimpleDateFormat("dd/MM/yyyy");
-        etData.setText(sdf.format(data.getTime()));
         umAbastecimento.data = etData.getText().toString();
     }
 
@@ -104,15 +111,11 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     public void salva(View view) {
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
-
         switch (operacao) {
             case "inserir":
                 if (abastecimentoDAO.inserir(umAbastecimento) > 0) {
-                    etVlr_litro.setText("");
-                    etVlr_tota.setText("");
-                    etQtde_litros.setText("");
-                    etQtde_litros.requestFocus();
                     Toast.makeText(this,"Salvo!!!", Toast.LENGTH_SHORT).show();
+                    preparaUmAbastecimetno();
                 }
                 break;
             case "alterar":
