@@ -3,6 +3,7 @@ package br.com.appviral.abastece;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +17,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import br.com.appviral.abastece.Entidade.Abastecimento;
+import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
 @SuppressWarnings("deprecation")
@@ -40,6 +42,16 @@ public class PrincipalActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        // FRAGMENT
+        AbastecimentoFragment frag = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag("PrinFrag");
+        if(frag == null) {
+            frag = AbastecimentoFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_container, frag, "PrinFrag");
+            ft.commit();
+        }
 
         abastecimentoDAO = new AbastecimentoDAO(this);
         //abastecimentoDAO.excluirTudo();
