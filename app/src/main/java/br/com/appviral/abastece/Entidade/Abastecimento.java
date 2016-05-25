@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 /**
  * Created by Martin on 13/05/2016.
@@ -108,6 +109,17 @@ public class Abastecimento {
 
     }
 
+    public String getVlrLitro(){
+        return String.valueOf(vlr_litro);
+    }
+
+    public String getVlrTotal(){
+        return String.valueOf(vlr_total);
+    }
+
+    public String getQtdeLitros(){
+        return String.valueOf(qtde_litros);
+    }
 
     public enum tipo_combustivel {
         gasolina, alcool, diesel;
