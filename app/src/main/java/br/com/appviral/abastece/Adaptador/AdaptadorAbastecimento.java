@@ -1,6 +1,7 @@
 package br.com.appviral.abastece.Adaptador;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,14 @@ import java.util.List;
 
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.R;
+import br.com.appviral.abastece.RegistraAbastecimentoActivity;
 
 /**
  * Created by Martin on 25/05/2016.
  */
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.meuViewHolder>{
 
-    private List<Abastecimento> listaAbastecimentos;
+    private static List<Abastecimento> listaAbastecimentos;
     LayoutInflater layoutInflater;
 
 
@@ -49,6 +51,8 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         return listaAbastecimentos.size();
     }
 
+
+
     public class meuViewHolder extends RecyclerView.ViewHolder {
         public TextView tvData, tvQtdeLitros, tvVlrTotal, tvVlrLitro;
 
@@ -60,5 +64,29 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             tvVlrTotal = (TextView) itemView.findViewById(R.id.tv_vlt_total);
             tvVlrLitro = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
         }
+    }
+
+
+
+
+    public static void addAbastecimento(Abastecimento abastecimento){
+        listaAbastecimentos.add(0, abastecimento);
+    }
+
+    public static void removeAbastecimento(long id){
+        for(Abastecimento abastecimento : listaAbastecimentos){
+            if(abastecimento.id == id){
+                listaAbastecimentos.remove(abastecimento);
+            }
+        }
+    }
+
+    public static Abastecimento getAbastecimento(long id){
+        for(Abastecimento abastecimento : listaAbastecimentos){
+            if(abastecimento.id == id){
+                return abastecimento;
+            }
+        }
+        return null;
     }
 }

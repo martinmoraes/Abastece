@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,7 +50,6 @@ public class AbastecimentoFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         recyclerView.setLayoutManager(linearLayoutManager);
 
         listaAbastecimentos = (new AbastecimentoDAO(getActivity())).listar();
@@ -56,19 +57,35 @@ public class AbastecimentoFragment extends Fragment {
         AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaAbastecimentos);
         recyclerView.setAdapter(adaptadorAbastecimento);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                if (childView != null) {
+                    int posicao = rv.getChildAdapterPosition(childView);
+                    Log.d("MEUAPP", "Posição: "+ posicao);
+                    return true;
+                }
+                return false;
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
             }
         });
-
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AdaptadorAbastecimento)recyclerView.getAdapter()).notifyDataSetChanged();
+    }
 }

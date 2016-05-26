@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
@@ -24,6 +25,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     RadioButton rbGasolina, rbAlcool, rbDiesel;
     SimpleDateFormat sdf;
     Abastecimento umAbastecimento = null;
+    NumberFormat nf;
+    long id;
 
 
     @Override
@@ -31,7 +34,12 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraabastecimento);
         operacao = getIntent().getStringExtra("OPERACAO");
+        if(operacao.equals("alterar")){
+            id = getIntent().getLongExtra("ID",0);
+        }
         data = Calendar.getInstance();
+        nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
 
         etQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
         etVlr_litro = (EditText) findViewById(R.id.etVlr_litros);
@@ -56,7 +64,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etData.setText(sdf.format(data.getTime()));
         etQtde_litros.requestFocus();
         umAbastecimento = new Abastecimento();
-        umAbastecimento.combustivel = Abastecimento.tipo_combustivel.gasolina;
+        umAbastecimento.setCombustivel("gasolina");
         umAbastecimento.data = etData.getText().toString();
     }
 
@@ -64,13 +72,13 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         int id = view.getId();
         switch (id) {
             case R.id.rbGasolina:
-                umAbastecimento.combustivel = Abastecimento.tipo_combustivel.gasolina;
+                umAbastecimento.setCombustivel("gasolina");
                 break;
             case R.id.rbAlcool:
-                umAbastecimento.combustivel = Abastecimento.tipo_combustivel.alcool;
+                umAbastecimento.setCombustivel("alcool");
                 break;
             case R.id.rbDiesel:
-                umAbastecimento.combustivel = Abastecimento.tipo_combustivel.diesel;
+                umAbastecimento.setCombustivel("diesel");
                 break;
         }
     }
@@ -83,8 +91,6 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
                     etVlr_litro.getText().toString(),
                     etVlr_tota.getText().toString());
             if (umAbastecimento.isCalculou) {
-                NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
                 etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
                 etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
                 etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
@@ -113,14 +119,49 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
         switch (operacao) {
             case "inserir":
-                if (abastecimentoDAO.inserir(umAbastecimento) > 0) {
-                    Toast.makeText(this,"Salvo!!!", Toast.LENGTH_SHORT).show();
+                long id = abastecimentoDAO.inserir(umAbastecimento);
+                if ( id > 0) {
+                    umAbastecimento.id = id;
+                    Toast.makeText(getApplicationContext(),"Salvo!!!", Toast.LENGTH_SHORT).show();
+                    AdaptadorAbastecimento.addAbastecimento(umAbastecimento);
                     preparaUmAbastecimetno();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Operação não realizada!!!", Toast.LENGTH_SHORT ).show();
                 }
                 break;
             case "alterar":
                 break;
         }
+    }
+
+    public void exclui(){
+        AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
+        if(abastecimentoDAO.excluir(id)){
+            AdaptadorAbastecimento.removeAbastecimento(id);
+            Toast.makeText(getApplicationContext(),"Excluído!!!", Toast.LENGTH_SHORT ).show();
+        }else{
+            Toast.makeText(getApplicationContext(),"Operação não realizada!!!", Toast.LENGTH_SHORT ).show();
+        }
+    }
+
+    public void pegaAbastecimento(){
+        umAbastecimento = AdaptadorAbastecimento.getAbastecimento(id);
+        etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
+        etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
+        etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
+        etData.setText(umAbastecimento.data);
+        switch (umAbastecimento.getCombustiviel()){
+            case "gasolina":
+                rbGasolina.setChecked(true);
+                break;
+            case "alcool":
+                rbAlcool.setChecked(true);
+                break;
+            case "diesel":
+                rbDiesel.setChecked(true);
+                break;
+        }
+        etQtde_litros.requestFocus();
     }
 
 

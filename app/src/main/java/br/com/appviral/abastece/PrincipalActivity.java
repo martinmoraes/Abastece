@@ -59,7 +59,7 @@ public class PrincipalActivity extends AppCompatActivity
 
 
     public void abre_RegistraAbastecimento(View view) {
-        Intent intent = new Intent(this, RegistraAbastecimentoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RegistraAbastecimentoActivity.class);
         intent.putExtra("OPERACAO", "inserir");
         startActivity(intent);
     }

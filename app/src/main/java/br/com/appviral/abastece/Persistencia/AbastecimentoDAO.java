@@ -63,7 +63,7 @@ public class AbastecimentoDAO {
         values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.vlr_litro);
         values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.vlr_total);
         values.put(Abastecimento.CAMPO_DATA, dataParaPersistir(abastecimento.data));
-        values.put(Abastecimento.CAMPO_COMBUSTIVEL, String.valueOf(abastecimento.combustivel));
+        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
         Long id = db.insert(Abastecimento.TABELA, null, values);
         db.close();
         return id;
@@ -77,7 +77,7 @@ public class AbastecimentoDAO {
         values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.vlr_litro);
         values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.vlr_total);
         values.put(Abastecimento.CAMPO_DATA, dataParaPersistir(abastecimento.data));
-        values.put(Abastecimento.CAMPO_COMBUSTIVEL, String.valueOf(abastecimento.combustivel));
+        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
         String whare = Abastecimento.CAMPO_ID + " = ?";
 
         int id = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.id)});

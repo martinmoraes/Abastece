@@ -24,7 +24,7 @@ public class Abastecimento {
     public float vlr_litro;
     public float vlr_total;
     public String data;
-    public tipo_combustivel combustivel;
+    private tipo_combustivel combustivel;
 
     public boolean isCalculou = false;
 
@@ -105,8 +105,10 @@ public class Abastecimento {
                 this.combustivel = tipo_combustivel.diesel;
                 break;
         }
+    }
 
-
+    public String getCombustiviel(){
+        return combustivel.toString();
     }
 
     public String getVlrLitro(){
