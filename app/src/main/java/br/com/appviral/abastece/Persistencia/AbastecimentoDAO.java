@@ -80,9 +80,9 @@ public class AbastecimentoDAO {
         values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
         String whare = Abastecimento.CAMPO_ID + " = ?";
 
-        int id = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.id)});
+        int ret = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.id)});
         db.close();
-        return id > 0 ? true : false;
+        return ret > 0 ? true : false;
     }
 
     public boolean excluir(Abastecimento abastecimento) {
@@ -112,7 +112,10 @@ public class AbastecimentoDAO {
                Abastecimento.CAMPO_VLR_LITRO, Abastecimento.CAMPO_VLR_TOTAL, Abastecimento.CAMPO_DATA,
                Abastecimento.CAMPO_COMBUSTIVEL};
 
-        Cursor cursor = db.query(Abastecimento.TABELA,colunas,null,null,null,null,Abastecimento.CAMPO_DATA + " DESC");
+        Cursor cursor = db.query(Abastecimento.TABELA,
+                colunas,
+                null,null,null,null,
+                Abastecimento.CAMPO_DATA + " DESC");
         Abastecimento umAbastecimento;
 
         if (cursor.moveToFirst()) {

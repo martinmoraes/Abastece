@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,25 +20,25 @@ import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
 public class RegistraAbastecimentoActivity extends AppCompatActivity implements OnFocusChangeListener {
+
     String operacao;
+    int posicao;
     Calendar data;
     EditText etQtde_litros, etVlr_litro, etVlr_tota, etData;
     RadioButton rbGasolina, rbAlcool, rbDiesel;
-    SimpleDateFormat sdf;
+    DateFormat sdf;
     Abastecimento umAbastecimento = null;
     NumberFormat nf;
-    long id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraabastecimento);
-        operacao = getIntent().getStringExtra("OPERACAO");
-        if(operacao.equals("alterar")){
-            id = getIntent().getLongExtra("ID",0);
-        }
+
         data = Calendar.getInstance();
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
+        //sdf = DateFormat.getDateInstance();
         nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
 
@@ -53,18 +54,24 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etVlr_litro.setOnFocusChangeListener(this);
         etVlr_tota.setOnFocusChangeListener(this);
 
-        sdf = new SimpleDateFormat("dd/MM/yyyy");
-        preparaUmAbastecimetno();
+        operacao = getIntent().getStringExtra("OPERACAO");
+        if (operacao.equals(Abastecimento.ALTERAR)) {
+            posicao = getIntent().getIntExtra("POSICAO", 0);
+            pegaAbastecimento();
+        }else{
+            preparaUmAbastecimento();
+        }
     }
 
-    private void preparaUmAbastecimetno(){
+    private void preparaUmAbastecimento() {
+        etQtde_litros.requestFocus();
         etVlr_litro.setText("");
         etVlr_tota.setText("");
         etQtde_litros.setText("");
         etData.setText(sdf.format(data.getTime()));
-        etQtde_litros.requestFocus();
+
         umAbastecimento = new Abastecimento();
-        umAbastecimento.setCombustivel("gasolina");
+        umAbastecimento.setCombustivel(Abastecimento.tipo_combustivel.gasolina);
         umAbastecimento.data = etData.getText().toString();
     }
 
@@ -72,13 +79,13 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         int id = view.getId();
         switch (id) {
             case R.id.rbGasolina:
-                umAbastecimento.setCombustivel("gasolina");
+                umAbastecimento.setCombustivel(Abastecimento.tipo_combustivel.gasolina);
                 break;
             case R.id.rbAlcool:
-                umAbastecimento.setCombustivel("alcool");
+                umAbastecimento.setCombustivel(Abastecimento.tipo_combustivel.alcool);
                 break;
             case R.id.rbDiesel:
-                umAbastecimento.setCombustivel("diesel");
+                umAbastecimento.setCombustivel(Abastecimento.tipo_combustivel.diesel);
                 break;
         }
     }
@@ -118,39 +125,53 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     public void salva(View view) {
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
         switch (operacao) {
-            case "inserir":
+            case Abastecimento.INSERIR:
                 long id = abastecimentoDAO.inserir(umAbastecimento);
-                if ( id > 0) {
+                if (id > 0) {
                     umAbastecimento.id = id;
-                    Toast.makeText(getApplicationContext(),"Salvo!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Salvo!!!", Toast.LENGTH_SHORT).show();
                     AdaptadorAbastecimento.addAbastecimento(umAbastecimento);
-                    preparaUmAbastecimetno();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Operação não realizada!!!", Toast.LENGTH_SHORT ).show();
+                    preparaUmAbastecimento();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case "alterar":
+            case Abastecimento.ALTERAR:
+                if(abastecimentoDAO.alterar(umAbastecimento)){
+                    Toast.makeText(getApplicationContext(), "Salvo!!!", Toast.LENGTH_SHORT).show();
+                    AdaptadorAbastecimento.alteraAbastecimetno(posicao, umAbastecimento);
+                    preparaUmAbastecimento();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
 
-    public void exclui(){
+    public void cancelar(View view){
+        finish();
+    }
+
+    public void excluir(View view) {
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
-        if(abastecimentoDAO.excluir(id)){
-            AdaptadorAbastecimento.removeAbastecimento(id);
-            Toast.makeText(getApplicationContext(),"Excluído!!!", Toast.LENGTH_SHORT ).show();
-        }else{
-            Toast.makeText(getApplicationContext(),"Operação não realizada!!!", Toast.LENGTH_SHORT ).show();
+        if (umAbastecimento != null) {
+            if (abastecimentoDAO.excluir(umAbastecimento)) {
+                AdaptadorAbastecimento.removeAbastecimento(umAbastecimento);
+                Toast.makeText(getApplicationContext(), "Excluído!!!", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    public void pegaAbastecimento(){
-        umAbastecimento = AdaptadorAbastecimento.getAbastecimento(id);
+    public void pegaAbastecimento() {
+        umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
         etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
         etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
         etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
         etData.setText(umAbastecimento.data);
-        switch (umAbastecimento.getCombustiviel()){
+        switch (umAbastecimento.getCombustiviel()) {
             case "gasolina":
                 rbGasolina.setChecked(true);
                 break;

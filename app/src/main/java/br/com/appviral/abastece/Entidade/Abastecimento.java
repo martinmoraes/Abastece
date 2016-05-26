@@ -18,6 +18,8 @@ public class Abastecimento {
     public static final String CAMPO_DATA = "data";
     public static final String CAMPO_COMBUSTIVEL = "combustivel";
 
+    public static final String INSERIR = "inserir";
+    public static final String ALTERAR = "alterar";
 
     public Long id;
     public float qtde_litros;
@@ -107,20 +109,24 @@ public class Abastecimento {
         }
     }
 
-    public String getCombustiviel(){
+    public void setCombustivel(tipo_combustivel combustivel) {
+        this.combustivel = combustivel;
+    }
+
+    public String getCombustiviel() {
         return combustivel.toString();
     }
 
-    public String getVlrLitro(){
-        return String.valueOf(vlr_litro);
+    public Float getVlrLitro() {
+        return vlr_litro;
     }
 
-    public String getVlrTotal(){
-        return String.valueOf(vlr_total);
+    public Float getVlrTotal() {
+        return vlr_total;
     }
 
-    public String getQtdeLitros(){
-        return String.valueOf(qtde_litros);
+    public Float getQtdeLitros() {
+        return qtde_litros;
     }
 
     public enum tipo_combustivel {

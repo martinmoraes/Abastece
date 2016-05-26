@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
         android:text="25/05/2016"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20dp"/>
@@ -32,6 +33,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="12dp"
         android:layout_toStartOf="@+id/tv_vlt_total"
+        android:layout_toLeftOf="@+id/tv_vlt_total"
         android:text="Gasto R$: "/>
 
     <TextView
@@ -39,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="140,00"
         android:textColor="@android:color/holo_red_dark"
@@ -60,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView4"
         android:layout_toEndOf="@+id/textView4"
+        android:layout_toRightOf="@+id/textView4"
         android:text="36,7"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20dp"/>
@@ -71,7 +75,8 @@
         android:layout_height="wrap_content"
         android:text="Vlr/Lt R$: "
         android:layout_alignTop="@+id/tv_vlt_litro"
-        android:layout_alignStart="@+id/textView3"/>
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignLeft="@+id/textView3"/>
 
     <TextView
         android:id="@+id/tv_vlt_litro"
@@ -79,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_vlt_total"
         android:layout_toEndOf="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3"
         android:text="140,00"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20dp"/>
@@ -89,6 +95,7 @@
         android:layout_height="0.8dp"
         android:layout_marginTop="20dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/tv_qtde_litros"
         android:background="@color/colorPrimary"/>
 

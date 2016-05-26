@@ -60,7 +60,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     public void abre_RegistraAbastecimento(View view) {
         Intent intent = new Intent(getApplicationContext(), RegistraAbastecimentoActivity.class);
-        intent.putExtra("OPERACAO", "inserir");
+        intent.putExtra("OPERACAO", Abastecimento.INSERIR);
         startActivity(intent);
     }
 
@@ -124,13 +124,4 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ArrayList<Abastecimento> listaAbastecimentos = abastecimentoDAO.listar();
-        for (Abastecimento umAbastecimento : listaAbastecimentos) {
-            Log.d("MEUAPP", umAbastecimento.toString());
-        }
-
-    }
 }

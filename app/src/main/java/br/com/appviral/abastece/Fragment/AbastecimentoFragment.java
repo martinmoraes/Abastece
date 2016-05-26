@@ -1,15 +1,10 @@
 package br.com.appviral.abastece.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,9 +21,9 @@ public class AbastecimentoFragment extends Fragment {
     List<Abastecimento> listaAbastecimentos;
 
 
-    public AbastecimentoFragment() {
+  /*  public AbastecimentoFragment() {
         // Required empty public constructor
-    }
+    }*/
 
     public static AbastecimentoFragment newInstance() {
         AbastecimentoFragment fragment = new AbastecimentoFragment();
@@ -57,29 +52,6 @@ public class AbastecimentoFragment extends Fragment {
         AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaAbastecimentos);
         recyclerView.setAdapter(adaptadorAbastecimento);
 
-
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                View childView = rv.findChildViewUnder(e.getX(), e.getY());
-                if (childView != null) {
-                    int posicao = rv.getChildAdapterPosition(childView);
-                    Log.d("MEUAPP", "Posição: "+ posicao);
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
         return view;
     }
 
