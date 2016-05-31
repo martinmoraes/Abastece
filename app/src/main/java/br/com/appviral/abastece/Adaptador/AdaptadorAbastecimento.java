@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import br.com.appviral.abastece.Entidade.Abastecimento;
@@ -22,14 +21,14 @@ import br.com.appviral.abastece.RegistraAbastecimentoActivity;
  */
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.meuViewHolder> {
 
-    private static List<Abastecimento> listaAbastecimentos;
+    private static List<Abastecimento> listaMostrada;
     LayoutInflater layoutInflater;
     final Context context;
     NumberFormat nf;
 
 
     public AdaptadorAbastecimento(Context context, List<Abastecimento> lista) {
-        this.listaAbastecimentos = lista;
+        this.listaMostrada = lista;
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         nf = NumberFormat.getInstance();
@@ -55,7 +54,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
 
     @Override
     public void onBindViewHolder(meuViewHolder holder, int position) {
-        Abastecimento abastecimento = listaAbastecimentos.get(position);
+        Abastecimento abastecimento = listaMostrada.get(position);
 
         holder.tvData.setText(abastecimento.data);
         holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros()));
@@ -66,7 +65,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
 
     @Override
     public int getItemCount() {
-        return listaAbastecimentos.size();
+        return listaMostrada.size();
     }
 
 
@@ -83,21 +82,22 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         }
     }
 
-
-    public static void addAbastecimento(Abastecimento abastecimento) {
-        listaAbastecimentos.add(0, abastecimento);
+    public static void adicionaAbastecimento(Abastecimento abastecimento) {
+        listaMostrada.add(0, abastecimento);
     }
 
-    public static void alteraAbastecimetno(int posicao, Abastecimento umAbastecimento) {
-        listaAbastecimentos.remove(posicao);
-        addAbastecimento(umAbastecimento);
+    public static void alteraAbastecimento(int posicao, Abastecimento umAbastecimento) {
+        listaMostrada.remove(posicao);
+        listaMostrada.add(posicao, umAbastecimento);
     }
 
     public static void removeAbastecimento(Abastecimento abastecimento) {
-        listaAbastecimentos.remove(abastecimento);
+        listaMostrada.remove(abastecimento);
     }
 
     public static Abastecimento getAbastecimento(int posicao) {
-        return listaAbastecimentos.get(posicao);
+        return listaMostrada.get(posicao);
     }
+
+
 }

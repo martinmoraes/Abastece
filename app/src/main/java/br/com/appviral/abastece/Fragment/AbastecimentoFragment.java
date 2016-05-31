@@ -18,12 +18,7 @@ import br.com.appviral.abastece.R;
 
 public class AbastecimentoFragment extends Fragment {
     RecyclerView recyclerView;
-    List<Abastecimento> listaAbastecimentos;
-
-
-  /*  public AbastecimentoFragment() {
-        // Required empty public constructor
-    }*/
+    List<Abastecimento> listaApresentada;
 
     public static AbastecimentoFragment newInstance() {
         AbastecimentoFragment fragment = new AbastecimentoFragment();
@@ -47,10 +42,11 @@ public class AbastecimentoFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        listaAbastecimentos = (new AbastecimentoDAO(getActivity())).listar();
+//        listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
 
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaAbastecimentos);
-        recyclerView.setAdapter(adaptadorAbastecimento);
+        alteraLista("nav_abastecimentos");
+//        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
+//        recyclerView.setAdapter(adaptadorAbastecimento);
 
         return view;
     }
@@ -58,6 +54,27 @@ public class AbastecimentoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AdaptadorAbastecimento)recyclerView.getAdapter()).notifyDataSetChanged();
+        ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
+    }
+
+    public void alteraLista(String mostrar) {
+        switch (mostrar) {
+            case "nav_abastecimentos":
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
+                break;
+            case "nav_sobre":
+                break;
+            case "nav_mesal":
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal();
+                break;
+            case "nav_bimestral":
+                break;
+            case "nav_trimestral":
+                break;
+            case "nav_semestral":
+                break;
+        }
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
+        recyclerView.setAdapter(adaptadorAbastecimento);
     }
 }

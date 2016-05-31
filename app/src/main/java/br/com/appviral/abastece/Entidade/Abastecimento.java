@@ -98,12 +98,15 @@ public class Abastecimento {
     public void setCombustivel(String combustivel) {
         switch (combustivel) {
             case "gasolina":
+            case "Gasolina":
                 this.combustivel = tipo_combustivel.gasolina;
                 break;
             case "alcool":
+            case "Alcool":
                 this.combustivel = tipo_combustivel.alcool;
                 break;
             case "diesel":
+            case "Diesel":
                 this.combustivel = tipo_combustivel.diesel;
                 break;
         }

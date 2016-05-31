@@ -1,5 +1,6 @@
 package br.com.appviral.abastece;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,7 @@ import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     AbastecimentoDAO abastecimentoDAO;
+    Fragment abastecimentoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +43,17 @@ public class PrincipalActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setItemIconTintList(null);
+        navigationView.getMenu().findItem(R.id.nav_abastecimentos).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
 
         // FRAGMENT
-        AbastecimentoFragment frag = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag("PrinFrag");
-        if(frag == null) {
-            frag = AbastecimentoFragment.newInstance();
+        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentById(R.id.rl_fragment_container);
+        if (abastecimentoFragment == null) {
+            abastecimentoFragment = AbastecimentoFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.rl_fragment_container, frag, "PrinFrag");
+            ft.replace(R.id.rl_fragment_container, abastecimentoFragment, "PrinFrag");
             ft.commit();
         }
 
@@ -58,7 +62,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
 
-    public void abre_RegistraAbastecimento(View view) {
+    public void abreRegistraAbastecimento(View view) {
         Intent intent = new Intent(getApplicationContext(), RegistraAbastecimentoActivity.class);
         intent.putExtra("OPERACAO", Abastecimento.INSERIR);
         startActivity(intent);
@@ -96,7 +100,7 @@ public class PrincipalActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    //   @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -104,19 +108,23 @@ public class PrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_abastecimentos:
+                abastecimentoFragment.alteraLista();
                 break;
-            case R.id.nav_mensal:
+            case R.id.nav_sobre:
+                Log.d("MEUAPP", "nav_sobre");
+                break;
+            case R.id.nav_mesal:
+                Log.d("MEUAPP", "nav_mesal");
                 break;
             case R.id.nav_bimestral:
+                Log.d("MEUAPP", "nav_bimestral");
                 break;
             case R.id.nav_trimestral:
+                Log.d("MEUAPP", "nav_trimestral");
                 break;
             case R.id.nav_semestral:
+                Log.d("MEUAPP", "nav_semestral");
                 break;
-            case R.id.nav_anual:
-                break;
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

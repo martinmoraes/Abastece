@@ -29,13 +29,22 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </RelativeLayout>
 
+
+    <!--
+     <fragment
+        android:id="@+id/rl_fragment_container"
+        class="br.com.appviral.abastece.Fragment.AbastecimentoFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+     -->
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"
-        android:onClick="abre_RegistraAbastecimento"/>
+        android:onClick="abreRegistraAbastecimento"
+        android:src="@mipmap/ic_plus_black_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
