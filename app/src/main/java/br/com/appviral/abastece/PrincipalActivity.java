@@ -24,8 +24,7 @@ import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 @SuppressWarnings("deprecation")
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    AbastecimentoDAO abastecimentoDAO;
-    Fragment abastecimentoFragment;
+    AbastecimentoFragment abastecimentoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +48,13 @@ public class PrincipalActivity extends AppCompatActivity
 
 
         // FRAGMENT
-        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentById(R.id.rl_fragment_container);
+        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag("PrinFrag");
         if (abastecimentoFragment == null) {
             abastecimentoFragment = AbastecimentoFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.rl_fragment_container, abastecimentoFragment, "PrinFrag");
             ft.commit();
         }
-
-        abastecimentoDAO = new AbastecimentoDAO(this);
-        //abastecimentoDAO.excluirTudo();
     }
 
 
@@ -108,22 +104,22 @@ public class PrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_abastecimentos:
-                abastecimentoFragment.alteraLista();
+                abastecimentoFragment.alteraLista("nav_abastecimentos");
                 break;
             case R.id.nav_sobre:
                 Log.d("MEUAPP", "nav_sobre");
                 break;
             case R.id.nav_mesal:
-                Log.d("MEUAPP", "nav_mesal");
+                abastecimentoFragment.alteraLista("nav_mesal");
                 break;
             case R.id.nav_bimestral:
-                Log.d("MEUAPP", "nav_bimestral");
+                abastecimentoFragment.alteraLista("nav_bimestral");
                 break;
             case R.id.nav_trimestral:
-                Log.d("MEUAPP", "nav_trimestral");
+                abastecimentoFragment.alteraLista("nav_trimestral");
                 break;
             case R.id.nav_semestral:
-                Log.d("MEUAPP", "nav_semestral");
+                abastecimentoFragment.alteraLista("nav_semestral");
                 break;
         }
 

@@ -22,9 +22,9 @@ import br.com.appviral.abastece.RegistraAbastecimentoActivity;
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.meuViewHolder> {
 
     private static List<Abastecimento> listaMostrada;
-    LayoutInflater layoutInflater;
-    final Context context;
-    NumberFormat nf;
+    private LayoutInflater layoutInflater;
+    private final Context context;
+    private NumberFormat nf;
 
 
     public AdaptadorAbastecimento(Context context, List<Abastecimento> lista) {
@@ -42,7 +42,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MEUAPP", "Clicou na posição: " + umViewHolder.getAdapterPosition());
+//                Log.d("MEUAPP", "Clicou na posição: " + umViewHolder.getAdapterPosition());
                 Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
                 intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
                 intent.putExtra("POSICAO", umViewHolder.getAdapterPosition());

@@ -42,11 +42,10 @@ public class AbastecimentoFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
+        listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
 
-        alteraLista("nav_abastecimentos");
-//        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
-//        recyclerView.setAdapter(adaptadorAbastecimento);
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
+        recyclerView.setAdapter(adaptadorAbastecimento);
 
         return view;
     }
@@ -58,23 +57,26 @@ public class AbastecimentoFragment extends Fragment {
     }
 
     public void alteraLista(String mostrar) {
+        listaApresentada.removeAll(listaApresentada);
         switch (mostrar) {
             case "nav_abastecimentos":
-                listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarAbastecimentos());
                 break;
             case "nav_sobre":
                 break;
             case "nav_mesal":
-                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal();
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_MENSAL));
                 break;
             case "nav_bimestral":
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_BIMESTRAL));
                 break;
             case "nav_trimestral":
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_TRIMESTRAL));
                 break;
             case "nav_semestral":
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_SEMESTRAL));
                 break;
         }
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
-        recyclerView.setAdapter(adaptadorAbastecimento);
+        ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
     }
 }

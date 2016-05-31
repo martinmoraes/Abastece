@@ -194,22 +194,27 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     public void mostraAbastecimento() {
         umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
-        etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
-        etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
-        etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
-        etData.setText(umAbastecimento.data);
-        switch (umAbastecimento.getCombustiviel()) {
-            case "gasolina":
-                rbGasolina.setChecked(true);
-                break;
-            case "alcool":
-                rbAlcool.setChecked(true);
-                break;
-            case "diesel":
-                rbDiesel.setChecked(true);
-                break;
+        try {
+            etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
+            etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
+            etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
+            etData.setText(umAbastecimento.data);
+            switch (umAbastecimento.getCombustiviel()) {
+                case "gasolina":
+                    rbGasolina.setChecked(true);
+                    break;
+                case "alcool":
+                    rbAlcool.setChecked(true);
+                    break;
+                case "diesel":
+                    rbDiesel.setChecked(true);
+                    break;
+            }
+            etQtde_litros.requestFocus();
+
+        } catch (Exception e) {
+            finish();
         }
-        etQtde_litros.requestFocus();
     }
 
 

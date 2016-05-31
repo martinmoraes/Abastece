@@ -19,22 +19,10 @@ import br.com.appviral.abastece.Entidade.Abastecimento;
  */
 public class AbastecimentoDAO {
 
+
     Context context;
     DBSQLite dbsqLite;
     String colunas[];
-    List<Abastecimento> lista;
-    List<Abastecimento> listaJan;
-    List<Abastecimento> listaFev;
-    List<Abastecimento> listaMar;
-    List<Abastecimento> listaAbr;
-    List<Abastecimento> listaMai;
-    List<Abastecimento> listaJun;
-    List<Abastecimento> listaJul;
-    List<Abastecimento> listaAgo;
-    List<Abastecimento> listaSet;
-    List<Abastecimento> listaOut;
-    List<Abastecimento> listaNov;
-    List<Abastecimento> listaDez;
 
     public AbastecimentoDAO(Context context) {
         this.context = context;
@@ -96,7 +84,7 @@ public class AbastecimentoDAO {
 
     public List<Abastecimento> listarAbastecimentos() {
         SQLiteDatabase db = dbsqLite.getReadableDatabase();
-        lista = new ArrayList<>();
+        List<Abastecimento> lista = new ArrayList<>();
 
         Cursor cursor = db.query(Abastecimento.TABELA,
                 colunas,
@@ -112,42 +100,38 @@ public class AbastecimentoDAO {
         return lista;
     }
 
-    public List<Abastecimento> listarMediaMensal() {
+    public List<Abastecimento> listarMediaMensal(int media) {
         SQLiteDatabase db = dbsqLite.getReadableDatabase();
-        lista = new ArrayList<>();
-        concatenaIniciaNovasListas(null);
+        List<Abastecimento> lista = new ArrayList<>();
+        List<Abastecimento> listaTEMP = new ArrayList<>();
 
-
-        String anoReferencia = null;
+        String referenciaDeTotalizacao = null;
         Cursor cursor = db.query(Abastecimento.TABELA,
                 colunas,
                 null, null, null, null,
                 Abastecimento.CAMPO_DATA + " DESC");
 
-        final int MES = 1;
-        final int ANO = 2;
-
         if (cursor.moveToFirst()) {
+            String referencia;
             do {
                 Abastecimento umAbastecimento = povoaAbastecimento(cursor);
-                String dtCampos[] = umAbastecimento.data.split("/");
-                if (anoReferencia == null) {
-                    anoReferencia = dtCampos[ANO];
+                referencia = pegaReferencia(umAbastecimento.data, media);
+                if (referenciaDeTotalizacao == null) {
+                    referenciaDeTotalizacao = referencia;
                 }
-                if (!anoReferencia.equals(dtCampos[ANO])) {
-                    //Se mudou o ano guarda a lista anterior e começa uma nova lista
-                    concatenaIniciaNovasListas(anoReferencia);
-                    anoReferencia = dtCampos[ANO];
-
+                if (!referenciaDeTotalizacao.equals(referencia)) {
+                    //Se mudou o mês/ano sumariza a lista e começa uma nova lista
+                    lista.add(totalizadorList(listaTEMP, referenciaDeTotalizacao));
+                    listaTEMP = new ArrayList<>();
+                    referenciaDeTotalizacao = referencia;
                 }
-                formaListaMes(umAbastecimento, dtCampos[MES]);
+                listaTEMP.add(umAbastecimento);
             } while (cursor.moveToNext());
-            concatenaIniciaNovasListas(anoReferencia);
+            lista.add(totalizadorList(listaTEMP, referencia));
             db.close();
         }
         return lista;
     }
-
 
     private String dataParaPersistir(String dtOriginal) {
         Date data = null;
@@ -190,7 +174,7 @@ public class AbastecimentoDAO {
         return umAbastecimento;
     }
 
-    public Abastecimento totalizadorList(List<Abastecimento> lista, String anoReferencia, String mes) {
+    public Abastecimento totalizadorList(List<Abastecimento> lista, String referencia) {
         float Qtde_litros = 0;
         float Total_Gasto = 0;
 
@@ -199,7 +183,7 @@ public class AbastecimentoDAO {
             Total_Gasto += abastecimento.vlr_total;
         }
         Abastecimento abastecimenTotalizado = new Abastecimento();
-        abastecimenTotalizado.data = mes +"/" + anoReferencia;
+        abastecimenTotalizado.data = referencia;
         abastecimenTotalizado.qtde_litros = Qtde_litros;
         abastecimenTotalizado.vlr_total = Total_Gasto;
         abastecimenTotalizado.vlr_litro = Total_Gasto / Qtde_litros;
@@ -207,90 +191,32 @@ public class AbastecimentoDAO {
         return abastecimenTotalizado;
     }
 
-    public void formaListaMes(Abastecimento umAbastecimento, String mes) {
-        switch (mes) {
-            case "01":
-                listaJan.add(umAbastecimento);
-                break;
-            case "02":
-                listaFev.add(umAbastecimento);
-                break;
-            case "03":
-                listaMar.add(umAbastecimento);
-                break;
-            case "04":
-                listaAbr.add(umAbastecimento);
-                break;
-            case "05":
-                listaMai.add(umAbastecimento);
-                break;
-            case "06":
-                listaJun.add(umAbastecimento);
-                break;
-            case "07":
-                listaJul.add(umAbastecimento);
-                break;
-            case "08":
-                listaAgo.add(umAbastecimento);
-                break;
-            case "09":
-                listaSet.add(umAbastecimento);
-                break;
-            case "10":
-                listaOut.add(umAbastecimento);
-                break;
-            case "11":
-                listaNov.add(umAbastecimento);
-                break;
-            case "12":
-                listaDez.add(umAbastecimento);
-                break;
-        }
-    }
 
+    public static int MEDIA_MENSAL = 1;
+    public static int MEDIA_BIMESTRAL = 2;
+    public static int MEDIA_TRIMESTRAL = 3;
+    public static int MEDIA_SEMESTRAL = 4;
 
-    private boolean concatenaIniciaNovasListas(String anoReferencia) {
+    private String pegaReferencia(String dt, int media) {
+        final int MES = 1;
+        final int ANO = 2;
+        String dtCampos[] = dt.split("/");
 
-        //Concatena todas as listas
-        if (listaJan != null && listaJan.size() > 0)
-            lista.add(totalizadorList(listaJan, anoReferencia, "JAN"));
-        if (listaFev != null && listaFev.size() > 0)
-            lista.add(totalizadorList(listaFev, anoReferencia, "FEV"));
-        if (listaMar != null && listaMar.size() > 0)
-            lista.add(totalizadorList(listaMar, anoReferencia, "MAR"));
-        if (listaAbr != null && listaAbr.size() > 0)
-            lista.add(totalizadorList(listaAbr, anoReferencia, "ABR"));
-        if (listaMai != null && listaMai.size() > 0)
-            lista.add(totalizadorList(listaMai, anoReferencia, "MAI"));
-        if (listaJun != null && listaJun.size() > 0)
-            lista.add(totalizadorList(listaJun, anoReferencia, "JUN"));
-        if (listaJul != null && listaJul.size() > 0)
-            lista.add(totalizadorList(listaJul, anoReferencia, "JUL"));
-        if (listaAgo != null && listaAgo.size() > 0)
-            lista.add(totalizadorList(listaAgo, anoReferencia, "AGO"));
-        if (listaSet != null && listaSet.size() > 0)
-            lista.add(totalizadorList(listaSet, anoReferencia, "SET"));
-        if (listaOut != null && listaOut.size() > 0)
-            lista.add(totalizadorList(listaOut, anoReferencia, "OUT"));
-        if (listaNov != null && listaNov.size() > 0)
-            lista.add(totalizadorList(listaNov, anoReferencia, "NOV"));
-        if (listaDez != null && listaDez.size() > 0)
-            lista.add(totalizadorList(listaDez, anoReferencia, "DEZ"));
-
-
-        listaJan = new ArrayList<>();
-        listaFev = new ArrayList<>();
-        listaMar = new ArrayList<>();
-        listaAbr = new ArrayList<>();
-        listaMai = new ArrayList<>();
-        listaJun = new ArrayList<>();
-        listaJul = new ArrayList<>();
-        listaAgo = new ArrayList<>();
-        listaSet = new ArrayList<>();
-        listaOut = new ArrayList<>();
-        listaNov = new ArrayList<>();
-        listaDez = new ArrayList<>();
-
-        return lista.size() > 0 ? true : false;
+        String referencia[][] = {
+                {"01", "JAN/", "1ºBi/", "1ºTri/", "1ºSem/"},
+                {"02", "FEV/", "1ºBi/", "1ºTri/", "1ºSem/"},
+                {"03", "MAR/", "2ºBi/", "1ºTri/", "1ºSem/"},
+                {"04", "ABR/", "2ºBi/", "2ºTri/", "1ºSem/"},
+                {"05", "MAI/", "3ºBi/", "2ºTri/", "1ºSem/"},
+                {"06", "JUN/", "3ºBi/", "2ºTri/", "1ºSem/"},
+                {"07", "JUL/", "4ºBi/", "3ºTri/", "2ºSem/"},
+                {"08", "AGO/", "4ºBi/", "3ºTri/", "2ºSem/"},
+                {"09", "SET/", "5ºBi/", "3ºTri/", "2ºSem/"},
+                {"10", "OUT/", "5ºBi/", "4ºTri/", "2ºSem/"},
+                {"11", "NOV/", "6ºBi/", "4ºTri/", "2ºSem/"},
+                {"12", "DEZ/", "6ºBi/", "4ºTri/", "2ºSem/"}
+        };
+        int oMES = Integer.parseInt(dtCampos[MES]) - 1;
+        return referencia[oMES][media]+ dtCampos[ANO];
     }
 }

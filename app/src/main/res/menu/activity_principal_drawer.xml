@@ -20,7 +20,7 @@
                 <item
                     android:id="@+id/nav_mesal"
                     android:icon="@mipmap/ic_numeric_1_box_multiple_outline_black_24dp"
-                    android:title="Menstral"/>
+                    android:title="Mensal"/>
                 <item
                     android:id="@+id/nav_bimestral"
                     android:icon="@mipmap/ic_numeric_2_box_multiple_outline_black_24dp"
