@@ -19,13 +19,16 @@ import br.com.appviral.abastece.R;
 
 public class AbastecimentoFragment extends Fragment {
     RecyclerView recyclerView;
-    List<Abastecimento> listaApresentada;
 
 
 
-    public static AbastecimentoFragment newInstance(boolean incluir) {
+
+    public static AbastecimentoFragment newInstance(boolean incluir, String lista) {
         AbastecimentoFragment fragment = new AbastecimentoFragment();
-        fragment.setArguments(null);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("INCLUIR" , incluir);
+        bundle.putString("LISTA" , lista);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -38,19 +41,21 @@ public class AbastecimentoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_abastecimento, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
+        View viewFragment = inflater.inflate(R.layout.fragment_abastecimento, container, false);
+        recyclerView = (RecyclerView) viewFragment.findViewById(R.id.rv_list);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada, AdaptadorAbastecimento.COM_CLICK);
+        String lista = getArguments().getString("LISTA");
+        List<Abastecimento> listaApresentada = defineLista(lista);
+        boolean incluir =  getArguments().getBoolean("INCLUIR");
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(),
+                listaApresentada, incluir);
         recyclerView.setAdapter(adaptadorAbastecimento);
-
-        return view;
+        return viewFragment;
     }
 
     @Override
@@ -59,25 +64,25 @@ public class AbastecimentoFragment extends Fragment {
         ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
     }
 
-    public void alteraLista(String mostrar) {
-        listaApresentada.removeAll(listaApresentada);
+    private List<Abastecimento> defineLista(String mostrar) {
+        List<Abastecimento> listaApresentada = new ArrayList<>();
         switch (mostrar) {
             case "nav_abastecimentos":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarAbastecimentos());
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
                 break;
             case "nav_mesal":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_MENSAL));
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_MENSAL);
                 break;
             case "nav_bimestral":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_BIMESTRAL));
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_BIMESTRAL);
                 break;
             case "nav_trimestral":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_TRIMESTRAL));
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_TRIMESTRAL);
                 break;
             case "nav_semestral":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_SEMESTRAL));
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_SEMESTRAL);
                 break;
         }
-        ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
+        return listaApresentada;
     }
 }

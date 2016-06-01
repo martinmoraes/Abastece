@@ -45,13 +45,17 @@ public class PrincipalActivity extends AppCompatActivity
 
 
         // FRAGMENT
-        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag("PrinFrag");
+        criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+    }
+
+    private void criaAbreFragmento(String tag, boolean incluirClick) {
+        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (abastecimentoFragment == null) {
-            abastecimentoFragment = AbastecimentoFragment.newInstance(AdaptadorAbastecimento.COM_CLICK);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.rl_fragment_container, abastecimentoFragment, "PrinFrag");
-            ft.commit();
+            abastecimentoFragment = AbastecimentoFragment.newInstance(incluirClick, tag);
         }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.rl_fragment_container, abastecimentoFragment, tag);
+        ft.commit();
     }
 
 
@@ -86,7 +90,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sobre) {
-            startActivity(new Intent(getApplicationContext(),SobreActivity.class));
+            startActivity(new Intent(getApplicationContext(), SobreActivity.class));
             return true;
         }
 
@@ -101,22 +105,22 @@ public class PrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_abastecimentos:
-                abastecimentoFragment.alteraLista("nav_abastecimentos");
+                criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
                 break;
             case R.id.nav_sobre:
-                startActivity(new Intent(getApplicationContext(),SobreActivity.class));
+                startActivity(new Intent(getApplicationContext(), SobreActivity.class));
                 break;
             case R.id.nav_mesal:
-                abastecimentoFragment.alteraLista("nav_mesal");
+                criaAbreFragmento("nav_mesal", AdaptadorAbastecimento.SEM_CLICK);
                 break;
             case R.id.nav_bimestral:
-                abastecimentoFragment.alteraLista("nav_bimestral");
+                criaAbreFragmento("nav_bimestral", AdaptadorAbastecimento.SEM_CLICK);
                 break;
             case R.id.nav_trimestral:
-                abastecimentoFragment.alteraLista("nav_trimestral");
+                criaAbreFragmento("nav_trimestral", AdaptadorAbastecimento.SEM_CLICK);
                 break;
             case R.id.nav_semestral:
-                abastecimentoFragment.alteraLista("nav_semestral");
+                criaAbreFragmento("nav_semestral", AdaptadorAbastecimento.SEM_CLICK);
                 break;
         }
 

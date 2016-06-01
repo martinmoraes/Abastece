@@ -195,7 +195,6 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     public void mostraAbastecimento() {
         umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
-        try {
             etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
             etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
             etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
@@ -212,10 +211,6 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
                     break;
             }
             etQtde_litros.requestFocus();
-
-        } catch (Exception e) {
-            finish();
-        }
     }
 
 
