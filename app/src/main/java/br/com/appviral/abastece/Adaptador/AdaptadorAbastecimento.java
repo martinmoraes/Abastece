@@ -21,34 +21,41 @@ import br.com.appviral.abastece.RegistraAbastecimentoActivity;
  */
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.meuViewHolder> {
 
+    public static boolean COM_CLICK = true;
+    public static boolean SEM_CLICK = false;
+
     private static List<Abastecimento> listaMostrada;
     private LayoutInflater layoutInflater;
     private final Context context;
     private NumberFormat nf;
+    private boolean incluir_click;
 
 
-    public AdaptadorAbastecimento(Context context, List<Abastecimento> lista) {
+    public AdaptadorAbastecimento(Context context, List<Abastecimento> lista, boolean incluir) {
         this.listaMostrada = lista;
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(2);
+        this.incluir_click = incluir;
     }
 
     @Override
     public meuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.item_abastecimento, null);
         final meuViewHolder umViewHolder = new meuViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (incluir_click) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 //                Log.d("MEUAPP", "Clicou na posição: " + umViewHolder.getAdapterPosition());
-                Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
-                intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
-                intent.putExtra("POSICAO", umViewHolder.getAdapterPosition());
-                context.startActivity(intent);
-            }
-        });
+                    Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
+                    intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
+                    intent.putExtra("POSICAO", umViewHolder.getAdapterPosition());
+                    context.startActivity(intent);
+                }
+            });
+        }
         return umViewHolder;
     }
 

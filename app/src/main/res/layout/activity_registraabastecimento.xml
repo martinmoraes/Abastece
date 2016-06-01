@@ -65,7 +65,7 @@
 
         </TableRow>
 
-        <!-- Quantidade de Litros -->
+        <!-- Valor total TODO icon ???-->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_gauge_black_24dp"/>
+                android:src="@mipmap/ic_currency_usd_black_24dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -82,12 +82,12 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:gravity="left|center"
-                android:text="Litros"
+                android:text="Total"
                 android:textSize="@dimen/fonte"
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/etQtde_litros"
+                android:id="@+id/etVlr_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,8 +129,7 @@
                 android:paddingLeft="2dp"/>
         </TableRow>
 
-        <!-- Valor total
-        todo icon ???-->
+        <!-- Quantidade de Litros -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -139,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_currency_usd_black_24dp"/>
+                android:src="@mipmap/ic_gauge_black_24dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -147,12 +146,12 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:gravity="left|center"
-                android:text="Total"
+                android:text="Litros"
                 android:textSize="@dimen/fonte"
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/etVlr_total"
+                android:id="@+id/etQtde_litros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -203,17 +202,25 @@
 
 
     <!-- Botão Salvar -->
-    <Button
-        android:id="@+id/btSalvar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="0"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:onClick="salva"
-        android:text="SALVA"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/btSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="0"
+
+            android:gravity="center"
+            android:onClick="salva"
+            android:text="SALVA"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -173,7 +173,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
                 }
                 break;
         }
-        preparaUmAbastecimento();
+//        preparaUmAbastecimento();
+        finish();
     }
 
     private Abastecimento.tipo_combustivel combustivelSelecionado() {

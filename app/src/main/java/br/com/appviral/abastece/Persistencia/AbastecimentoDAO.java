@@ -60,7 +60,7 @@ public class AbastecimentoDAO {
 
         int ret = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.id)});
         db.close();
-        return ret > 0 ? true : false;
+        return ret > 0;
     }
 
     public boolean excluir(Abastecimento abastecimento) {

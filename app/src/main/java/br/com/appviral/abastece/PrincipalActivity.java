@@ -1,6 +1,5 @@
 package br.com.appviral.abastece;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,21 +9,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
-
+import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
-import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
 @SuppressWarnings("deprecation")
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     AbastecimentoFragment abastecimentoFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class PrincipalActivity extends AppCompatActivity
         // FRAGMENT
         abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag("PrinFrag");
         if (abastecimentoFragment == null) {
-            abastecimentoFragment = AbastecimentoFragment.newInstance();
+            abastecimentoFragment = AbastecimentoFragment.newInstance(AdaptadorAbastecimento.COM_CLICK);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.rl_fragment_container, abastecimentoFragment, "PrinFrag");
             ft.commit();
@@ -76,7 +73,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
         return true;
     }
@@ -89,7 +85,8 @@ public class PrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sobre) {
+            startActivity(new Intent(getApplicationContext(),SobreActivity.class));
             return true;
         }
 
@@ -107,7 +104,7 @@ public class PrincipalActivity extends AppCompatActivity
                 abastecimentoFragment.alteraLista("nav_abastecimentos");
                 break;
             case R.id.nav_sobre:
-                Log.d("MEUAPP", "nav_sobre");
+                startActivity(new Intent(getApplicationContext(),SobreActivity.class));
                 break;
             case R.id.nav_mesal:
                 abastecimentoFragment.alteraLista("nav_mesal");

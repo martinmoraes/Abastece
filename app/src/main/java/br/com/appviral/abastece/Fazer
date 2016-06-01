@@ -1,0 +1,19 @@
+
+// Requisições 31/05/2016
+    // 01 - Ordem de cadastro: Total/Preço/Litros
+    // 02 - ao salvar retorna a lista
+    // 03 - Alterar o cabeçalho do NAV diminuir a altura
+    // 04 - Alterar o cabeçalho do NAV e texto na direita
+    // 05 - Cabeçalho NAV com cor AZUL
+    // 06 - alterar a cor do + do FAB para o branco
+    // 07 - diminuir a fonte dos label de cadastro
+    // 08 - no Sobre um texto com imagem em uma Activity
+    // 09 - Setings chama o sobre
+    // 10 - Adicionar o efeito rippleefect no botão salvar
+    // 11 - Adicionar o efeito rippleefect nos itens do list
+    //TODO Tirar a pog e colocar fragments
+    //TODO calcula ao digitar
+    //TODO quando instalar colocar icone no launcher
+
+
+    //TODO alterar layout dos itens

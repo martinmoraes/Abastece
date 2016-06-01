@@ -21,10 +21,13 @@
         <activity
             android:name=".RegistraAbastecimentoActivity"
             android:parentActivityName=".PrincipalActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PrincipalActivity"/>
+        </activity>
+        <activity android:name=".SobreActivity">
         </activity>
     </application>
 

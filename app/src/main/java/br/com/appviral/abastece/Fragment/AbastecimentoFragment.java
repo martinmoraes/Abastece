@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
@@ -20,7 +21,9 @@ public class AbastecimentoFragment extends Fragment {
     RecyclerView recyclerView;
     List<Abastecimento> listaApresentada;
 
-    public static AbastecimentoFragment newInstance() {
+
+
+    public static AbastecimentoFragment newInstance(boolean incluir) {
         AbastecimentoFragment fragment = new AbastecimentoFragment();
         fragment.setArguments(null);
         return fragment;
@@ -34,6 +37,7 @@ public class AbastecimentoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_abastecimento, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         recyclerView.setHasFixedSize(true);
@@ -43,8 +47,7 @@ public class AbastecimentoFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
-
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada);
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentada, AdaptadorAbastecimento.COM_CLICK);
         recyclerView.setAdapter(adaptadorAbastecimento);
 
         return view;
@@ -60,7 +63,7 @@ public class AbastecimentoFragment extends Fragment {
         listaApresentada.removeAll(listaApresentada);
         switch (mostrar) {
             case "nav_abastecimentos":
-                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarAbastecimentos());
+                listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
                 break;
             case "nav_sobre":
                 break;
