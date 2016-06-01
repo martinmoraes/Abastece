@@ -46,21 +46,23 @@ public class Abastecimento {
     }
 
     public void calculaTerceiro(String qtde_litrosS, String vlr_litroS, String vlr_totalS) {
-        if (!qtde_litrosS.equals(""))
-            qtde_litros = retornaFloat(qtde_litrosS);
-        if (!vlr_litroS.equals(""))
-            vlr_litro = retornaFloat(vlr_litroS);
         if (!vlr_totalS.equals(""))
             vlr_total = retornaFloat(vlr_totalS);
+        if (!vlr_litroS.equals("")) {
+            vlr_litro = retornaFloat(vlr_litroS);
+        }
+        if (!qtde_litrosS.equals("")) {
+            qtde_litros = retornaFloat(qtde_litrosS);
+        }
 
         isCalculou = false;
         DecimalFormat df = new DecimalFormat("0.00");
 
-        //Calcula vlr_Total
-        if (qtde_litros > 0 && vlr_litro > 0) {
-            vlr_total = qtde_litros * vlr_litro;
-            String vlr = df.format(vlr_total).replace(",", ".");
-            vlr_total = Float.parseFloat(vlr);
+        //Calcula Qtde litros
+        if (vlr_total > 0 && vlr_litro > 0) {
+            qtde_litros = vlr_total / vlr_litro;
+            String vlr = df.format(qtde_litros).replace(",", ".");
+            qtde_litros = Float.parseFloat(vlr);
             isCalculou = true;
         }
 
@@ -72,14 +74,13 @@ public class Abastecimento {
             isCalculou = true;
         }
 
-        //Calcula Qtde litros
-        if (vlr_total > 0 && vlr_litro > 0) {
-            qtde_litros = vlr_total / vlr_litro;
-            String vlr = df.format(qtde_litros).replace(",", ".");
-            qtde_litros = Float.parseFloat(vlr);
+        //Calcula vlr_Total
+        if (qtde_litros > 0 && vlr_litro > 0) {
+            vlr_total = qtde_litros * vlr_litro;
+            String vlr = df.format(vlr_total).replace(",", ".");
+            vlr_total = Float.parseFloat(vlr);
             isCalculou = true;
         }
-
 
     }
 

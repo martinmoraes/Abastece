@@ -4,7 +4,8 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +24,13 @@ import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
-public class RegistraAbastecimentoActivity extends AppCompatActivity implements OnFocusChangeListener {
+public class RegistraAbastecimentoActivity extends AppCompatActivity implements TextWatcher, OnFocusChangeListener {
 
     String operacao;
     int posicao;
     Calendar data;
-    EditText etQtde_litros, etVlr_litro, etVlr_tota, etData;
+    EditText etQtde_litros, etVlr_litro, etVlr_total, etData;
+    boolean etQtde_litrosB, etVlr_litroB, etVlr_totalB;
     RadioButton rbGasolina, rbAlcool, rbDiesel;
     DateFormat sdf;
     Abastecimento umAbastecimento = null;
@@ -54,16 +56,20 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         nf.setMaximumFractionDigits(2);
 
         etQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
-        etVlr_litro = (EditText) findViewById(R.id.etVlr_litros);
-        etVlr_tota = (EditText) findViewById(R.id.etVlr_total);
+        etVlr_litro = (EditText) findViewById(R.id.etVlr_litro);
+        etVlr_total = (EditText) findViewById(R.id.etVlr_total);
         etData = (EditText) findViewById(R.id.etData);
         rbGasolina = (RadioButton) findViewById(R.id.rbGasolina);
         rbAlcool = (RadioButton) findViewById(R.id.rbAlcool);
         rbDiesel = (RadioButton) findViewById(R.id.rbDiesel);
 
+//        etQtde_litros.addTextChangedListener(this);
+//        etVlr_litro.addTextChangedListener(this);
+//        etVlr_total.addTextChangedListener(this);
+
         etQtde_litros.setOnFocusChangeListener(this);
         etVlr_litro.setOnFocusChangeListener(this);
-        etVlr_tota.setOnFocusChangeListener(this);
+        etVlr_total.setOnFocusChangeListener(this);
 
         operacao = getIntent().getStringExtra("OPERACAO");
         if (operacao.equals(Abastecimento.ALTERAR)) {
@@ -105,26 +111,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            umAbastecimento.calculaTerceiro(
-                    etQtde_litros.getText().toString(),
-                    etVlr_litro.getText().toString(),
-                    etVlr_tota.getText().toString());
-            if (umAbastecimento.isCalculou) {
-                etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
-                etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
-                etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
-            }
-        }
-    }
-
     private void preparaUmAbastecimento() {
-        etQtde_litros.requestFocus();
-        etVlr_litro.setText("");
-        etVlr_tota.setText("");
-        etQtde_litros.setText("");
+        etVlr_total.requestFocus();
         data = Calendar.getInstance();
         etData.setText(sdf.format(data.getTime()));
 
@@ -173,7 +161,6 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
                 }
                 break;
         }
-//        preparaUmAbastecimento();
         finish();
     }
 
@@ -195,23 +182,77 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     public void mostraAbastecimento() {
         umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
-            etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
-            etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
-            etVlr_tota.setText(nf.format(umAbastecimento.vlr_total));
-            etData.setText(umAbastecimento.data);
-            switch (umAbastecimento.getCombustiviel()) {
-                case "gasolina":
-                    rbGasolina.setChecked(true);
-                    break;
-                case "alcool":
-                    rbAlcool.setChecked(true);
-                    break;
-                case "diesel":
-                    rbDiesel.setChecked(true);
-                    break;
-            }
-            etQtde_litros.requestFocus();
+        etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
+        etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
+        etVlr_total.setText(nf.format(umAbastecimento.vlr_total));
+        etData.setText(umAbastecimento.data);
+        switch (umAbastecimento.getCombustiviel()) {
+            case "gasolina":
+                rbGasolina.setChecked(true);
+                break;
+            case "alcool":
+                rbAlcool.setChecked(true);
+                break;
+            case "diesel":
+                rbDiesel.setChecked(true);
+                break;
+        }
+        etQtde_litros.requestFocus();
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        umAbastecimento.calculaTerceiro(
+                etQtde_litros.getText().toString(),
+                etVlr_litro.getText().toString(),
+                etVlr_total.getText().toString());
+        if (umAbastecimento.isCalculou) {
+
+            if (!etQtde_litrosB)
+                etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
+            if (!etVlr_litroB)
+                etVlr_litro.setText(nf.format(umAbastecimento.vlr_litro));
+            if (!etVlr_totalB)
+                etVlr_total.setText(nf.format(umAbastecimento.vlr_total));
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            etQtde_litrosB = false;
+            etVlr_litroB = false;
+            etVlr_totalB = false;
+            etQtde_litros.removeTextChangedListener(this);
+            etVlr_total.removeTextChangedListener(this);
+            etVlr_litro.removeTextChangedListener(this);
+            int id = v.getId();
+            switch (id) {
+                case R.id.etVlr_total:
+                    etVlr_totalB = true;
+                    etVlr_total.addTextChangedListener(this);
+                    break;
+                case R.id.etVlr_litro:
+                    etVlr_litroB = true;
+                    etVlr_litro.addTextChangedListener(this);
+                    break;
+                case R.id.etQtde_litros:
+                    etQtde_litrosB = true;
+                    etQtde_litros.addTextChangedListener(this);
+                    break;
+            }
+        }
+
+    }
 }

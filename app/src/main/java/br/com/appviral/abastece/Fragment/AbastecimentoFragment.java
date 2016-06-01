@@ -49,24 +49,9 @@ public class AbastecimentoFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        List<Abastecimento> listaApresentada = null;
         String lista = getArguments().getString("LISTA");
-        List<Abastecimento> listaApresentada = defineLista(lista);
-        boolean incluir =  getArguments().getBoolean("INCLUIR");
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(),
-                listaApresentada, incluir);
-        recyclerView.setAdapter(adaptadorAbastecimento);
-        return viewFragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
-    }
-
-    private List<Abastecimento> defineLista(String mostrar) {
-        List<Abastecimento> listaApresentada = new ArrayList<>();
-        switch (mostrar) {
+        switch (lista) {
             case "nav_abastecimentos":
                 listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
                 break;
@@ -83,6 +68,18 @@ public class AbastecimentoFragment extends Fragment {
                 listaApresentada = (new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_SEMESTRAL);
                 break;
         }
-        return listaApresentada;
+
+
+        boolean incluir =  getArguments().getBoolean("INCLUIR");
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(),
+                listaApresentada, incluir);
+        recyclerView.setAdapter(adaptadorAbastecimento);
+        return viewFragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AdaptadorAbastecimento) recyclerView.getAdapter()).notifyDataSetChanged();
     }
 }
