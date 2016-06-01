@@ -27,7 +27,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PrincipalActivity"/>
         </activity>
-        <activity android:name=".SobreActivity">
+        <activity android:name=".SobreActivity"
+                  android:parentActivityName=".PrincipalActivity">
         </activity>
     </application>
 

@@ -63,9 +63,7 @@ public class AbastecimentoFragment extends Fragment {
         listaApresentada.removeAll(listaApresentada);
         switch (mostrar) {
             case "nav_abastecimentos":
-                listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
-                break;
-            case "nav_sobre":
+                listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarAbastecimentos());
                 break;
             case "nav_mesal":
                 listaApresentada.addAll((new AbastecimentoDAO(getActivity())).listarMediaMensal(AbastecimentoDAO.MEDIA_MENSAL));
