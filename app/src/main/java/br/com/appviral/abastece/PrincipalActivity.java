@@ -1,6 +1,10 @@
 package br.com.appviral.abastece;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
@@ -20,13 +28,20 @@ import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
 @SuppressWarnings("deprecation")
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     AbastecimentoFragment abastecimentoFragment;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        adiconaAtalho();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,6 +61,9 @@ public class PrincipalActivity extends AppCompatActivity
 
         // FRAGMENT
         criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void criaAbreFragmento(String tag, boolean incluirClick) {
@@ -129,4 +147,82 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
+    private void adiconaAtalho() {
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("br.com.appviral.abastece.PREFERENCE_FILE", Context.MODE_PRIVATE);
+        boolean atalho = sharedPref.getBoolean("ATALHO", false);
+
+        if (!atalho) {
+            Intent atalhoIntent = new Intent(getApplicationContext(), PrincipalActivity.class);
+            atalhoIntent.setAction(Intent.ACTION_MAIN);
+            Intent adicionaIntent = new Intent();
+            adicionaIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, atalhoIntent);
+            adicionaIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Abastece");
+//            adicionaIntent.putExtra("duplicate", false);
+            adicionaIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher_gota));
+            adicionaIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            sendBroadcast(adicionaIntent);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("ATALHO", true);
+            editor.commit();
+        }
+
+
+/*
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+
+        // Shortcut name
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
+        shortcut.putExtra("duplicate", false);  // Just create once
+
+        // Setup current activity shoud be shortcut object
+        ComponentName comp = new ComponentName(this.getPackageName(), "."+this.getLocalClassName());
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(Intent.ACTION_MAIN).setComponent(comp));
+
+        // Set shortcut icon
+        Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.icon);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+
+        sendBroadcast(shortcut);*/
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Principal Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://br.com.appviral.abastece/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Principal Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://br.com.appviral.abastece/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }
