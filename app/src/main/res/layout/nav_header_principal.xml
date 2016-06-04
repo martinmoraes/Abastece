@@ -18,20 +18,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_launcher_gota"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/margin">
+        android:layout_marginLeft="@dimen/margin12">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:text="APP Abastece"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
         <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="http://www.appviral.com.br"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

@@ -19,6 +19,8 @@ import br.com.appviral.abastece.R;
 
 public class AbastecimentoFragment extends Fragment {
     RecyclerView recyclerView;
+    String lista;
+    boolean incluir;
 
 
 
@@ -35,6 +37,10 @@ public class AbastecimentoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            lista = getArguments().getString("LISTA");
+            incluir =  getArguments().getBoolean("INCLUIR");
+        }
     }
 
     @Override
@@ -50,7 +56,7 @@ public class AbastecimentoFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         List<Abastecimento> listaApresentada = null;
-        String lista = getArguments().getString("LISTA");
+
         switch (lista) {
             case "nav_abastecimentos":
                 listaApresentada = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
@@ -69,8 +75,6 @@ public class AbastecimentoFragment extends Fragment {
                 break;
         }
 
-
-        boolean incluir =  getArguments().getBoolean("INCLUIR");
         AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(),
                 listaApresentada, incluir);
         recyclerView.setAdapter(adaptadorAbastecimento);

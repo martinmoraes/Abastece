@@ -48,7 +48,6 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                Log.d("MEUAPP", "Clicou na posição: " + umViewHolder.getAdapterPosition());
                     Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
                     intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
                     intent.putExtra("POSICAO", umViewHolder.getAdapterPosition());
@@ -89,6 +88,8 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         }
     }
 
+
+    // Faz chamadas direto ao Banco. Não faz estes métodos.
     public static void adicionaAbastecimento(Abastecimento abastecimento) {
         listaMostrada.add(0, abastecimento);
     }

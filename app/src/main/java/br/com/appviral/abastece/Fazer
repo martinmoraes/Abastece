@@ -13,12 +13,11 @@
     // 11 - Adicionar o efeito rippleefect nos itens do list
     // 12 - Tirar a pog e colocar fragments
     // 13 - calcula ao digitar
-    //TODO quando instalar colocar icone no launcher
-
+    // ?? -  quando instalar colocar icone no launcher
+//TODO Mudar para Spinner
 
     //TODO alterar layout dos itens
     //TODO texto para o sobre
-    //TODO icon para o lancher
-    //TODO imagem para o Cabeçalho do navegador
+    //TODO Layout para o SOBRE
     //TODO icon para o valor TOTAL
-    //TODO definir se o FAB fica sempre visível
+    // TODO Alterar

@@ -10,15 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
@@ -31,7 +35,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     Calendar data;
     EditText etQtde_litros, etVlr_litro, etVlr_total, etData;
     boolean etQtde_litrosB, etVlr_litroB, etVlr_totalB;
-    RadioButton rbGasolina, rbAlcool, rbDiesel;
+    Spinner spCombustivel;
+//    RadioButton rbGasolina, rbAlcool, rbDiesel;
     DateFormat sdf;
     Abastecimento umAbastecimento = null;
     NumberFormat nf;
@@ -47,6 +52,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Registra Abastecimento");
+            actionBar.setElevation(10f);
         }
 
         data = Calendar.getInstance();
@@ -59,9 +65,10 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etVlr_litro = (EditText) findViewById(R.id.etVlr_litro);
         etVlr_total = (EditText) findViewById(R.id.etVlr_total);
         etData = (EditText) findViewById(R.id.etData);
-        rbGasolina = (RadioButton) findViewById(R.id.rbGasolina);
-        rbAlcool = (RadioButton) findViewById(R.id.rbAlcool);
-        rbDiesel = (RadioButton) findViewById(R.id.rbDiesel);
+        spCombustivel = (Spinner) findViewById(R.id.spCombustivel);
+//        rbGasolina = (RadioButton) findViewById(R.id.rbGasolina);
+//        rbAlcool = (RadioButton) findViewById(R.id.rbAlcool);
+//        rbDiesel = (RadioButton) findViewById(R.id.rbDiesel);
 
 //        etQtde_litros.addTextChangedListener(this);
 //        etVlr_litro.addTextChangedListener(this);
@@ -70,6 +77,10 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etQtde_litros.setOnFocusChangeListener(this);
         etVlr_litro.setOnFocusChangeListener(this);
         etVlr_total.setOnFocusChangeListener(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.combustivel, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCombustivel.setAdapter(adapter);
 
         operacao = getIntent().getStringExtra("OPERACAO");
         if (operacao.equals(Abastecimento.ALTERAR)) {
@@ -117,7 +128,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etData.setText(sdf.format(data.getTime()));
 
         umAbastecimento = new Abastecimento();
-        umAbastecimento.setCombustivel(combustivelSelecionado());
+        umAbastecimento.setCombustivel(spCombustivel.getSelectedItem().toString());
         umAbastecimento.data = etData.getText().toString();
     }
 
@@ -140,7 +151,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     public void salva(View view) {
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
-        umAbastecimento.setCombustivel(combustivelSelecionado());
+        umAbastecimento.setCombustivel(spCombustivel.getSelectedItem().toString());
         switch (operacao) {
             case Abastecimento.INSERIR:
                 long id = abastecimentoDAO.inserir(umAbastecimento);
@@ -164,22 +175,6 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         finish();
     }
 
-    private Abastecimento.tipo_combustivel combustivelSelecionado() {
-        if (rbGasolina.isChecked()) {
-            return Abastecimento.tipo_combustivel.gasolina;
-        } else {
-            if (rbAlcool.isChecked()) {
-                return Abastecimento.tipo_combustivel.alcool;
-            } else {
-                if (rbDiesel.isChecked()) {
-                    return Abastecimento.tipo_combustivel.diesel;
-                }
-            }
-        }
-        rbGasolina.setChecked(true);
-        return Abastecimento.tipo_combustivel.gasolina;
-    }
-
     public void mostraAbastecimento() {
         umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
         etQtde_litros.setText(nf.format(umAbastecimento.qtde_litros));
@@ -188,13 +183,13 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etData.setText(umAbastecimento.data);
         switch (umAbastecimento.getCombustiviel()) {
             case "gasolina":
-                rbGasolina.setChecked(true);
+                spCombustivel.setSelection(0);
                 break;
             case "alcool":
-                rbAlcool.setChecked(true);
+                spCombustivel.setSelection(1);
                 break;
             case "diesel":
-                rbDiesel.setChecked(true);
+                spCombustivel.setSelection(2);
                 break;
         }
         etQtde_litros.requestFocus();

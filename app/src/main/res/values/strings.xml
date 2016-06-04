@@ -6,4 +6,10 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="combustivel">
+        <item>Gasolina</item>
+        <item>Alcool</item>
+        <item>Diesel</item>
+    </string-array>
 </resources>
