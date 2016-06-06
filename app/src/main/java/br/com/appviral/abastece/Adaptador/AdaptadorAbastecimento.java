@@ -63,8 +63,8 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         Abastecimento abastecimento = listaMostrada.get(position);
 
         holder.tvData.setText(abastecimento.data);
-        holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros()));
-        holder.tvVlrLitro.setText(nf.format(abastecimento.getVlrLitro()));
+        holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros())+" litros");
+        holder.tvVlrLitro.setText(nf.format(abastecimento.getVlrLitro())+" /litro");
         holder.tvVlrTotal.setText(nf.format(abastecimento.getVlrTotal()));
 
     }

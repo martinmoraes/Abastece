@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorAccent">#d50000</color>
     <color name="colorDetale">#455A64</color>
-
+    <color name="fundo_cinza">#EEEEEE</color>
 
     <!-- <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
