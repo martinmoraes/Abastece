@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +37,7 @@ public class PrincipalActivity extends AppCompatActivity
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private static FloatingActionButton fab;
 
 
     @Override
@@ -55,15 +57,13 @@ public class PrincipalActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setItemIconTintList(null);
         navigationView.getMenu().findItem(R.id.nav_abastecimentos).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // FRAGMENT
         criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
-
-
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -86,6 +86,14 @@ public class PrincipalActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public static void fabVisivel(boolean estado) {
+        if (estado) {
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -106,12 +114,17 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_sobre) {
-            startActivity(new Intent(getApplicationContext(), SobreActivity.class));
-            return true;
+        switch (id) {
+            case R.id.abastercer:
+                abreRegistraAbastecimento(null);
+                return true;
+            case R.id.action_sobre:
+                startActivity(new Intent(getApplicationContext(), SobreActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 
     @Override
@@ -121,6 +134,9 @@ public class PrincipalActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_abastecimentos:
                 criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+                break;
+            case R.id.nav_abastecer:
+                abreRegistraAbastecimento(null);
                 break;
             case R.id.nav_sobre:
                 startActivity(new Intent(getApplicationContext(), SobreActivity.class));
@@ -143,7 +159,6 @@ public class PrincipalActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     private void adiconaAtalho() {

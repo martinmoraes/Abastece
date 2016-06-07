@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.List;
 
 import br.com.appviral.abastece.Entidade.Abastecimento;
+import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 import br.com.appviral.abastece.R;
 import br.com.appviral.abastece.RegistraAbastecimentoActivity;
 
@@ -54,6 +56,24 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                     context.startActivity(intent);
                 }
             });
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
+                    Abastecimento umAbastecimento = listaMostrada.get(umViewHolder.getAdapterPosition());
+                    if (umAbastecimento != null) {
+                        if (abastecimentoDAO.excluir(umAbastecimento)) {
+                            notifyItemRemoved(umViewHolder.getAdapterPosition());
+                            Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
+                            listaMostrada.remove(umAbastecimento);
+                        } else {
+                            Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    return false;
+                }
+            });
         }
         return umViewHolder;
     }
@@ -63,8 +83,8 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
         Abastecimento abastecimento = listaMostrada.get(position);
 
         holder.tvData.setText(abastecimento.data);
-        holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros())+" litros");
-        holder.tvVlrLitro.setText(nf.format(abastecimento.getVlrLitro())+" /litro");
+        holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros()) + " litros");
+        holder.tvVlrLitro.setText(nf.format(abastecimento.getVlrLitro()) + " /litro");
         holder.tvVlrTotal.setText(nf.format(abastecimento.getVlrTotal()));
 
     }

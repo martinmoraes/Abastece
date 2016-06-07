@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/as_excluir"
+        android:id="@+id/salvar"
         android:orderInCategory="100"
-        android:title="Excluir"
-        app:showAsAction="never"/>
+        android:title="Salvar"
+        android:icon="@mipmap/ic_done_white_24dp"
+        app:showAsAction="ifRoom"/>
+
 </menu>

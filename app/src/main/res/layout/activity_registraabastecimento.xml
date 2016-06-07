@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context=".RegistraAbastecimentoActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -15,22 +29,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingBottom="@dimen/pading16"
             android:paddingLeft="@dimen/pading12"
             android:paddingRight="@dimen/pading12"
-            android:paddingTop="@dimen/pading17"
-            android:clipToPadding="false">
+            android:paddingTop="@dimen/pading17">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:elevation="2dp"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/pading16"
                 android:paddingLeft="@dimen/pading14"
                 android:paddingRight="@dimen/pading4"
-                android:paddingTop="@dimen/pading16"
-                android:elevation="2dp">
+                android:paddingTop="@dimen/pading16">
 
 
                 <!-- Tipo do combustível -->
@@ -59,7 +73,7 @@
                     <Spinner
                         android:id="@+id/spCombustivel"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -191,27 +205,6 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btSalvar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_weight="0"
-
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:onClick="salva"
-            android:text="SALVAR"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"/>
-    </LinearLayout>
-
 
 </LinearLayout>
 

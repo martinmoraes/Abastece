@@ -1,23 +1,27 @@
 
 // Requisições 31/05/2016
-    // 01 - Ordem de cadastro: Total/Preço/Litros
-    // 02 - ao salvar retorna a lista
-    // 03 - Alterar o cabeçalho do NAV diminuir a altura
-    // 04 - Alterar o cabeçalho do NAV e texto na direita
-    // 05 - Cabeçalho NAV com cor AZUL
-    // 06 - alterar a cor do + do FAB para o branco
-    // 07 - diminuir a fonte dos label de cadastro
-    // 08 - no Sobre um texto com imagem em uma Activity
-    // 09 - Setings chama o sobre
-    // 10 - Adicionar o efeito rippleefect no botão salvar
-    // 11 - Adicionar o efeito rippleefect nos itens do list
-    // 12 - Tirar a pog e colocar fragments
-    // 13 - calcula ao digitar
-    // ?? -  quando instalar colocar icone no launcher
-//TODO Mudar para Spinner
+// 01 - Ordem de cadastro: Total/Preço/Litros
+// 02 - ao salvar retorna a lista
+// 03 - Alterar o cabeçalho do NAV diminuir a altura
+// 04 - Alterar o cabeçalho do NAV e texto na direita
+// 05 - Cabeçalho NAV com cor AZUL
+// 06 - alterar a cor do + do FAB para o branco
+// 07 - diminuir a fonte dos label de cadastro
+// 08 - no Sobre um texto com imagem em uma Activity
+// 09 - Setings chama o sobre
+// 10 - Adicionar o efeito rippleefect no botão salvar
+// 11 - Adicionar o efeito rippleefect nos itens do list
+// 12 - Tirar a pog e colocar fragments
+// 13 - calcula ao digitar
+// ?? -  quando instalar colocar icone no launcher
+// Mudar para Spinner
+// Quando o Recyclerview rola para baixo o FAB some e aparece quando rola para cima
+// Para salvar o tick- Tirar o botão.
+//TODO Menu suspenso para excluir no Recycler.
+//TODO Calculo do combustível mais barato.
+//TODO no digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
 
-    //TODO alterar layout dos itens
-    //TODO texto para o sobre
-    //TODO Layout para o SOBRE
-    //TODO icon para o valor TOTAL
-    // TODO Alterar
+//TODO alterar layout dos itens
+//TODO texto para o sobre
+//TODO Layout para o SOBRE
+//TODO icon para o valor TOTAL

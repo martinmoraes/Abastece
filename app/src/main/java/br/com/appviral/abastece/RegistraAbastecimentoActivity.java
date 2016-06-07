@@ -1,9 +1,11 @@
 package br.com.appviral.abastece;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -36,7 +38,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     EditText etQtde_litros, etVlr_litro, etVlr_total, etData;
     boolean etQtde_litrosB, etVlr_litroB, etVlr_totalB;
     Spinner spCombustivel;
-//    RadioButton rbGasolina, rbAlcool, rbDiesel;
+    //    RadioButton rbGasolina, rbAlcool, rbDiesel;
     DateFormat sdf;
     Abastecimento umAbastecimento = null;
     NumberFormat nf;
@@ -47,6 +49,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraabastecimento);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -78,7 +82,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etVlr_litro.setOnFocusChangeListener(this);
         etVlr_total.setOnFocusChangeListener(this);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.combustivel, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combustivel, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCombustivel.setAdapter(adapter);
 
@@ -91,10 +95,10 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_registra_abastecimento, menu);
+        getMenuInflater().inflate(R.menu.registraabastecimento, menu);
         return true;
     }
 
@@ -104,21 +108,10 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.as_excluir) {
-            AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
-            if (umAbastecimento != null) {
-                if (abastecimentoDAO.excluir(umAbastecimento)) {
-                    AdaptadorAbastecimento.removeAbastecimento(umAbastecimento);
-                    Toast.makeText(getApplicationContext(), "Excluído!!!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                }
-            }
+        if (id == R.id.salvar) {
+            salva();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -149,7 +142,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
 
     }
 
-    public void salva(View view) {
+    public void salva() {
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
         umAbastecimento.setCombustivel(spCombustivel.getSelectedItem().toString());
         switch (operacao) {

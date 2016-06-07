@@ -1,19 +1,21 @@
 package br.com.appviral.abastece.Fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
+import br.com.appviral.abastece.PrincipalActivity;
 import br.com.appviral.abastece.R;
 
 
@@ -21,9 +23,6 @@ public class AbastecimentoFragment extends Fragment {
     RecyclerView recyclerView;
     String lista;
     boolean incluir;
-
-
-
 
     public static AbastecimentoFragment newInstance(boolean incluir, String lista) {
         AbastecimentoFragment fragment = new AbastecimentoFragment();
@@ -55,7 +54,21 @@ public class AbastecimentoFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d("MEUAPP", "dy: " + dy);
+                if(dy <= 0) {
+                    PrincipalActivity.fabVisivel(true);
+                } else {
+                    PrincipalActivity.fabVisivel(false);
+                }
+            }
+        });
         List<Abastecimento> listaApresentada = null;
+
 
         switch (lista) {
             case "nav_abastecimentos":

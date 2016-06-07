@@ -16,13 +16,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".RegistraAbastecimentoActivity"
-            android:parentActivityName=".PrincipalActivity">
+            android:parentActivityName=".PrincipalActivity"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -31,7 +31,11 @@
         </activity>
         <activity android:name=".SobreActivity"
                   android:parentActivityName=".PrincipalActivity">
-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        </activity>
+
+
+
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"
