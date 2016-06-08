@@ -2,9 +2,12 @@ package br.com.appviral.abastece.Adaptador;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.view.menu.ListMenuItemView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -46,35 +49,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
     public meuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.item_abastecimento, null);
         final meuViewHolder umViewHolder = new meuViewHolder(view);
-        if (incluir_click) {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
-                    intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
-                    intent.putExtra("POSICAO", umViewHolder.getAdapterPosition());
-                    context.startActivity(intent);
-                }
-            });
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
-                    Abastecimento umAbastecimento = listaMostrada.get(umViewHolder.getAdapterPosition());
-                    if (umAbastecimento != null) {
-                        if (abastecimentoDAO.excluir(umAbastecimento)) {
-                            notifyItemRemoved(umViewHolder.getAdapterPosition());
-                            Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
-                            listaMostrada.remove(umAbastecimento);
-                        } else {
-                            Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    return false;
-                }
-            });
-        }
         return umViewHolder;
     }
 
@@ -105,6 +80,66 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             tvQtdeLitros = (TextView) itemView.findViewById(R.id.tv_qtde_litros);
             tvVlrTotal = (TextView) itemView.findViewById(R.id.tv_vlt_total);
             tvVlrLitro = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
+
+
+            if (incluir_click) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
+                        intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
+                        intent.putExtra("POSICAO", getAdapterPosition());
+                        context.startActivity(intent);
+                    }
+                });
+
+
+                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                    @Override
+                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+                        MenuItem menuItem = menu.add("Excluir");
+                        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
+                                Abastecimento umAbastecimento = listaMostrada.get(getAdapterPosition());
+                                if (umAbastecimento != null) {
+                                    if (abastecimentoDAO.excluir(umAbastecimento)) {
+                                        notifyItemRemoved(getAdapterPosition());
+                                        Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
+                                        listaMostrada.remove(umAbastecimento);
+                                    } else {
+                                        Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                });
+
+
+               /* itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
+                        Abastecimento umAbastecimento = listaMostrada.get(getAdapterPosition());
+                        if (umAbastecimento != null) {
+                            if (abastecimentoDAO.excluir(umAbastecimento)) {
+                                notifyItemRemoved(getAdapterPosition());
+                                Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
+                                listaMostrada.remove(umAbastecimento);
+                            } else {
+                                Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        return false;
+                    }
+                });*/
+            }
+
+
         }
     }
 

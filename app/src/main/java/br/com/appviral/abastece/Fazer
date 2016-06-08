@@ -17,7 +17,7 @@
 // Mudar para Spinner
 // Quando o Recyclerview rola para baixo o FAB some e aparece quando rola para cima
 // Para salvar o tick- Tirar o botão.
-//TODO Menu suspenso para excluir no Recycler.
+// Menu suspenso para excluir no Recycler.
 //TODO Calculo do combustível mais barato.
 //TODO no digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
 
