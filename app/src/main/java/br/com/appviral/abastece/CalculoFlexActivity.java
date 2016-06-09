@@ -1,5 +1,6 @@
 package br.com.appviral.abastece;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +23,13 @@ public class CalculoFlexActivity extends AppCompatActivity {
         etVlrGasolina = (EditText) findViewById(R.id.etVlr_Gasolina);
         etVlrAlcool = (EditText) findViewById(R.id.etVlr_Alcool);
         tvResposta = (TextView) findViewById(R.id.tvResposta);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Calcula Flex");
+            actionBar.setElevation(10f);
+        }
 
         etVlrAlcool.addTextChangedListener(new TextWatcher() {
             @Override

@@ -21,6 +21,7 @@ public class Abastecimento {
     public static final String INSERIR = "inserir";
     public static final String ALTERAR = "alterar";
 
+
     public Long id;
     public float qtde_litros;
     public float vlr_litro;
@@ -28,73 +29,6 @@ public class Abastecimento {
     public String data;
     private tipo_combustivel combustivel;
 
-    public boolean isCalculou = false;
-
-
-    private float retornaFloat(String s) {
-        String novoValor = s;
-        int ultimaVirgula = s.lastIndexOf(',');
-        int ultimoPonto = s.lastIndexOf('.');
-
-        if (ultimaVirgula > -1) {
-            //Vírgula no decimal
-            if (ultimoPonto > -1)
-                novoValor = s.replace(".", "");
-            novoValor = novoValor.replace(",", ".");
-        }
-        return Float.valueOf(novoValor);
-    }
-
-    public void calculaTerceiro(String qtde_litrosS, String vlr_litroS, String vlr_totalS) {
-        if (!vlr_totalS.equals(""))
-            vlr_total = retornaFloat(vlr_totalS);
-        if (!vlr_litroS.equals("")) {
-            vlr_litro = retornaFloat(vlr_litroS);
-        }
-        if (!qtde_litrosS.equals("")) {
-            qtde_litros = retornaFloat(qtde_litrosS);
-        }
-
-        isCalculou = false;
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        //Calcula Qtde litros
-        if (vlr_total > 0 && vlr_litro > 0) {
-            qtde_litros = vlr_total / vlr_litro;
-            String vlr = df.format(qtde_litros).replace(",", ".");
-            qtde_litros = Float.parseFloat(vlr);
-            isCalculou = true;
-        }
-
-        //Calcula vlr do litro
-        if (qtde_litros > 0 && vlr_total > 0) {
-            vlr_litro = vlr_total / qtde_litros;
-            String vlr = df.format(vlr_litro).replace(",", ".");
-            vlr_litro = Float.parseFloat(vlr);
-            isCalculou = true;
-        }
-
-        //Calcula vlr_Total
-        if (qtde_litros > 0 && vlr_litro > 0) {
-            vlr_total = qtde_litros * vlr_litro;
-            String vlr = df.format(vlr_total).replace(",", ".");
-            vlr_total = Float.parseFloat(vlr);
-            isCalculou = true;
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "Abastecimento{" +
-                "id=" + id +
-                ", qtde_litros=" + qtde_litros +
-                ", vlr_litro=" + vlr_litro +
-                ", vlr_total=" + vlr_total +
-                ", data='" + data + '\'' +
-                ", combustivel=" + combustivel +
-                '}';
-    }
 
     public void setCombustivel(String combustivel) {
         switch (combustivel) {
@@ -111,10 +45,6 @@ public class Abastecimento {
                 this.combustivel = tipo_combustivel.diesel;
                 break;
         }
-    }
-
-    public void setCombustivel(tipo_combustivel combustivel) {
-        this.combustivel = combustivel;
     }
 
     public String getCombustiviel() {
@@ -137,6 +67,17 @@ public class Abastecimento {
         gasolina, alcool, diesel;
     }
 
+    @Override
+    public String toString() {
+        return "Abastecimento{" +
+                "id=" + id +
+                ", qtde_litros=" + qtde_litros +
+                ", vlr_litro=" + vlr_litro +
+                ", vlr_total=" + vlr_total +
+                ", data='" + data + '\'' +
+                ", combustivel=" + combustivel +
+                '}';
+    }
 }
 
 

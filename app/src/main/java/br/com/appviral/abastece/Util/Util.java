@@ -38,10 +38,28 @@ public class Util {
         nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(casasDecimais);
         nf.setMinimumFractionDigits(casasDecimais);
-        double num = Double.valueOf(temp);
-        return nf.format(num);
+        return nf.format(Double.valueOf(temp));
     }
 
+    public static String formataFloat(String vlr){
+        return formataFloat(vlr,2);
+    }
+
+
+    public static String formataFloat(float vlr, int casasDecimais){
+        String str_vlr = String.valueOf(vlr);
+        int posPonto = str_vlr.indexOf(".");
+        int tamanho = str_vlr.length();
+        int contemCasasDecimais = tamanho - posPonto;
+        if(contemCasasDecimais > casasDecimais){
+            str_vlr = str_vlr.substring(0, contemCasasDecimais+casasDecimais);
+        }
+        return formataFloat(str_vlr, casasDecimais);
+    }
+
+    public static String formataFloat(float vlr){
+        return formataFloat(vlr,2);
+    }
 
     public static double deStringParaDouble(String vlr) {
         if (vlr.isEmpty()) {
