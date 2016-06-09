@@ -138,6 +138,9 @@ public class PrincipalActivity extends AppCompatActivity
             case R.id.nav_abastecer:
                 abreRegistraAbastecimento(null);
                 break;
+            case R.id.nav_calculo_flex:
+                startActivity(new Intent(getApplicationContext(), CalculoFlexActivity.class));
+                break;
             case R.id.nav_sobre:
                 startActivity(new Intent(getApplicationContext(), SobreActivity.class));
                 break;

@@ -17,4 +17,5 @@
     <dimen name="pading16">16dp</dimen>
     <dimen name="pading17">17dp</dimen>
     <dimen name="fonte">16sp</dimen>
+    <dimen name="fonte20">20sp</dimen>
 </resources>
