@@ -37,16 +37,24 @@ public class Util {
         }
         nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(casasDecimais);
-        return nf.format(Double.valueOf(temp));
+        nf.setMinimumFractionDigits(casasDecimais);
+        double num = Double.valueOf(temp);
+        return nf.format(num);
     }
 
 
     public static double deStringParaDouble(String vlr) {
+        if (vlr.isEmpty()) {
+            vlr = "0.0";
+        }
         vlr = vlr.replaceAll(",", "");
         return Double.valueOf(vlr);
     }
 
-    public static double deStringParaFloat(String vlr) {
+    public static float deStringParaFloat(String vlr) {
+        if (vlr.isEmpty()) {
+            vlr = "0.0";
+        }
         vlr = vlr.replaceAll(",", "");
         return Float.valueOf(vlr);
     }
