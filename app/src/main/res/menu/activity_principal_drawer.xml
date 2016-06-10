@@ -12,6 +12,10 @@
             android:icon="@mipmap/ic_plus_black_24dip"
             android:title="Abastecer"/>
         <item
+            android:id="@+id/nav_calculo_flex"
+            android:icon="@mipmap/ic_calculadora"
+            android:title="Calculo Flex"/>
+        <item
             android:id="@+id/nav_sobre"
             android:icon="@mipmap/ic_alert_circle_black_24dp"
             android:title="Sobre"/>

@@ -2,7 +2,7 @@
 <manifest package="br.com.appviral.abastece"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
 
     <application
         android:allowBackup="true"
@@ -10,15 +10,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".PrincipalActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".RegistraAbastecimentoActivity"
             android:parentActivityName=".PrincipalActivity"
@@ -29,17 +32,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PrincipalActivity"/>
         </activity>
-        <activity android:name=".SobreActivity"
+
+        <activity
+            android:name=".SobreActivity"
+            android:parentActivityName=".PrincipalActivity">
+        </activity>
+
+        <activity android:name=".CalculoFlexActivity"
                   android:parentActivityName=".PrincipalActivity">
         </activity>
 
 
-
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <!--
+     ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
+
     </application>
 
 </manifest>
