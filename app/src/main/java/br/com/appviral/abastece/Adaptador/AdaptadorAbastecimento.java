@@ -118,28 +118,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                         });
                     }
                 });
-
-
-               /* itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
-                        Abastecimento umAbastecimento = listaMostrada.get(getAdapterPosition());
-                        if (umAbastecimento != null) {
-                            if (abastecimentoDAO.excluir(umAbastecimento)) {
-                                notifyItemRemoved(getAdapterPosition());
-                                Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
-                                listaMostrada.remove(umAbastecimento);
-                            } else {
-                                Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        return false;
-                    }
-                });*/
             }
-
-
         }
     }
 
@@ -152,10 +131,6 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
     public static void alteraAbastecimento(int posicao, Abastecimento umAbastecimento) {
         listaMostrada.remove(posicao);
         listaMostrada.add(posicao, umAbastecimento);
-    }
-
-    public static void removeAbastecimento(Abastecimento abastecimento) {
-        listaMostrada.remove(abastecimento);
     }
 
     public static Abastecimento getAbastecimento(int posicao) {

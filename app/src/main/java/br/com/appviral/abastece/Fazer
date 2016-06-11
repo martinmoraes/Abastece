@@ -18,12 +18,12 @@
 // Quando o Recyclerview rola para baixo o FAB some e aparece quando rola para cima
 // Para salvar o tick- Tirar o botão.
 // Menu suspenso para excluir no Recycler.
+// No registra abastecimetno ver o digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
+
+
+
+
 //TODO Calculo do combustível mais barato - rever a fórmula.
-//TODO No registra abastecimetno ver o digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
-
-
-
-
 //TODO alterar layout dos itens
 //TODO texto para o sobre
 //TODO Layout para o SOBRE

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,15 +18,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
+import br.com.appviral.abastece.Util.Calcula;
 import br.com.appviral.abastece.Util.Util;
 
-public class RegistraAbastecimentoActivity extends AppCompatActivity implements TextWatcher{
+public class RegistraAbastecimentoActivity extends AppCompatActivity {
 
     String operacao;
     int posicao;
@@ -33,6 +36,8 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     EditText etQtde_litros, etVlr_litro, etVlr_total, etData;
     Spinner spCombustivel;
     DateFormat sdf;
+    Abastecimento umAbastecimento;
+    static boolean emOperacao = false;
 
 
     @Override
@@ -61,10 +66,127 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etData = (EditText) findViewById(R.id.etData);
         spCombustivel = (Spinner) findViewById(R.id.spCombustivel);
 
-        etQtde_litros.addTextChangedListener(this);
-        etVlr_litro.addTextChangedListener(this);
-        etVlr_total.addTextChangedListener(this);
+        String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
+        etQtde_litros.setHint(simbolo);
+        etVlr_litro.setHint(simbolo);
+        etVlr_total.setHint(simbolo);
 
+        etQtde_litros.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!emOperacao) {
+                    emOperacao = true;
+                    Log.d("MEUAPP", "etQtde_litros: " + s.toString());
+                    etQtde_litros.setText(Util.floatDeStringParaStrin(s.toString()));
+                    etQtde_litros.setSelection(etQtde_litros.length());
+
+                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
+                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
+                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
+
+                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
+
+                    if (Calcula.vlr_litro != 0) {
+                        etVlr_litro.setText(Util.deFloatParaString(Calcula.vlr_litro));
+                        etVlr_litro.setSelection(etVlr_litro.length());
+                    }
+
+                    if (Calcula.vlr_total != 0) {
+                        etVlr_total.setText(Util.deFloatParaString(Calcula.vlr_total));
+                        etVlr_total.setSelection(etVlr_total.length());
+                    }
+                    emOperacao = false;
+                }
+            }
+        });
+        etVlr_litro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!emOperacao) {
+                    emOperacao = true;
+                    Log.d("MEUAPP", "etVlr_litro: " + s.toString());
+                    etVlr_litro.setText(Util.floatDeStringParaStrin(s.toString()));
+                    etVlr_litro.setSelection(etVlr_litro.length());
+
+                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
+                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
+                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
+
+                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
+
+                    if (Calcula.qtde_litros != 0) {
+                        etQtde_litros.setText(Util.deFloatParaString(Calcula.qtde_litros));
+                        etQtde_litros.setSelection(etQtde_litros.length());
+                    }
+
+                    if (Calcula.vlr_total != 0) {
+                        etVlr_total.setText(Util.deFloatParaString(Calcula.vlr_total));
+                        etVlr_total.setSelection(etVlr_total.length());
+                    }
+                }
+                emOperacao = false;
+            }
+        });
+        etVlr_total.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!emOperacao) {
+                    emOperacao = true;
+                    Log.d("MEUAPP", "etVlr_total: " + s.toString());
+                    etVlr_total.setText(Util.floatDeStringParaStrin(s.toString()));
+                    etVlr_total.setSelection(etVlr_total.length());
+
+                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
+                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
+                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
+
+                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
+
+                    if (Calcula.qtde_litros != 0) {
+                        etQtde_litros.setText(Util.deFloatParaString(Calcula.qtde_litros));
+                        etQtde_litros.setSelection(etQtde_litros.length());
+                    }
+
+                    if (Calcula.vlr_litro != 0) {
+                        etVlr_litro.setText(Util.deFloatParaString(Calcula.vlr_litro));
+                        etVlr_litro.setSelection(etVlr_litro.length());
+                    }
+                    emOperacao = false;
+                }
+            }
+        });
+
+        umAbastecimento = new Abastecimento();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combustivel, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -123,7 +245,7 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     }
 
     public void salva() {
-        Abastecimento umAbastecimento = new Abastecimento();
+
         umAbastecimento.qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
         umAbastecimento.vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
         umAbastecimento.vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
@@ -156,10 +278,10 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
     }
 
     public void mostraAbastecimento(int posicao) {
-        Abastecimento umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
-        etQtde_litros.setText(Util.formataFloat(umAbastecimento.qtde_litros));
-        etVlr_litro.setText(Util.formataFloat(umAbastecimento.vlr_litro));
-        etVlr_total.setText(Util.formataFloat(umAbastecimento.vlr_total));
+        umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
+        etQtde_litros.setText(Util.deFloatParaString(umAbastecimento.qtde_litros));
+        etVlr_litro.setText(Util.deFloatParaString(umAbastecimento.vlr_litro));
+        etVlr_total.setText(Util.deFloatParaString(umAbastecimento.vlr_total));
         etData.setText(umAbastecimento.data);
         switch (umAbastecimento.getCombustiviel()) {
             case "gasolina":
@@ -175,53 +297,4 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity implements 
         etQtde_litros.requestFocus();
     }
 
-    public void calculaTerceiro() {
-        //Chamar este método com todos os TextChangedListener desativado
-        float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
-        float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
-        float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
-
-        //Calcula Qtde litros
-        if (vlr_total > 0 && vlr_litro > 0) {
-            qtde_litros = vlr_total / vlr_litro;
-            etQtde_litros.setText(Util.formataFloat(qtde_litros));
-        }
-
-        //Calcula vlr do litro
-        if (qtde_litros > 0 && vlr_total > 0) {
-            vlr_litro = vlr_total / qtde_litros;
-            etVlr_litro.setText(Util.formataFloat(vlr_litro));
-        }
-
-        //Calcula vlr_Total
-        if (qtde_litros > 0 && vlr_litro > 0) {
-            vlr_total = qtde_litros * vlr_litro;
-            etVlr_total.setText(Util.formataFloat(vlr_total));
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        etQtde_litros.removeTextChangedListener(this);
-        etVlr_litro.removeTextChangedListener(this);
-        etVlr_total.removeTextChangedListener(this);
-        calculaTerceiro();
-        etQtde_litros.addTextChangedListener(this);
-        etVlr_litro.addTextChangedListener(this);
-        etVlr_total.addTextChangedListener(this);
-
-
-//        etVlrAlcool.setText(str);
-//        etVlrAlcool.setSelection(etVlrAlcool.length());
-    }
 }

@@ -45,7 +45,7 @@ public class CalculoFlexActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 etVlrAlcool.removeTextChangedListener(this);
-                String str = Util.formataFloat(etVlrAlcool.getText().toString(),2);
+                String str = Util.floatDeStringParaStrin(etVlrAlcool.getText().toString(),2);
                 etVlrAlcool.setText(str);
                 etVlrAlcool.setSelection(etVlrAlcool.length());
                 etVlrAlcool.addTextChangedListener(this);
@@ -67,7 +67,7 @@ public class CalculoFlexActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 etVlrGasolina.removeTextChangedListener(this);
-                String str = Util.formataFloat(etVlrGasolina.getText().toString(),2);
+                String str = Util.floatDeStringParaStrin(etVlrGasolina.getText().toString(),2);
                 etVlrGasolina.setText(str);
                 etVlrGasolina.setSelection(etVlrGasolina.length());
                 etVlrGasolina.addTextChangedListener(this);

@@ -125,8 +125,6 @@ public class PrincipalActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -162,7 +160,6 @@ public class PrincipalActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     private void adiconaAtalho() {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("br.com.appviral.abastece.PREFERENCE_FILE", Context.MODE_PRIVATE);
