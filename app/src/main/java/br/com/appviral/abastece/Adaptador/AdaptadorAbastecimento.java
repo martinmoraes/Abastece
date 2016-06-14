@@ -2,9 +2,7 @@ package br.com.appviral.abastece.Adaptador;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.view.menu.ListMenuItemView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,7 +17,7 @@ import java.util.List;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 import br.com.appviral.abastece.R;
-import br.com.appviral.abastece.RegistraAbastecimentoActivity;
+import br.com.appviral.abastece.AbastecerActivity;
 
 /**
  * Created by Martin on 25/05/2016.
@@ -86,7 +84,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, RegistraAbastecimentoActivity.class);
+                        Intent intent = new Intent(context, AbastecerActivity.class);
                         intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
                         intent.putExtra("POSICAO", getAdapterPosition());
                         context.startActivity(intent);
@@ -106,9 +104,9 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                                 Abastecimento umAbastecimento = listaMostrada.get(getAdapterPosition());
                                 if (umAbastecimento != null) {
                                     if (abastecimentoDAO.excluir(umAbastecimento)) {
-                                        notifyItemRemoved(getAdapterPosition());
-                                        Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
                                         listaMostrada.remove(umAbastecimento);
+                                        notifyItemRemoved(getAdapterPosition());//TODO ver se faz falta desta lista
+                                        Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                                     }

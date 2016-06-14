@@ -1,4 +1,5 @@
 
+//TODO Tatar acesso a dados direto na DAO e tirar a collection
 // Requisições 31/05/2016
 // 01 - Ordem de cadastro: Total/Preço/Litros
 // 02 - ao salvar retorna a lista
@@ -19,6 +20,9 @@
 // Para salvar o tick- Tirar o botão.
 // Menu suspenso para excluir no Recycler.
 // No registra abastecimetno ver o digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
+//TODO todas activity utilizando toobar com appbar
+//TODO TabLayout com pageView para rolar para o lado. Cada pageView um relatório
+//TODO retirar o recyclerView.addOnScrollListener e fazer funcionar com layoutbahi
 
 
 

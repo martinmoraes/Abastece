@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:fitsSystemWindows="true"
     tools:context=".CalculoFlexActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    </android.support.design.widget.AppBarLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin12"
+        android:layout_marginEnd="@dimen/margin12"
+        android:layout_marginLeft="@dimen/margin12"
+        android:layout_marginRight="@dimen/margin12"
+        android:layout_marginStart="@dimen/margin12"
+        android:layout_marginTop="@dimen/margin16"
         android:background="@android:color/white"
         android:elevation="2dp"
         android:orientation="vertical"
         android:paddingBottom="@dimen/pading16"
         android:paddingLeft="@dimen/pading14"
         android:paddingRight="@dimen/pading4"
-        android:paddingTop="@dimen/pading16">
+        android:paddingTop="@dimen/pading16"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <!-- Valor Alcool TODO icon ???-->
@@ -48,7 +68,6 @@
                 android:id="@+id/etVlr_Alcool"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:hint="0.0"
                 android:inputType="numberDecimal"
                 android:paddingLeft="2dp"/>
         </LinearLayout>
@@ -78,7 +97,6 @@
                 android:id="@+id/etVlr_Gasolina"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:hint="0.0"
                 android:inputType="numberDecimal"
                 android:paddingLeft="2dp"/>
         </LinearLayout>
@@ -96,4 +114,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

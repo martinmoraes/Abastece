@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
@@ -28,7 +27,7 @@ import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 import br.com.appviral.abastece.Util.Calcula;
 import br.com.appviral.abastece.Util.Util;
 
-public class RegistraAbastecimentoActivity extends AppCompatActivity {
+public class AbastecerActivity extends AppCompatActivity {
 
     String operacao;
     int posicao;
@@ -37,13 +36,13 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity {
     Spinner spCombustivel;
     DateFormat sdf;
     Abastecimento umAbastecimento;
-    static boolean emOperacao = false;
+    boolean emOperacao = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registraabastecimento);
+        setContentView(R.layout.activity_abastecer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,14 +50,12 @@ public class RegistraAbastecimentoActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Registra Abastecimento");
-            actionBar.setElevation(10f);
+            actionBar.setTitle("Abastecer");
+//        getSupportActionBar().setElevation(10f);
         }
 
         data = Calendar.getInstance();
-
-        //TODO Alterar para getDateInstance
-        sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf = DateFormat.getDateInstance();
 
         etQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
         etVlr_litro = (EditText) findViewById(R.id.etVlr_litro);

@@ -68,6 +68,8 @@ public class AbastecimentoFragment extends Fragment {
             }
         });
 
+
+
         List<Abastecimento> listaApresentada = null;
         switch (lista) {
             case "nav_abastecimentos":

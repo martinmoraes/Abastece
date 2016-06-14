@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".RegistraAbastecimentoActivity">
-
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".AbastecerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     </android.support.design.widget.AppBarLayout>
 
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +31,9 @@
         android:paddingBottom="@dimen/pading16"
         android:paddingLeft="@dimen/pading12"
         android:paddingRight="@dimen/pading12"
-        android:paddingTop="@dimen/pading17">
+        android:paddingTop="@dimen/pading17"
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +72,7 @@
 
                 <Spinner
                     android:id="@+id/spCombustivel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -96,11 +98,11 @@
                     android:text="Total"
                     android:textSize="@dimen/fonte"/>
 
-              <!--  <com.blackcat.currencyedittext.CurrencyEditText
-                    android:id="@+id/etVlr_total"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"/>-->
+                <!--  <com.blackcat.currencyedittext.CurrencyEditText
+                      android:id="@+id/etVlr_total"
+                      android:layout_width="100dp"
+                      android:layout_height="wrap_content"
+                      android:paddingLeft="2dp"/>-->
                 <EditText
                     android:id="@+id/etVlr_total"
                     android:layout_width="100dp"
@@ -203,7 +205,7 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
 

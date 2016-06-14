@@ -1,6 +1,5 @@
 package br.com.appviral.abastece;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,9 +50,9 @@ public class PrincipalActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if (drawer != null) {
+       /* if (drawer != null) {
             drawer.setDrawerListener(toggle);
-        }
+        }*/
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -81,7 +80,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public void abreRegistraAbastecimento(View view) {
-        Intent intent = new Intent(getApplicationContext(), RegistraAbastecimentoActivity.class);
+        Log.d("MEUAPP", "entrou no abreRegistraAbastecimento(View view)");
+        Intent intent = new Intent(this, AbastecerActivity.class);
         intent.putExtra("OPERACAO", Abastecimento.INSERIR);
         startActivity(intent);
     }
@@ -129,6 +129,7 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        Log.d("MEUAPP", "entrou no onNavigationItemSelected(MenuItem item) ");
         switch (id) {
             case R.id.nav_abastecimentos:
                 criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);

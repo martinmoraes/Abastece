@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -136,22 +138,19 @@ public class AbastecimentoDAO {
     private String dataParaPersistir(String dtOriginal) {
         Date data = null;
         SimpleDateFormat sdfPersiste = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat sdfMostra = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat sdfMostra = DateFormat.getDateInstance();
 
         //De String para Date
         try {
             data = sdfMostra.parse(dtOriginal);
-        } catch (ParseException e) {
-        }
-
-        //De Date para String
+        } catch (ParseException e) {   }
         return sdfPersiste.format(data);
     }
 
     private String dataParaMostrar(String dtPersisitida) {
         Date data = null;
         SimpleDateFormat sdfPersiste = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat sdfMostra = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat sdfMostra = DateFormat.getDateInstance();
 
         //De String para Date
         try {
