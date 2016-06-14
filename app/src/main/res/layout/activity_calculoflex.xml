@@ -55,21 +55,27 @@
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_currency_usd_black_24dp"/>
 
-            <TextView
+            <!--   <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="@dimen/margin16"
+                   android:layout_weight="1"
+                   android:gravity="left|center"
+                   android:text="Alcool"
+                   android:textSize="@dimen/fonte"/>-->
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin16"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:text="Alcool"
-                android:textSize="@dimen/fonte"/>
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/etVlr_Alcool"
-                android:layout_width="90dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:hint="Alcool R$"
                 android:inputType="numberDecimal"
                 android:paddingLeft="2dp"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <!-- Valor Gasolina TODO icon ???-->
@@ -84,21 +90,27 @@
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_currency_usd_black_24dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin16"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:text="Gasolina"
-                android:textSize="@dimen/fonte"/>
+            <!-- <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="@dimen/margin16"
+                 android:layout_weight="1"
+                 android:gravity="left|center"
+                 android:text="Gasolina"
+                 android:textSize="@dimen/fonte"/>-->
 
-            <EditText
-                android:id="@+id/etVlr_Gasolina"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:paddingLeft="2dp"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etVlr_Gasolina"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Gasolina R$"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="2dp"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <TextView

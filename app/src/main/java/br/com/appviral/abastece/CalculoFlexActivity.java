@@ -17,6 +17,7 @@ import br.com.appviral.abastece.Util.Util;
 public class CalculoFlexActivity extends AppCompatActivity {
     EditText etVlrGasolina, etVlrAlcool;
     TextView tvResposta;
+    boolean emOperacao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,9 @@ public class CalculoFlexActivity extends AppCompatActivity {
         etVlrAlcool = (EditText) findViewById(R.id.etVlr_Alcool);
         tvResposta = (TextView) findViewById(R.id.tvResposta);
 
-        String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-        etVlrGasolina.setHint(simbolo);
-        etVlrAlcool.setHint(simbolo);
+//        String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
+//        etVlrGasolina.setHint(simbolo);
+//        etVlrAlcool.setHint(simbolo);
 
 
         etVlrAlcool.addTextChangedListener(new TextWatcher() {
@@ -54,12 +55,15 @@ public class CalculoFlexActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                etVlrAlcool.removeTextChangedListener(this);
-                String str = Util.floatDeStringParaStrin(etVlrAlcool.getText().toString(),2);
-                etVlrAlcool.setText(str);
-                etVlrAlcool.setSelection(etVlrAlcool.length());
-                etVlrAlcool.addTextChangedListener(this);
-                calculaFlex();
+                if (!emOperacao) {
+                    emOperacao = true;
+                    String str = Util.floatDeStringParaStrin(etVlrAlcool.getText().toString(), 2);
+                    if (!str.equals("0,00")) //TODO deixar universal
+                    etVlrAlcool.setText(str);
+                    etVlrAlcool.setSelection(etVlrAlcool.length());
+                    calculaFlex();
+                    emOperacao = false;
+                }
             }
         });
 
@@ -76,23 +80,26 @@ public class CalculoFlexActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                etVlrGasolina.removeTextChangedListener(this);
-                String str = Util.floatDeStringParaStrin(etVlrGasolina.getText().toString(),2);
-                etVlrGasolina.setText(str);
-                etVlrGasolina.setSelection(etVlrGasolina.length());
-                etVlrGasolina.addTextChangedListener(this);
-                calculaFlex();
+                if (!emOperacao) {
+                    emOperacao = true;
+                    String str = Util.floatDeStringParaStrin(etVlrGasolina.getText().toString(), 2);
+                    if (!str.equals("0,00")) //TODO deixar universal
+                        etVlrGasolina.setText(str);
+                    etVlrGasolina.setSelection(etVlrGasolina.length());
+                    calculaFlex();
+                    emOperacao = false;
+                }
             }
         });
 
     }
 
 
-    private void calculaFlex(){
+    private void calculaFlex() {
         float vlrAlcool = Util.deStringParaFloat(etVlrAlcool.getText().toString());
         float vlrGasolina = Util.deStringParaFloat(etVlrGasolina.getText().toString());
 
-        if(vlrAlcool > 0 & vlrGasolina > 0) {
+        if (vlrAlcool > 0 & vlrGasolina > 0) {
             float resultado = vlrAlcool / vlrGasolina;
             if (resultado > 0.7) {
                 tvResposta.setText("ALCOOL");
