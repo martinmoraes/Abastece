@@ -23,18 +23,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         </android.support.design.widget.AppBarLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_fragment_container"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </RelativeLayout>
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -49,16 +51,15 @@
     </android.support.design.widget.CoordinatorLayout>
 
 
-
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_principal"
-        app:menu="@menu/activity_principal_drawer"
         app:itemIconTint="@color/seletor_cores"
-        app:itemTextColor="@android:color/black"/>
+        app:itemTextColor="@android:color/black"
+        app:menu="@menu/activity_principal_drawer"/>
 
 
 </android.support.v4.widget.DrawerLayout>

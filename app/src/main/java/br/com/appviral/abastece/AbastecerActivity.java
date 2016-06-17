@@ -109,7 +109,7 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.registraabastecimento, menu);
+        getMenuInflater().inflate(R.menu.activity_registraabastecimento_toolbar, menu);
         return true;
     }
 

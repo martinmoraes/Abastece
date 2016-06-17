@@ -1,5 +1,15 @@
-
+//TODO Calcula o terceiro só quando o terceiro é vazio, do contrário aparece botões para recalcular
 //TODO Tatar acesso a dados direto na DAO e tirar a collection
+
+
+//TODO Calculo do combustível mais barato - rever a fórmula.
+//TODO alterar layout dos itens
+//TODO texto para o sobre
+//TODO Layout para o SOBRE
+//TODO icon para o valor TOTAL
+//TODO rever se mantem <dimen name="toolbarHeight">65dp</dimen>
+
+
 // Requisições 31/05/2016
 // 01 - Ordem de cadastro: Total/Preço/Litros
 // 02 - ao salvar retorna a lista
@@ -22,15 +32,9 @@
 // No registra abastecimetno ver o digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
 // todas activity utilizando toobar com appbar
 // FAB sumir junto como ToolBar
-//TODO Calcula o terceiro só quando o terceiro é vazio, do contrário aparece botões para recalcular
-//TODO Tira os totalizadores
+// Tira os totalizadores
 
 
 
 
-//TODO Calculo do combustível mais barato - rever a fórmula.
-//TODO alterar layout dos itens
-//TODO texto para o sobre
-//TODO Layout para o SOBRE
-//TODO icon para o valor TOTAL
-//TODO rever se mantem <dimen name="toolbarHeight">65dp</dimen>
+

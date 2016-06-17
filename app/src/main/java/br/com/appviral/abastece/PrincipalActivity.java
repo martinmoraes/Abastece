@@ -6,11 +6,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,13 +21,16 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.List;
+
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
-import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
+import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
 @SuppressWarnings("deprecation")
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private RecyclerView mRecyclerView;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -55,24 +59,22 @@ public class PrincipalActivity extends AppCompatActivity
         navigationView.getMenu().findItem(R.id.nav_abastecimentos).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // FRAGMENT
-        criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        List<Abastecimento> listaApresentar = (new AbastecimentoDAO(this)).listarAbastecimentos();
+        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(this, listaApresentar);
+        mRecyclerView.setAdapter(adaptadorAbastecimento);
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void criaAbreFragmento(String tag, boolean incluirClick) {
-        //TODO rever se ainda é necessário este procedimento para abrir um Fragment
-        AbastecimentoFragment abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (abastecimentoFragment == null) {
-            abastecimentoFragment = AbastecimentoFragment.newInstance(incluirClick, tag);
-        }
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.rl_fragment_container, abastecimentoFragment, tag);
-        ft.commit();
-    }
+
 
     public void abreRegistraAbastecimento(View view) {
         Intent intent = new Intent(this, AbastecerActivity.class);
@@ -92,7 +94,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.principal, menu);
+        getMenuInflater().inflate(R.menu.activity_principal_toolbar, menu);
         return true;
     }
 
@@ -117,7 +119,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_abastecimentos:
-                criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+                //criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
                 break;
             case R.id.nav_abastecer:
                 abreRegistraAbastecimento(null);
@@ -127,18 +129,6 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case R.id.nav_sobre:
                 startActivity(new Intent(getApplicationContext(), SobreActivity.class));
-                break;
-            case R.id.nav_mesal:
-                criaAbreFragmento("nav_mesal", AdaptadorAbastecimento.SEM_CLICK);
-                break;
-            case R.id.nav_bimestral:
-                criaAbreFragmento("nav_bimestral", AdaptadorAbastecimento.SEM_CLICK);
-                break;
-            case R.id.nav_trimestral:
-                criaAbreFragmento("nav_trimestral", AdaptadorAbastecimento.SEM_CLICK);
-                break;
-            case R.id.nav_semestral:
-                criaAbreFragmento("nav_semestral", AdaptadorAbastecimento.SEM_CLICK);
                 break;
         }
 
@@ -166,6 +156,13 @@ public class PrincipalActivity extends AppCompatActivity
             editor.putBoolean("ATALHO", true);
             editor.commit();
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AdaptadorAbastecimento) mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
 
     @Override

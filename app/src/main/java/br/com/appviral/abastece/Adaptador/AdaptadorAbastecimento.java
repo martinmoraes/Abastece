@@ -24,23 +24,18 @@ import br.com.appviral.abastece.AbastecerActivity;
  */
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.OViewHolder> {
 
-    public static boolean COM_CLICK = true;
-    public static boolean SEM_CLICK = false;
-
     private static List<Abastecimento> mListaMostrar;
     private LayoutInflater mLayoutInflater;
     private final Context mContext;
     private NumberFormat mNF;
-    private boolean mIncluir_click;
 
 
-    public AdaptadorAbastecimento(Context context, List<Abastecimento> lista, boolean incluir) {
+    public AdaptadorAbastecimento(Context context, List<Abastecimento> lista) {
         this.mListaMostrar = lista;
         this.mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mNF = NumberFormat.getInstance();
         mNF.setMinimumFractionDigits(2);
-        this.mIncluir_click = incluir;
     }
 
     @Override
@@ -79,43 +74,41 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             tvVlrLitro = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
 
 
-            if (mIncluir_click) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, AbastecerActivity.class);
-                        intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
-                        intent.putExtra("POSICAO", getAdapterPosition());
-                        mContext.startActivity(intent);
-                    }
-                });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, AbastecerActivity.class);
+                    intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
+                    intent.putExtra("POSICAO", getAdapterPosition());
+                    mContext.startActivity(intent);
+                }
+            });
 
 
-                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-                    @Override
-                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-                        MenuItem menuItem = menu.add("Excluir");
-                        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(mContext);
-                                Abastecimento umAbastecimento = mListaMostrar.get(getAdapterPosition());
-                                if (umAbastecimento != null) {
-                                    if (abastecimentoDAO.excluir(umAbastecimento)) {
-                                        mListaMostrar.remove(umAbastecimento);
-                                        notifyItemRemoved(getAdapterPosition());//TODO ver se faz falta desta lista
-                                        Toast.makeText(mContext, "Excluído!!!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                                    }
+                    MenuItem menuItem = menu.add("Excluir");
+                    menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(mContext);
+                            Abastecimento umAbastecimento = mListaMostrar.get(getAdapterPosition());
+                            if (umAbastecimento != null) {
+                                if (abastecimentoDAO.excluir(umAbastecimento)) {
+                                    mListaMostrar.remove(umAbastecimento);
+                                    notifyItemRemoved(getAdapterPosition());//TODO ver se faz falta desta lista
+                                    Toast.makeText(mContext, "Excluído!!!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                                 }
-                                return true;
                             }
-                        });
-                    }
-                });
-            }
+                            return true;
+                        }
+                    });
+                }
+            });
         }
     }
 
