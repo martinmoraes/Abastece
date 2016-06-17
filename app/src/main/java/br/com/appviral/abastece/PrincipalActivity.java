@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +28,11 @@ import br.com.appviral.abastece.Fragment.AbastecimentoFragment;
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    AbastecimentoFragment abastecimentoFragment;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private static FloatingActionButton fab;
 
 
     @Override
@@ -50,16 +46,14 @@ public class PrincipalActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-       /* if (drawer != null) {
+        if (drawer != null) {
             drawer.setDrawerListener(toggle);
-        }*/
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().findItem(R.id.nav_abastecimentos).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // FRAGMENT
         criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
@@ -70,7 +64,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void criaAbreFragmento(String tag, boolean incluirClick) {
-        abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        //TODO rever se ainda é necessário este procedimento para abrir um Fragment
+        AbastecimentoFragment abastecimentoFragment = (AbastecimentoFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (abastecimentoFragment == null) {
             abastecimentoFragment = AbastecimentoFragment.newInstance(incluirClick, tag);
         }
@@ -80,18 +75,9 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public void abreRegistraAbastecimento(View view) {
-        Log.d("MEUAPP", "entrou no abreRegistraAbastecimento(View view)");
         Intent intent = new Intent(this, AbastecerActivity.class);
         intent.putExtra("OPERACAO", Abastecimento.INSERIR);
         startActivity(intent);
-    }
-
-    public static void fabVisivel(boolean estado) {
-        if (estado) {
-            fab.setVisibility(View.VISIBLE);
-        } else {
-            fab.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
@@ -129,7 +115,6 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        Log.d("MEUAPP", "entrou no onNavigationItemSelected(MenuItem item) ");
         switch (id) {
             case R.id.nav_abastecimentos:
                 criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);

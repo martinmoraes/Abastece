@@ -22,56 +22,55 @@ import br.com.appviral.abastece.AbastecerActivity;
 /**
  * Created by Martin on 25/05/2016.
  */
-public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.meuViewHolder> {
+public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.OViewHolder> {
 
     public static boolean COM_CLICK = true;
     public static boolean SEM_CLICK = false;
 
-    private static List<Abastecimento> listaMostrada;
-    private LayoutInflater layoutInflater;
-    private final Context context;
-    private NumberFormat nf;
-    private boolean incluir_click;
+    private static List<Abastecimento> mListaMostrar;
+    private LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private NumberFormat mNF;
+    private boolean mIncluir_click;
 
 
     public AdaptadorAbastecimento(Context context, List<Abastecimento> lista, boolean incluir) {
-        this.listaMostrada = lista;
-        this.context = context;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        nf = NumberFormat.getInstance();
-        nf.setMinimumFractionDigits(2);
-        this.incluir_click = incluir;
+        this.mListaMostrar = lista;
+        this.mContext = context;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mNF = NumberFormat.getInstance();
+        mNF.setMinimumFractionDigits(2);
+        this.mIncluir_click = incluir;
     }
 
     @Override
-    public meuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_abastecimento, null);
-        final meuViewHolder umViewHolder = new meuViewHolder(view);
-
+    public OViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mLayoutInflater.inflate(R.layout.item_abastecimento, null);
+        final OViewHolder umViewHolder = new OViewHolder(view);
         return umViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(meuViewHolder holder, int position) {
-        Abastecimento abastecimento = listaMostrada.get(position);
+    public void onBindViewHolder(OViewHolder holder, int position) {
+        Abastecimento abastecimento = mListaMostrar.get(position);
 
-        holder.tvData.setText(abastecimento.data);
-        holder.tvQtdeLitros.setText(nf.format(abastecimento.getQtdeLitros()) + " litros");
-        holder.tvVlrLitro.setText(nf.format(abastecimento.getVlrLitro()) + " /litro");
-        holder.tvVlrTotal.setText(nf.format(abastecimento.getVlrTotal()));
+        holder.tvData.setText(abastecimento.getData());
+        holder.tvQtdeLitros.setText(mNF.format(abastecimento.getQtdelitros()) + " litros");
+        holder.tvVlrLitro.setText(mNF.format(abastecimento.getVlrLitro()) + " /litro");
+        holder.tvVlrTotal.setText(mNF.format(abastecimento.getVlrTotal()));
 
     }
 
     @Override
     public int getItemCount() {
-        return listaMostrada.size();
+        return mListaMostrar.size();
     }
 
 
-    public class meuViewHolder extends RecyclerView.ViewHolder {
+    public class OViewHolder extends RecyclerView.ViewHolder {
         public TextView tvData, tvQtdeLitros, tvVlrTotal, tvVlrLitro;
 
-        public meuViewHolder(View itemView) {
+        public OViewHolder(View itemView) {
             super(itemView);
 
             tvData = (TextView) itemView.findViewById(R.id.tv_data_abastecimento);
@@ -80,14 +79,14 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             tvVlrLitro = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
 
 
-            if (incluir_click) {
+            if (mIncluir_click) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, AbastecerActivity.class);
+                        Intent intent = new Intent(mContext, AbastecerActivity.class);
                         intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
                         intent.putExtra("POSICAO", getAdapterPosition());
-                        context.startActivity(intent);
+                        mContext.startActivity(intent);
                     }
                 });
 
@@ -100,15 +99,15 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(context);
-                                Abastecimento umAbastecimento = listaMostrada.get(getAdapterPosition());
+                                AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(mContext);
+                                Abastecimento umAbastecimento = mListaMostrar.get(getAdapterPosition());
                                 if (umAbastecimento != null) {
                                     if (abastecimentoDAO.excluir(umAbastecimento)) {
-                                        listaMostrada.remove(umAbastecimento);
+                                        mListaMostrar.remove(umAbastecimento);
                                         notifyItemRemoved(getAdapterPosition());//TODO ver se faz falta desta lista
-                                        Toast.makeText(context, "Excluído!!!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "Excluído!!!", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(context, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 return true;
@@ -121,18 +120,18 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
     }
 
 
-    // Faz chamadas direto ao Banco. Não faz estes métodos.
+    // TODO Faz chamadas direto ao Banco. Não faz estes métodos.
     public static void adicionaAbastecimento(Abastecimento abastecimento) {
-        listaMostrada.add(0, abastecimento);
+        mListaMostrar.add(0, abastecimento);
     }
 
     public static void alteraAbastecimento(int posicao, Abastecimento umAbastecimento) {
-        listaMostrada.remove(posicao);
-        listaMostrada.add(posicao, umAbastecimento);
+        mListaMostrar.remove(posicao);
+        mListaMostrar.add(posicao, umAbastecimento);
     }
 
     public static Abastecimento getAbastecimento(int posicao) {
-        return listaMostrada.get(posicao);
+        return mListaMostrar.get(posicao);
     }
 
 

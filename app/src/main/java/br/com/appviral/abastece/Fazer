@@ -20,9 +20,10 @@
 // Para salvar o tick- Tirar o botão.
 // Menu suspenso para excluir no Recycler.
 // No registra abastecimetno ver o digitar valor ter mascaras para que o usuário não tenha que digitar o ponto. - olhar Filters - http://stackoverflow.com/questions/10297769/simple-edittext-currency-formatter
-//TODO todas activity utilizando toobar com appbar
-//TODO TabLayout com pageView para rolar para o lado. Cada pageView um relatório
-//TODO retirar o recyclerView.addOnScrollListener e fazer funcionar com layoutbahi
+// todas activity utilizando toobar com appbar
+// FAB sumir junto como ToolBar
+//TODO Calcula o terceiro só quando o terceiro é vazio, do contrário aparece botões para recalcular
+//TODO Tira os totalizadores
 
 
 
@@ -32,3 +33,4 @@
 //TODO texto para o sobre
 //TODO Layout para o SOBRE
 //TODO icon para o valor TOTAL
+//TODO rever se mantem <dimen name="toolbarHeight">65dp</dimen>

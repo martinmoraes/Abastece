@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,27 +22,24 @@ import br.com.appviral.abastece.Entidade.Abastecimento;
 public class AbastecimentoDAO {
 
 
-    Context context;
-    DBSQLite dbsqLite;
-    String colunas[];
+    private DBSQLite mDBSqLite;
+    private String mColunas[] = {Abastecimento.CAMPO_ID, Abastecimento.CAMPO_QTDE_LITROS,
+            Abastecimento.CAMPO_VLR_LITRO, Abastecimento.CAMPO_VLR_TOTAL, Abastecimento.CAMPO_DATA,
+            Abastecimento.CAMPO_COMBUSTIVEL};
 
     public AbastecimentoDAO(Context context) {
-        this.context = context;
-        dbsqLite = new DBSQLite(context);
-
-        String colunas[] = {Abastecimento.CAMPO_ID, Abastecimento.CAMPO_QTDE_LITROS,
-                Abastecimento.CAMPO_VLR_LITRO, Abastecimento.CAMPO_VLR_TOTAL, Abastecimento.CAMPO_DATA,
-                Abastecimento.CAMPO_COMBUSTIVEL};
+        mDBSqLite = new DBSQLite(context);
     }
 
+
     public Long inserir(Abastecimento abastecimento) {
-        SQLiteDatabase db = dbsqLite.getWritableDatabase();
+        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Abastecimento.CAMPO_QTDE_LITROS, abastecimento.qtde_litros);
-        values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.vlr_litro);
-        values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.vlr_total);
-        values.put(Abastecimento.CAMPO_DATA, dataParaPersistir(abastecimento.data));
+        values.put(Abastecimento.CAMPO_QTDE_LITROS, abastecimento.getQtdelitros());
+        values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.getVlrLitro());
+        values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.getVlrTotal());
+        values.put(Abastecimento.CAMPO_DATA, abastecimento.getDataParaPersistir());
         values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
         Long id = db.insert(Abastecimento.TABELA, null, values);
         db.close();
@@ -50,27 +47,27 @@ public class AbastecimentoDAO {
     }
 
     public boolean alterar(Abastecimento abastecimento) {
-        SQLiteDatabase db = dbsqLite.getWritableDatabase();
+        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Abastecimento.CAMPO_QTDE_LITROS, abastecimento.qtde_litros);
-        values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.vlr_litro);
-        values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.vlr_total);
-        values.put(Abastecimento.CAMPO_DATA, dataParaPersistir(abastecimento.data));
+        values.put(Abastecimento.CAMPO_QTDE_LITROS, abastecimento.getQtdelitros());
+        values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.getVlrLitro());
+        values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.getVlrTotal());
+        values.put(Abastecimento.CAMPO_DATA, abastecimento.getDataParaPersistir());
         values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
         String whare = Abastecimento.CAMPO_ID + " = ?";
 
-        int ret = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.id)});
+        int ret = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.getId())});
         db.close();
         return ret > 0;
     }
 
     public boolean excluir(Abastecimento abastecimento) {
-        return excluir(abastecimento.id);
+        return excluir(abastecimento.getId());
     }
 
     public boolean excluir(Long id) {
-        SQLiteDatabase db = dbsqLite.getWritableDatabase();
+        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
         String whare = Abastecimento.CAMPO_ID + " = ?";
         int ret = db.delete(Abastecimento.TABELA, whare, new String[]{String.valueOf(id)});
         db.close();
@@ -78,38 +75,73 @@ public class AbastecimentoDAO {
     }
 
     public boolean excluirTudo() {
-        SQLiteDatabase db = dbsqLite.getWritableDatabase();
+        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
         int ret = db.delete(Abastecimento.TABELA, null, null);
         db.close();
         return ret > 0 ? true : false;
     }
 
-    public List<Abastecimento> listarAbastecimentos() {
-        SQLiteDatabase db = dbsqLite.getReadableDatabase();
-        List<Abastecimento> lista = new ArrayList<>();
-
+    private Cursor consultaDB(){
+        SQLiteDatabase db = mDBSqLite.getReadableDatabase();
         Cursor cursor = db.query(Abastecimento.TABELA,
-                colunas,
+                mColunas,
                 null, null, null, null,
                 Abastecimento.CAMPO_DATA + " DESC");
+        db.close();
+        return cursor;
+    }
 
+    public List<Abastecimento> listarAbastecimentos() {
+        List<Abastecimento> lista = new ArrayList<>();
+//        Cursor cursor = consultaDB();
+        SQLiteDatabase db = mDBSqLite.getReadableDatabase();
+        Cursor cursor = db.query(Abastecimento.TABELA,
+                mColunas,
+                null, null, null, null,
+                Abastecimento.CAMPO_DATA + " DESC");
         if (cursor.moveToFirst()) {
             do {
                 lista.add(povoaAbastecimento(cursor));
             } while (cursor.moveToNext());
-            db.close();
         }
+        db.close();
         return lista;
     }
 
+    public int getQtdeRegistros(){
+        Cursor cursor = consultaDB();
+        return cursor.getCount();
+    }
+
+    public Abastecimento getRegistro(int posicao){
+        Cursor cursor = consultaDB();
+        cursor.moveToPosition(posicao);
+        return povoaAbastecimento(cursor);
+    }
+
+    private Abastecimento povoaAbastecimento(Cursor cursor) {
+        Abastecimento umAbastecimento = new Abastecimento();
+        umAbastecimento.setId(cursor.getLong(0));
+        umAbastecimento.setQtdelitros(cursor.getFloat(1));
+        umAbastecimento.setVlrLitro(cursor.getFloat(2));
+        umAbastecimento.setVlrTotal(cursor.getFloat(3));
+        umAbastecimento.setDataDoBanco(cursor.getString(4));
+        umAbastecimento.setCombustivel(cursor.getString(5));
+        return umAbastecimento;
+    }
+
+
+/*
+
+
     public List<Abastecimento> listarMediaMensal(int media) {
-        SQLiteDatabase db = dbsqLite.getReadableDatabase();
+        SQLiteDatabase db = mDBSqLite.getReadableDatabase();
         List<Abastecimento> lista = new ArrayList<>();
         List<Abastecimento> listaTEMP = new ArrayList<>();
 
         String referenciaDeTotalizacao = null;
         Cursor cursor = db.query(Abastecimento.TABELA,
-                colunas,
+                mColunas,
                 null, null, null, null,
                 Abastecimento.CAMPO_DATA + " DESC");
 
@@ -117,7 +149,7 @@ public class AbastecimentoDAO {
             String referencia;
             do {
                 Abastecimento umAbastecimento = povoaAbastecimento(cursor);
-                referencia = pegaReferencia(umAbastecimento.data, media);
+                referencia = pegaReferencia(umAbastecimento.getData(), media);
                 if (referenciaDeTotalizacao == null) {
                     referenciaDeTotalizacao = referencia;
                 }
@@ -135,57 +167,20 @@ public class AbastecimentoDAO {
         return lista;
     }
 
-    private String dataParaPersistir(String dtOriginal) {
-        Date data = null;
-        SimpleDateFormat sdfPersiste = new SimpleDateFormat("yyyy/MM/dd");
-        DateFormat sdfMostra = DateFormat.getDateInstance();
-
-        //De String para Date
-        try {
-            data = sdfMostra.parse(dtOriginal);
-        } catch (ParseException e) {   }
-        return sdfPersiste.format(data);
-    }
-
-    private String dataParaMostrar(String dtPersisitida) {
-        Date data = null;
-        SimpleDateFormat sdfPersiste = new SimpleDateFormat("yyyy/MM/dd");
-        DateFormat sdfMostra = DateFormat.getDateInstance();
-
-        //De String para Date
-        try {
-            data = sdfPersiste.parse(dtPersisitida);
-        } catch (ParseException e) {
-        }
-
-        //De Date para String
-        return sdfMostra.format(data);
-    }
-
-    public Abastecimento povoaAbastecimento(Cursor cursor) {
-        Abastecimento umAbastecimento = new Abastecimento();
-        umAbastecimento.id = cursor.getLong(0);
-        umAbastecimento.qtde_litros = cursor.getFloat(1);
-        umAbastecimento.vlr_litro = cursor.getFloat(2);
-        umAbastecimento.vlr_total = cursor.getFloat(3);
-        umAbastecimento.data = dataParaMostrar(cursor.getString(4));
-        umAbastecimento.setCombustivel(cursor.getString(5));
-        return umAbastecimento;
-    }
 
     public Abastecimento totalizadorList(List<Abastecimento> lista, String referencia) {
         float Qtde_litros = 0;
         float Total_Gasto = 0;
 
         for (Abastecimento abastecimento : lista) {
-            Qtde_litros += abastecimento.qtde_litros;
-            Total_Gasto += abastecimento.vlr_total;
+            Qtde_litros += abastecimento.getQtdelitros();
+            Total_Gasto += abastecimento.getVlrTotal();
         }
         Abastecimento abastecimenTotalizado = new Abastecimento();
-        abastecimenTotalizado.data = referencia;
-        abastecimenTotalizado.qtde_litros = Qtde_litros;
-        abastecimenTotalizado.vlr_total = Total_Gasto;
-        abastecimenTotalizado.vlr_litro = Total_Gasto / Qtde_litros;
+        abastecimenTotalizado.setData(referencia);
+        abastecimenTotalizado.setQtdelitros(Qtde_litros);
+        abastecimenTotalizado.setVlrTotal(Total_Gasto);
+        abastecimenTotalizado.setVlrLitro(Total_Gasto / Qtde_litros);
 
         return abastecimenTotalizado;
     }
@@ -217,5 +212,5 @@ public class AbastecimentoDAO {
         };
         int oMES = Integer.parseInt(dtCampos[MES]) - 1;
         return referencia[oMES][media]+ dtCampos[ANO];
-    }
+    }*/
 }

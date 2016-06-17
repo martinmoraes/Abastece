@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,19 +23,20 @@ import java.util.Calendar;
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
-import br.com.appviral.abastece.Util.Calcula;
+import br.com.appviral.abastece.Util.CalculaTerceiro;
 import br.com.appviral.abastece.Util.Util;
 
-public class AbastecerActivity extends AppCompatActivity {
+public class AbastecerActivity extends AppCompatActivity implements View.OnFocusChangeListener, TextWatcher {
 
-    String operacao;
-    int posicao;
-    Calendar data;
-    EditText etQtde_litros, etVlr_litro, etVlr_total, etData;
-    Spinner spCombustivel;
-    DateFormat sdf;
-    Abastecimento umAbastecimento;
-    boolean emOperacao = false;
+    private String mOperacao;
+    private int mPosicao;
+    private Calendar mData;
+    private EditText mEtQtde_litros, mEtVlr_litro, mEtVlr_total, mEtData;
+    private Spinner mSpCombustivel;
+    private DateFormat mSdf;
+    private Abastecimento mAbastecimento;
+    private CalculaTerceiro mCalculaTerceiro;
+    private boolean mEstaEmQtdeLitros, mEstaEmVlrTotal, mEstaEmVlrLitro;
 
 
     @Override
@@ -54,147 +54,56 @@ public class AbastecerActivity extends AppCompatActivity {
 //        getSupportActionBar().setElevation(10f);
         }
 
-        data = Calendar.getInstance();
-        sdf = DateFormat.getDateInstance();
+        mData = Calendar.getInstance();
+        mSdf = DateFormat.getDateInstance();
 
-        etQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
-        etVlr_litro = (EditText) findViewById(R.id.etVlr_litro);
-        etVlr_total = (EditText) findViewById(R.id.etVlr_total);
-        etData = (EditText) findViewById(R.id.etData);
-        spCombustivel = (Spinner) findViewById(R.id.spCombustivel);
+        mEtQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
+        mEtVlr_litro = (EditText) findViewById(R.id.etVlr_litro);
+        mEtVlr_total = (EditText) findViewById(R.id.etVlr_total);
+        mEtData = (EditText) findViewById(R.id.etData);
+        mSpCombustivel = (Spinner) findViewById(R.id.spCombustivel);
 
         String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-        etQtde_litros.setHint(simbolo);
-        etVlr_litro.setHint(simbolo);
-        etVlr_total.setHint(simbolo);
+        mEtQtde_litros.setHint(simbolo);
+        mEtVlr_litro.setHint(simbolo);
+        mEtVlr_total.setHint(simbolo);
 
-        etQtde_litros.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+        mCalculaTerceiro = new CalculaTerceiro();
+        mEtQtde_litros.setOnFocusChangeListener(this);
+        mEtVlr_litro.setOnFocusChangeListener(this);
+        mEtVlr_total.setOnFocusChangeListener(this);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!emOperacao) {
-                    emOperacao = true;
-                    Log.d("MEUAPP", "etQtde_litros: " + s.toString());
-                    etQtde_litros.setText(Util.floatDeStringParaStrin(s.toString()));
-                    etQtde_litros.setSelection(etQtde_litros.length());
-
-                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
-                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
-                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
-
-                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
-
-                    if (Calcula.vlr_litro != 0) {
-                        etVlr_litro.setText(Util.deFloatParaString(Calcula.vlr_litro));
-                        etVlr_litro.setSelection(etVlr_litro.length());
-                    }
-
-                    if (Calcula.vlr_total != 0) {
-                        etVlr_total.setText(Util.deFloatParaString(Calcula.vlr_total));
-                        etVlr_total.setSelection(etVlr_total.length());
-                    }
-                    emOperacao = false;
-                }
-            }
-        });
-        etVlr_litro.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!emOperacao) {
-                    emOperacao = true;
-                    Log.d("MEUAPP", "etVlr_litro: " + s.toString());
-                    etVlr_litro.setText(Util.floatDeStringParaStrin(s.toString()));
-                    etVlr_litro.setSelection(etVlr_litro.length());
-
-                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
-                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
-                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
-
-                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
-
-                    if (Calcula.qtde_litros != 0) {
-                        etQtde_litros.setText(Util.deFloatParaString(Calcula.qtde_litros));
-                        etQtde_litros.setSelection(etQtde_litros.length());
-                    }
-
-                    if (Calcula.vlr_total != 0) {
-                        etVlr_total.setText(Util.deFloatParaString(Calcula.vlr_total));
-                        etVlr_total.setSelection(etVlr_total.length());
-                    }
-                }
-                emOperacao = false;
-            }
-        });
-        etVlr_total.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!emOperacao) {
-                    emOperacao = true;
-                    Log.d("MEUAPP", "etVlr_total: " + s.toString());
-                    etVlr_total.setText(Util.floatDeStringParaStrin(s.toString()));
-                    etVlr_total.setSelection(etVlr_total.length());
-
-                    float vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
-                    float vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
-                    float qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
-
-                    Calcula.calculaTerceiro(qtde_litros, vlr_litro, vlr_total);
-
-                    if (Calcula.qtde_litros != 0) {
-                        etQtde_litros.setText(Util.deFloatParaString(Calcula.qtde_litros));
-                        etQtde_litros.setSelection(etQtde_litros.length());
-                    }
-
-                    if (Calcula.vlr_litro != 0) {
-                        etVlr_litro.setText(Util.deFloatParaString(Calcula.vlr_litro));
-                        etVlr_litro.setSelection(etVlr_litro.length());
-                    }
-                    emOperacao = false;
-                }
-            }
-        });
-
-        umAbastecimento = new Abastecimento();
+        mAbastecimento = new Abastecimento();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combustivel, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCombustivel.setAdapter(adapter);
+        mSpCombustivel.setAdapter(adapter);
 
-        operacao = getIntent().getStringExtra("OPERACAO");
-        if (operacao.equals(Abastecimento.ALTERAR)) {
-            posicao = getIntent().getIntExtra("POSICAO", 0);
-            mostraAbastecimento(posicao);
-        } else {
-            preparaUmAbastecimento();
+        mOperacao = getIntent().getStringExtra("OPERACAO");
+        if (mOperacao.equals(Abastecimento.ALTERAR)) {
+            mPosicao = getIntent().getIntExtra("POSICAO", 0);
+            mAbastecimento = AdaptadorAbastecimento.getAbastecimento(mPosicao);
+            mEtQtde_litros.setText(Util.deFloatParaString(mAbastecimento.getQtdelitros()));
+            mEtVlr_litro.setText(Util.deFloatParaString(mAbastecimento.getVlrLitro()));
+            mEtVlr_total.setText(Util.deFloatParaString(mAbastecimento.getVlrTotal()));
+            mEtData.setText(mAbastecimento.getData());
+            switch (mAbastecimento.getCombustiviel()) {
+                case "Gasolina":
+                    mSpCombustivel.setSelection(0);
+                    break;
+                case "Alcool":
+                    mSpCombustivel.setSelection(1);
+                    break;
+                case "Diesel":
+                    mSpCombustivel.setSelection(2);
+                    break;
+            }
+            mEtQtde_litros.requestFocus();
+        } else {//Prepara para um novo abastecimento
+            mEtVlr_total.requestFocus();
+            mData = Calendar.getInstance();
+            mEtData.setText(mSdf.format(mData.getTime()));
         }
     }
 
@@ -217,55 +126,48 @@ public class AbastecerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void preparaUmAbastecimento() {
-        etVlr_total.requestFocus();
-        data = Calendar.getInstance();
-        etData.setText(sdf.format(data.getTime()));
-
-    }
-
     public void pegaData(View view) {
         DatePickerDialog toDatePickerDialog = new DatePickerDialog(
                 this,
                 new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        data.set(year, monthOfYear, dayOfMonth);
-                        etData.setText(sdf.format(data.getTime()));
+                        mData.set(year, monthOfYear, dayOfMonth);
+                        mEtData.setText(mSdf.format(mData.getTime()));
 
                     }
                 },
-                data.get(Calendar.YEAR),
-                data.get(Calendar.MONTH),
-                data.get(Calendar.DAY_OF_MONTH));
+                mData.get(Calendar.YEAR),
+                mData.get(Calendar.MONTH),
+                mData.get(Calendar.DAY_OF_MONTH));
         toDatePickerDialog.show();
 
     }
 
     public void salva() {
 
-        umAbastecimento.qtde_litros = Util.deStringParaFloat(etQtde_litros.getText().toString());
-        umAbastecimento.vlr_litro = Util.deStringParaFloat(etVlr_litro.getText().toString());
-        umAbastecimento.vlr_total = Util.deStringParaFloat(etVlr_total.getText().toString());
-        umAbastecimento.setCombustivel(spCombustivel.getSelectedItem().toString());
-        umAbastecimento.data = etData.getText().toString();
+        mAbastecimento.setQtdelitros(Util.deStringParaFloat(mEtQtde_litros.getText().toString()));
+        mAbastecimento.setVlrLitro(Util.deStringParaFloat(mEtVlr_litro.getText().toString()));
+        mAbastecimento.setVlrTotal(Util.deStringParaFloat(mEtVlr_total.getText().toString()));
+        mAbastecimento.setCombustivel(mSpCombustivel.getSelectedItem().toString());
+        mAbastecimento.setData(mEtData.getText().toString());
 
         AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
 
-        switch (operacao) {
+        switch (mOperacao) {
             case Abastecimento.INSERIR:
-                long id = abastecimentoDAO.inserir(umAbastecimento);
+                long id = abastecimentoDAO.inserir(mAbastecimento);
                 if (id > 0) {
-                    umAbastecimento.id = id;
+                    mAbastecimento.setId(id);
                     Toast.makeText(getApplicationContext(), "Salvo!!!", Toast.LENGTH_SHORT).show();
-                    AdaptadorAbastecimento.adicionaAbastecimento(umAbastecimento);
+                    AdaptadorAbastecimento.adicionaAbastecimento(mAbastecimento);
                 } else {
                     Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case Abastecimento.ALTERAR:
-                if (abastecimentoDAO.alterar(umAbastecimento)) {
+                if (abastecimentoDAO.alterar(mAbastecimento)) {
                     Toast.makeText(getApplicationContext(), "Salvo!!!", Toast.LENGTH_SHORT).show();
-                    AdaptadorAbastecimento.alteraAbastecimento(posicao, umAbastecimento);
+                    AdaptadorAbastecimento.alteraAbastecimento(mPosicao, mAbastecimento);
                 } else {
                     Toast.makeText(getApplicationContext(), "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                 }
@@ -274,24 +176,88 @@ public class AbastecerActivity extends AppCompatActivity {
         finish();
     }
 
-    public void mostraAbastecimento(int posicao) {
-        umAbastecimento = AdaptadorAbastecimento.getAbastecimento(posicao);
-        etQtde_litros.setText(Util.deFloatParaString(umAbastecimento.qtde_litros));
-        etVlr_litro.setText(Util.deFloatParaString(umAbastecimento.vlr_litro));
-        etVlr_total.setText(Util.deFloatParaString(umAbastecimento.vlr_total));
-        etData.setText(umAbastecimento.data);
-        switch (umAbastecimento.getCombustiviel()) {
-            case "gasolina":
-                spCombustivel.setSelection(0);
-                break;
-            case "alcool":
-                spCombustivel.setSelection(1);
-                break;
-            case "diesel":
-                spCombustivel.setSelection(2);
-                break;
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        int id = v.getId();
+        if (hasFocus) {
+            switch (id) {
+                case R.id.etVlr_total:
+                    mEtVlr_total.addTextChangedListener(this);
+                    mEstaEmVlrTotal = true;
+                    break;
+                case R.id.etVlr_litro:
+                    mEtVlr_litro.addTextChangedListener(this);
+                    mEstaEmVlrLitro = true;
+                    break;
+                case R.id.etQtde_litros:
+                    mEtQtde_litros.addTextChangedListener(this);
+                    mEstaEmQtdeLitros = true;
+                    break;
+            }
+        } else {
+            switch (id) {
+                case R.id.etVlr_total:
+                    mEtVlr_total.removeTextChangedListener(this);
+                    mEstaEmVlrTotal = false;
+                    break;
+                case R.id.etVlr_litro:
+                    mEtVlr_litro.removeTextChangedListener(this);
+                    mEstaEmVlrLitro = false;
+                    break;
+                case R.id.etQtde_litros:
+                    mEtQtde_litros.removeTextChangedListener(this);
+                    mEstaEmQtdeLitros = false;
+                    break;
+            }
         }
-        etQtde_litros.requestFocus();
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+    @Override
+    public void afterTextChanged(Editable s) {
+
+
+        if(mEstaEmVlrTotal) {
+            mEtVlr_total.removeTextChangedListener(this);
+            mEtVlr_total.setText(Util.floatDeStringParaStrin(s.toString()));
+            mEtVlr_total.setSelection(mEtVlr_total.length());
+            mCalculaTerceiro.setVlrTotal(Util.deStringParaFloat(mEtVlr_total.getText().toString()));
+            mEtVlr_total.addTextChangedListener(this);
+        } else if(mEstaEmVlrLitro) {
+            mEtVlr_litro.removeTextChangedListener(this);
+            mEtVlr_litro.setText(Util.floatDeStringParaStrin(s.toString()));
+            mEtVlr_litro.setSelection(mEtVlr_litro.length());
+            mCalculaTerceiro.setVlrLitro(Util.deStringParaFloat(mEtVlr_litro.getText().toString()));
+            mEtVlr_litro.addTextChangedListener(this);
+        } else if(mEstaEmQtdeLitros) {
+            mEtQtde_litros.removeTextChangedListener(this);
+            mEtQtde_litros.setText(Util.floatDeStringParaStrin(s.toString()));
+            mEtQtde_litros.setSelection(mEtQtde_litros.length());
+            mCalculaTerceiro.setQtdeLitros(Util.deStringParaFloat(mEtQtde_litros.getText().toString()));
+            mEtQtde_litros.addTextChangedListener(this);
+        }
+
+
+        if (mCalculaTerceiro.getVlrTotal() != 0 && !mEstaEmVlrTotal) {
+            mEtVlr_total.setText(Util.deFloatParaString(mCalculaTerceiro.getVlrTotal()));
+            mEtVlr_total.setSelection(mEtVlr_total.length());
+        }
+
+        if (mCalculaTerceiro.getQtdeLitros() != 0  && !mEstaEmQtdeLitros) {
+            mEtQtde_litros.setText(Util.deFloatParaString(mCalculaTerceiro.getQtdeLitros()));
+            mEtQtde_litros.setSelection(mEtQtde_litros.length());
+        }
+
+        if (mCalculaTerceiro.getVlrLitro() != 0 && !mEstaEmVlrLitro) {
+            mEtVlr_litro.setText(Util.deFloatParaString(mCalculaTerceiro.getVlrLitro()));
+            mEtVlr_litro.setSelection(mEtVlr_litro.length());
+        }
+    }
 }
