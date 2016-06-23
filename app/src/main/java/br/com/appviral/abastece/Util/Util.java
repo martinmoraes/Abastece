@@ -1,9 +1,6 @@
 package br.com.appviral.abastece.Util;
 
-import android.util.Log;
-
 import java.text.NumberFormat;
-import java.text.ParseException;
 
 /**
  * Created by Martin on 09/06/2016.
@@ -28,12 +25,12 @@ public class Util {
         return deFloatParaString(num, 2);
     }
 
-    public static String floatDeStringParaStrin(String vlr, int casasDecimais) {
+    public static String floatDeStringParaString(String vlr, int casasDecimais) {
         return deFloatParaString(deStringParaFloat(vlr));
     }
 
-    public static String floatDeStringParaStrin(String vlr) {
-        return floatDeStringParaStrin(vlr, 2);
+    public static String floatDeStringParaString(String vlr) {
+        return floatDeStringParaString(vlr, 2);
     }
 
     public static float deStringParaFloat(String vlr) {

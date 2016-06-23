@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.text.NumberFormat;
 
 import br.com.appviral.abastece.Util.Util;
 
@@ -57,7 +54,7 @@ public class CalculoFlexActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
-                    String str = Util.floatDeStringParaStrin(etVlrAlcool.getText().toString(), 2);
+                    String str = Util.floatDeStringParaString(etVlrAlcool.getText().toString(), 2);
                     if (!str.equals("0,00")) //TODO deixar universal
                     etVlrAlcool.setText(str);
                     etVlrAlcool.setSelection(etVlrAlcool.length());
@@ -82,7 +79,7 @@ public class CalculoFlexActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
-                    String str = Util.floatDeStringParaStrin(etVlrGasolina.getText().toString(), 2);
+                    String str = Util.floatDeStringParaString(etVlrGasolina.getText().toString(), 2);
                     if (!str.equals("0,00")) //TODO deixar universal
                         etVlrGasolina.setText(str);
                     etVlrGasolina.setSelection(etVlrGasolina.length());

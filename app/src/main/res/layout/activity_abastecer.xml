@@ -32,7 +32,7 @@
         android:paddingLeft="@dimen/pading12"
         android:paddingRight="@dimen/pading12"
         android:paddingTop="@dimen/pading17"
-        app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout
@@ -98,17 +98,22 @@
                     android:text="Total"
                     android:textSize="@dimen/fonte"/>
 
-                <!--  <com.blackcat.currencyedittext.CurrencyEditText
-                      android:id="@+id/etVlr_total"
-                      android:layout_width="100dp"
-                      android:layout_height="wrap_content"
-                      android:paddingLeft="2dp"/>-->
                 <EditText
                     android:id="@+id/etVlr_total"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingLeft="2dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibValorTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:src="@android:drawable/stat_notify_sync"
+                    android:tint="?attr/colorAccent"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- Valor do Litro -->
@@ -138,6 +143,16 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingLeft="2dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibValorLitro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:src="@android:drawable/stat_notify_sync"
+                    android:tint="?attr/colorAccent"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- Quantidade de Litros -->
@@ -167,12 +182,22 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingLeft="2dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibQtdeLitro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:src="@android:drawable/stat_notify_sync"
+                    android:tint="?attr/colorAccent"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- Data -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -180,14 +205,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_table_edit_black_24dp"/>
+                    android:src="@mipmap/ic_table_edit_black_24dp"
+                    tools:ignore="contentDescription"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin16"
+                    android:layout_marginStart="@dimen/margin16"
                     android:layout_weight="1"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:text="Data"
                     android:textSize="@dimen/fonte"/>
 
@@ -199,6 +226,7 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:inputType="text"
                     android:onClick="pegaData"
                     android:textSize="@dimen/fonte"/>
             </LinearLayout>

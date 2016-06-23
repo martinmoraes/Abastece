@@ -1,11 +1,5 @@
 package br.com.appviral.abastece.Util;
 
-import android.content.Context;
-import android.util.Log;
-
-import java.io.Closeable;
-import java.lang.ref.ReferenceQueue;
-
 /**
  * Created by Martin on 10/06/2016.
  */
@@ -44,68 +38,85 @@ public class CalculaTerceiro {
     }
 
     public void calcula() {
-        //Calcula vlr_Total
-        if (mQtdeLitros > 0 && mVlrLitro > 0 && !mDigitadoVlrTotal) {
-            calculaVlrTotal();
-        }
+            //Calcula vlr_Total
+            if (!mDigitadoVlrTotal) {
+                calculaVlrTotal();
+            }
 
-        //Calcula vlr do litro
-        if (mQtdeLitros > 0 && mVlrTotal > 0 && !mDigitadoVlrLitro) {
-            calculaVlrLitro();
-        }
+            //Calcula vlr do litro
+            if (!mDigitadoVlrLitro) {
+                calculaVlrLitro();
+            }
 
-        //Calcula Qtde litros
-        if (mVlrTotal > 0 && mVlrLitro > 0 && !mDigitadoQtdeLitros) {
-           calculaQtdeLitros();
-        }
-
+            //Calcula Qtde litros
+            if (!mDigitadoQtdeLitros) {
+                calculaQtdeLitros();
+            }
     }
 
-    public float calculaVlrTotal(){
-        mVlrTotal = mQtdeLitros * mVlrLitro;
-        mCalculadoVlrTotal = true;
-        return  mVlrTotal;
+    public float calculaVlrTotal() {
+        if (mQtdeLitros > 0 && mVlrLitro > 0) {
+            mVlrTotal = mQtdeLitros * mVlrLitro;
+            mCalculadoVlrTotal = true;
+            return mVlrTotal;
+        }
+        return 0;
     }
 
-    public float calculaVlrLitro(){
-        mVlrLitro = mVlrTotal / mQtdeLitros;
-        mCalculadoVlrLitro = true;
-        return mVlrLitro;
+    public float calculaVlrLitro() {
+        if (mQtdeLitros > 0 && mVlrTotal > 0) {
+            mVlrLitro = mVlrTotal / mQtdeLitros;
+            mCalculadoVlrLitro = true;
+            return mVlrLitro;
+        }
+        return 0;
     }
 
-    public float calculaQtdeLitros(){
-        mQtdeLitros = mVlrTotal / mVlrLitro;
-        mCalculadoQtdeLitros = true;
-        return mQtdeLitros;
+    public float calculaQtdeLitros() {
+        if (mVlrTotal > 0 && mVlrLitro > 0) {
+            mQtdeLitros = mVlrTotal / mVlrLitro;
+            mCalculadoQtdeLitros = true;
+            return mQtdeLitros;
+        }
+        return 0;
     }
 
     public void setQtdeLitros(float mQtdeLitros) {
-        if (mCalculadoQtdeLitros) {
-            setCalculoPorEscolha();
-        } else if (mQtdeLitros > 0) {
-            this.mQtdeLitros = mQtdeLitros;
-            mDigitadoQtdeLitros = true;
-            calcula();
+        this.mQtdeLitros = mQtdeLitros;
+        if (!mCalculoPorEscolha) {
+            if (mCalculadoQtdeLitros) {
+                mCalculadoQtdeLitros = false;
+                setCalculoPorEscolha();
+            } else if (mQtdeLitros > 0) {
+                mDigitadoQtdeLitros = true;
+                calcula();
+            }
         }
     }
 
     public void setVlrLitro(float mVlrLitro) {
-        if (mCalculadoVlrLitro) {
-            setCalculoPorEscolha();
-        } else if (mVlrLitro > 0) {
-            this.mVlrLitro = mVlrLitro;
-            mDigitadoVlrLitro = true;
-            calcula();
+        this.mVlrLitro = mVlrLitro;
+        if (!mCalculoPorEscolha) {
+            if (mCalculadoVlrLitro) {
+                mCalculadoVlrLitro = false;
+                setCalculoPorEscolha();
+            } else if (mVlrLitro > 0) {
+                mDigitadoVlrLitro = true;
+                calcula();
+            }
         }
     }
 
     public void setVlrTotal(float mVlrTotal) {
-        if (mCalculadoVlrTotal) {
-            setCalculoPorEscolha();
-        } else if (mVlrTotal > 0) {
-            this.mVlrTotal = mVlrTotal;
-            mDigitadoVlrTotal = true;
-            calcula();
+        this.mVlrTotal = mVlrTotal;
+        if (!mCalculoPorEscolha) {
+            if (mCalculadoVlrTotal) {
+                mCalculadoVlrTotal = false;
+                setCalculoPorEscolha();
+            } else if (mVlrTotal > 0) {
+                mDigitadoVlrTotal = true;
+                calcula();
+            }
         }
     }
 
@@ -137,10 +148,17 @@ public class CalculaTerceiro {
         return mCalculoPorEscolha;
     }
 
+    public void setTiraDeCalculoPorEscolha() {
+        this.mCalculoPorEscolha = false;
+        mCalculadoVlrTotal = true;
+        mCalculadoVlrLitro = true;
+        mCalculadoQtdeLitros = true;
+    }
+
     private void setCalculoPorEscolha() {
-        if(!mCalculoPorEscolha) {
+        if (!mCalculoPorEscolha) {
             mCalculoPorEscolha = true;
-            mOnCalculoPorEscolhaListener.onCalculoPorEscolhaListener();
+            mOnCalculoPorEscolhaListener.onCalculoPorEscolhaListener(true);
         }
     }
 
@@ -150,7 +168,7 @@ public class CalculaTerceiro {
 
 
     public interface OnCalculoPorEscolhaListener {
-        void onCalculoPorEscolhaListener();
+        void onCalculoPorEscolhaListener(boolean ativado);
     }
 
 
