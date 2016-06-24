@@ -269,6 +269,8 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
         ImageButton ibVlrTotal = (ImageButton) findViewById(R.id.ibValorTotal);
         ImageButton ibVlrLitro = (ImageButton) findViewById(R.id.ibValorLitro);
         ImageButton ibQtdeLitro = (ImageButton) findViewById(R.id.ibQtdeLitro);
+        ImageButton ibCombustivel = (ImageButton) findViewById(R.id.ibCombustivel);
+        ImageButton ibData = (ImageButton) findViewById(R.id.ibData);
 
         if (ativado) {
             mEtVlr_total.removeTextChangedListener(this);
@@ -287,12 +289,19 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
             ibQtdeLitro.setOnClickListener(this);
             ibQtdeLitro.setVisibility(View.VISIBLE);
 
+            ibCombustivel.setVisibility(View.VISIBLE);
+            ibData.setVisibility(View.VISIBLE);
+
+
+
         } else {
             mSalvar = true;
             invalidateOptionsMenu();
             ibVlrLitro.setVisibility(View.GONE);
             ibVlrTotal.setVisibility(View.GONE);
             ibQtdeLitro.setVisibility(View.GONE);
+            ibCombustivel.setVisibility(View.GONE);
+            ibData.setVisibility(View.GONE);
             mCalculaTerceiro.setTiraDeCalculoPorEscolha();
         }
     }

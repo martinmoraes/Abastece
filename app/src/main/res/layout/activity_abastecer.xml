@@ -78,6 +78,17 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"/>
 
+                <ImageButton
+                    android:id="@+id/ibCombustivel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/white"
+                    android:contentDescription="@string/img_recalcular"
+                    android:src="@android:drawable/stat_notify_sync"
+                    android:tint="@android:color/white"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
             <!-- Valor total TODO icon ???-->
@@ -249,6 +260,17 @@
                     android:inputType="text"
                     android:onClick="pegaData"
                     android:textSize="@dimen/fonte"/>
+
+                <ImageButton
+                    android:id="@+id/ibData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/white"
+                    android:contentDescription="@string/img_recalcular"
+                    android:src="@android:drawable/stat_notify_sync"
+                    android:tint="@android:color/white"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
 
