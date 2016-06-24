@@ -1,4 +1,4 @@
-//TODO Calcula o terceiro só quando o terceiro é vazio, do contrário aparece botões para recalcular
+
 //TODO Colocar todas Activity em Fragments para a gaveta abrir sempre.
 //TODO Tatar acesso a dados direto na DAO e tirar a collection
 
@@ -35,7 +35,7 @@
 // todas activity utilizando toobar com appbar
 // FAB sumir junto como ToolBar
 // Tira os totalizadores
-
+// Calcula o terceiro só quando o terceiro é vazio, do contrário aparece botões para recalcular
 
 
 

@@ -73,6 +73,7 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpCombustivel.setAdapter(adapter);
 
+
         if (savedInstanceState != null) {
             mOperacao = savedInstanceState.getString("OPERACAO");
             mPosicao = savedInstanceState.getInt("POSICAO", 0);

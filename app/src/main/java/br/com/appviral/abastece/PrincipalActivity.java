@@ -103,9 +103,6 @@ public class PrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.abastercer:
-                abreRegistraAbastecimento(null);
-                return true;
             case R.id.action_sobre:
                 startActivity(new Intent(getApplicationContext(), SobreActivity.class));
                 return true;
@@ -120,9 +117,6 @@ public class PrincipalActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_abastecimentos:
                 //criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
-                break;
-            case R.id.nav_abastecer:
-                abreRegistraAbastecimento(null);
                 break;
             case R.id.nav_calculo_flex:
                 startActivity(new Intent(getApplicationContext(), CalculoFlexActivity.class));
