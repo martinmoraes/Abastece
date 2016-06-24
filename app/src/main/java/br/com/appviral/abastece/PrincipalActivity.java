@@ -43,6 +43,7 @@ public class PrincipalActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
 
+    private Fragment fragmentAtivo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,25 +65,46 @@ public class PrincipalActivity extends AppCompatActivity
         navigationView.getMenu().findItem(R.id.nav_abastecimentos).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
 
+        abreFragments("AbastecimentosFragment");
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void abreFragments(String tag) {
-        Log.d("MEUAPP", "Está em abreFragments(): " + tag);
-
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
+
         switch (tag){
+            case "AbastecimentosFragment":
+                AbastecimentosFragment abastecimentosFragment = AbastecimentosFragment.newInstance();
+                ft.replace(R.id.rl_fragment_container, abastecimentosFragment, tag);
+                /*AbastecimentosFragment abastecimentosFragment = (AbastecimentosFragment) fragmentManager.findFragmentByTag(tag);
+                if(abastecimentosFragment == null) {
+                    Log.d("MEUAPP", "Criando AbastecimentosFragment");
+                    abastecimentosFragment = AbastecimentosFragment.newInstance();
+                    ft.add(R.id.rl_fragment_container, abastecimentosFragment, tag);
+                } else {
+                    Log.d("MEUAPP", "Reabrindo AbastecimentosFragment");
+                    ft.remove(fragmentAtivo);
+                    ft.show(abastecimentosFragment);
+                }*/
+                break;
             case "SobreFragment":
                 SobreFragment sobreFragment = SobreFragment.newInstance();
                 ft.replace(R.id.rl_fragment_container, sobreFragment, tag);
+                fragmentAtivo = sobreFragment;
+                break;
+            case "CalculaFlexFragment":
+                CalculaFlexFragment calculaFlexFragment = CalculaFlexFragment.newInstance();
+                ft.replace(R.id.rl_fragment_container, calculaFlexFragment, tag);
+                fragmentAtivo = calculaFlexFragment;
                 break;
         }
 
-        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.addToBackStack(tag);
         ft.commit();
     }
@@ -127,10 +149,10 @@ public class PrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_abastecimentos:
-                //criaAbreFragmento("nav_abastecimentos", AdaptadorAbastecimento.COM_CLICK);
+                abreFragments("AbastecimentosFragment");
                 break;
             case R.id.nav_calculo_flex:
-                startActivity(new Intent(getApplicationContext(), CalculoFlexActivity.class));
+                abreFragments("CalculaFlexFragment");
                 break;
             case R.id.nav_sobre:
                 abreFragments("SobreFragment");

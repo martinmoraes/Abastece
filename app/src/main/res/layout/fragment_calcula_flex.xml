@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/margin12"
+              android:layout_marginEnd="@dimen/margin12"
+              android:layout_marginLeft="@dimen/margin12"
+              android:layout_marginRight="@dimen/margin12"
+              android:layout_marginStart="@dimen/margin12"
+              android:layout_marginTop="@dimen/margin16"
+              android:background="@android:color/white"
+              android:elevation="2dp"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/pading16"
+              android:paddingLeft="@dimen/pading14"
+              android:paddingRight="@dimen/pading4"
+              android:paddingStart="@dimen/pading14"
+              android:paddingEnd="@dimen/pading4"
+              android:paddingTop="@dimen/pading16"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              tools:context="br.com.appviral.abastece.CalculaFlexFragment">
+
+
+    <!-- Valor Alcool -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_currency_usd_black_24dp"
+            android:contentDescription="@string/img_currency"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etVlr_Alcool"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/vlr_alcool"
+                android:inputType="numberDecimal"
+                android:paddingLeft="2dp"
+                android:paddingRight="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="0dp"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <!-- Valor Gasolina -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_currency_usd_black_24dp"
+            android:contentDescription="@string/img_currency"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etVlr_Gasolina"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/vlr_gasolina"
+                android:inputType="numberDecimal"
+                android:paddingLeft="2dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="2dp"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <!-- Reposta -->
+    <TextView
+        android:id="@+id/tvResposta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/preco"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/fonte20"
+        android:textStyle="bold"/>
+
+
+</LinearLayout>

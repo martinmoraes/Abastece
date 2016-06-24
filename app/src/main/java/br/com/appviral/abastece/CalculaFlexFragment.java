@@ -1,62 +1,66 @@
 package br.com.appviral.abastece;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import br.com.appviral.abastece.Util.Util;
 
-public class CalculoFlexActivity extends AppCompatActivity {
+
+public class CalculaFlexFragment extends Fragment {
     EditText etVlrGasolina, etVlrAlcool;
     TextView tvResposta;
     boolean emOperacao = false;
 
+
+    public CalculaFlexFragment() {
+    }
+
+
+    public static CalculaFlexFragment newInstance() {
+        CalculaFlexFragment fragment = new CalculaFlexFragment();
+
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculoflex);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    }
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Calcula Flex");
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_calcula_flex, container, false);
 
-        etVlrGasolina = (EditText) findViewById(R.id.etVlr_Gasolina);
-        etVlrAlcool = (EditText) findViewById(R.id.etVlr_Alcool);
-        tvResposta = (TextView) findViewById(R.id.tvResposta);
-
-//        String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-//        etVlrGasolina.setHint(simbolo);
-//        etVlrAlcool.setHint(simbolo);
-
+        etVlrGasolina = (EditText) view.findViewById(R.id.etVlr_Gasolina);
+        etVlrAlcool = (EditText) view.findViewById(R.id.etVlr_Alcool);
+        tvResposta = (TextView) view.findViewById(R.id.tvResposta);
 
         etVlrAlcool.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
                     String str = Util.floatDeStringParaString(etVlrAlcool.getText().toString(), 2);
-                    if (!str.equals("0,00")) //TODO deixar universal
-                    etVlrAlcool.setText(str);
+                    if (!str.equals(Util.deFloatParaString(0f)))
+                        etVlrAlcool.setText(str);
                     etVlrAlcool.setSelection(etVlrAlcool.length());
                     calculaFlex();
                     emOperacao = false;
@@ -69,18 +73,16 @@ public class CalculoFlexActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
                     String str = Util.floatDeStringParaString(etVlrGasolina.getText().toString(), 2);
-                    if (!str.equals("0,00")) //TODO deixar universal
+                    if (!str.equals(Util.deFloatParaString(0f)))
                         etVlrGasolina.setText(str);
                     etVlrGasolina.setSelection(etVlrGasolina.length());
                     calculaFlex();
@@ -89,8 +91,8 @@ public class CalculoFlexActivity extends AppCompatActivity {
             }
         });
 
+        return view;
     }
-
 
     private void calculaFlex() {
         float vlrAlcool = Util.deStringParaFloat(etVlrAlcool.getText().toString());

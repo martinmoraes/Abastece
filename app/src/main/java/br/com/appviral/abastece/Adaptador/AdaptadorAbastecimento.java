@@ -98,7 +98,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                             if (umAbastecimento != null) {
                                 if (abastecimentoDAO.excluir(umAbastecimento)) {
                                     mListaMostrar.remove(umAbastecimento);
-                                    notifyItemRemoved(getAdapterPosition());//TODO ver se faz falta desta lista
+                                    notifyItemRemoved(getAdapterPosition());
                                     Toast.makeText(mContext, "Excluído!!!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();

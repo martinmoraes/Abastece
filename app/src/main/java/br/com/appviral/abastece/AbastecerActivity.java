@@ -168,6 +168,7 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
                 if (id > 0) {
                     abastecimento.setId(id);
                     Toast.makeText(this, "Salvo!!!", Toast.LENGTH_SHORT).show();
+                    //TODO Como eleimitar este atalho
                     AdaptadorAbastecimento.adicionaAbastecimento(abastecimento);
                 } else {
                     Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
@@ -176,6 +177,7 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
             case Abastecimento.ALTERAR:
                 if (abastecimentoDAO.alterar(abastecimento)) {
                     Toast.makeText(this, "Salvo!!!", Toast.LENGTH_SHORT).show();
+                    //TODO Como eleimitar este atalho
                     AdaptadorAbastecimento.alteraAbastecimento(mPosicao, abastecimento);
                 } else {
                     Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();

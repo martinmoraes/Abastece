@@ -29,6 +29,7 @@ public class AbastecimentoDAO {
 
     public AbastecimentoDAO(Context context) {
         mDBSqLite = new DBSQLite(context);
+        Log.d("MEUAPP", "AbastecimentoDAO - context: "+ context.toString());
     }
 
 
