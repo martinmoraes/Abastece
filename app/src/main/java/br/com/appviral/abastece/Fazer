@@ -2,6 +2,7 @@
 //TODO Colocar todas Activity em Fragments para a gaveta abrir sempre.
 //TODO Tatar acesso a dados direto na DAO e tirar a collection
 
+//TODO Como fazer para não ficar só em um campo quando em landscap
 
 //TODO Calculo do combustível mais barato - rever a fórmula.
 //TODO alterar layout dos itens
