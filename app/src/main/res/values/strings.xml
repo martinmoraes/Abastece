@@ -6,6 +6,27 @@
 
     <string name="action_settings">Settings</string>
 
+
+
+    <string name="img_recalcular">Imagem recalcular</string>
+    <string name="img_currency">Imagem currency</string>
+    <string name="img_quantidade">Imagem quantidade</string>
+    <string name="img_estacao_abastecimento">Imagem Estação de Abastecimento</string>
+    <string name="img_calendario">Imagem Calendário</string>
+
+
+
+    <string name="combustivel">Combustível</string>
+    <string name="litros">Litros</string>
+    <string name="quantidade">quantidade</string>
+    <string name="preco">Preço</string>
+    <string name="total">Total</string>
+    <string name="data">Data</string>
+
+
+
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="combustivel">
         <item>Gasolina</item>
