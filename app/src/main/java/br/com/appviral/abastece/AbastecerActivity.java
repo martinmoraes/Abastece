@@ -348,6 +348,7 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
         outState.putInt("POSICAO", mPosicao);
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

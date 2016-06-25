@@ -121,6 +121,9 @@ public class PrincipalActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if(getFragmentManager().getBackStackEntryCount() == 1){
+                finish();
+            }
             super.onBackPressed();
         }
     }
