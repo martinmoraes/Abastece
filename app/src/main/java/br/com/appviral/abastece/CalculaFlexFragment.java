@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import br.com.appviral.abastece.Util.Util;
+import br.com.appviral.abastece.Util.Dinheiro;
 
 
 public class CalculaFlexFragment extends Fragment {
@@ -58,8 +58,8 @@ public class CalculaFlexFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
-                    String str = Util.floatDeStringParaString(etVlrAlcool.getText().toString(), 2);
-                    if (!str.equals(Util.deFloatParaString(0f)))
+                    String str = Dinheiro.deDinheiroParaDinheiro(etVlrAlcool.getText().toString(), 2);
+                    if (!str.equals(Dinheiro.deDinheiroParaString(0f)))
                         etVlrAlcool.setText(str);
                     etVlrAlcool.setSelection(etVlrAlcool.length());
                     calculaFlex();
@@ -81,8 +81,8 @@ public class CalculaFlexFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!emOperacao) {
                     emOperacao = true;
-                    String str = Util.floatDeStringParaString(etVlrGasolina.getText().toString(), 2);
-                    if (!str.equals(Util.deFloatParaString(0f)))
+                    String str = Dinheiro.deDinheiroParaDinheiro(etVlrGasolina.getText().toString(), 2);
+                    if (!str.equals(Dinheiro.deDinheiroParaString(0f)))
                         etVlrGasolina.setText(str);
                     etVlrGasolina.setSelection(etVlrGasolina.length());
                     calculaFlex();
@@ -95,8 +95,8 @@ public class CalculaFlexFragment extends Fragment {
     }
 
     private void calculaFlex() {
-        float vlrAlcool = Util.deStringParaFloat(etVlrAlcool.getText().toString());
-        float vlrGasolina = Util.deStringParaFloat(etVlrGasolina.getText().toString());
+        float vlrAlcool = Dinheiro.deDinheiroParaFloat(etVlrAlcool.getText().toString());
+        float vlrGasolina = Dinheiro.deDinheiroParaFloat(etVlrGasolina.getText().toString());
 
         if (vlrAlcool > 0 & vlrGasolina > 0) {
             float resultado = vlrAlcool / vlrGasolina;

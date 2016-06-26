@@ -115,17 +115,18 @@
                     android:textSize="@dimen/fonte"/>
 
                 <EditText
-                    android:id="@+id/etVlr_total"
+                    android:id="@+id/valorTotalEditTextId"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingEnd="0dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="0dp"
-                    android:paddingStart="2dp"/>
+                    android:paddingStart="2dp"
+                    android:tag="TOTAL"/>
 
                 <ImageButton
-                    android:id="@+id/ibValorTotal"
+                    android:id="@+id/valorTatalImageButtoId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -160,17 +161,18 @@
                     android:textSize="@dimen/fonte"/>
 
                 <EditText
-                    android:id="@+id/etVlr_litro"
+                    android:id="@+id/valorLitroEditTextId"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingEnd="0dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="0dp"
-                    android:paddingStart="2dp"/>
+                    android:paddingStart="2dp"
+                    android:tag="LITRO"/>
 
                 <ImageButton
-                    android:id="@+id/ibValorLitro"
+                    android:id="@+id/valorLitroImageButtoId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -205,17 +207,18 @@
                     android:textSize="@dimen/fonte"/>
 
                 <EditText
-                    android:id="@+id/etQtde_litros"
+                    android:id="@+id/quantidadeLitroEditTextId"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:paddingEnd="0dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="0dp"
-                    android:paddingStart="2dp"/>
+                    android:paddingStart="2dp"
+                    android:tag="QUANTIDADE"/>
 
                 <ImageButton
-                    android:id="@+id/ibQtdeLitro"
+                    android:id="@+id/quantidadeLitroImageButtonId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

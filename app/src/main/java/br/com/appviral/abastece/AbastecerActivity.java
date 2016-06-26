@@ -5,16 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,20 +21,17 @@ import java.util.Calendar;
 import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
-import br.com.appviral.abastece.Util.CalculaTerceiro;
-import br.com.appviral.abastece.Util.Util;
+import br.com.appviral.abastece.Servico.CalculaTerceiro;
+import br.com.appviral.abastece.Util.Dinheiro;
 
-public class AbastecerActivity extends AppCompatActivity implements View.OnFocusChangeListener,
-        TextWatcher, CalculaTerceiro.OnCalculoPorEscolhaListener, View.OnClickListener {
+public class AbastecerActivity extends AppCompatActivity implements CalculaTerceiro.OnMudaEstadoSalvarListner {
 
     private String mOperacao;
     private int mPosicao;
-    private EditText mEtQtde_litros, mEtVlr_litro, mEtVlr_total, mEtData;
+    private EditText mValorTotalEditText, mValorLitroEditText, mQuantidadeLitroEditText, mEtData;
     private Spinner mSpCombustivel;
     private DateFormat mDf;
 
-    private CalculaTerceiro mCalculaTerceiro;
-    private int mEstaNoEditText;
     private boolean mSalvar = true;
 
 
@@ -56,23 +49,18 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
             actionBar.setTitle("Abastecer");
         }
 
+        mValorTotalEditText = (EditText) findViewById(R.id.valorTotalEditTextId);
+        mValorLitroEditText = (EditText) findViewById(R.id.valorLitroEditTextId);
+        mQuantidadeLitroEditText = (EditText) findViewById(R.id.quantidadeLitroEditTextId);
 
+        
         mDf = DateFormat.getDateInstance();
-
-        mEtQtde_litros = (EditText) findViewById(R.id.etQtde_litros);
-        mEtVlr_litro = (EditText) findViewById(R.id.etVlr_litro);
-        mEtVlr_total = (EditText) findViewById(R.id.etVlr_total);
         mEtData = (EditText) findViewById(R.id.etData);
         mSpCombustivel = (Spinner) findViewById(R.id.spCombustivel);
-
-        mEtQtde_litros.setOnFocusChangeListener(this);
-        mEtVlr_litro.setOnFocusChangeListener(this);
-        mEtVlr_total.setOnFocusChangeListener(this);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combustivel, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpCombustivel.setAdapter(adapter);
-
 
         if (savedInstanceState != null) {
             mOperacao = savedInstanceState.getString("OPERACAO");
@@ -84,9 +72,9 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
 
         if (mOperacao.equals(Abastecimento.ALTERAR)) {
             Abastecimento abastecimento = AdaptadorAbastecimento.getAbastecimento(mPosicao);
-            mEtQtde_litros.setText(Util.deFloatParaString(abastecimento.getQtdelitros()));
-            mEtVlr_litro.setText(Util.deFloatParaString(abastecimento.getVlrLitro()));
-            mEtVlr_total.setText(Util.deFloatParaString(abastecimento.getVlrTotal()));
+            mQuantidadeLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getQtdelitros()));
+            mValorLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getVlrLitro()));
+            mValorTotalEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getVlrTotal()));
             mEtData.setText(abastecimento.getData());
             switch (abastecimento.getCombustiviel()) {
                 case "Gasolina":
@@ -99,19 +87,23 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
                     mSpCombustivel.setSelection(2);
                     break;
             }
-            mEtQtde_litros.requestFocus();
+            mQuantidadeLitroEditText.requestFocus();
 
-            mCalculaTerceiro = new CalculaTerceiro(this, abastecimento.getQtdelitros(), abastecimento.getVlrLitro(), abastecimento.getVlrTotal());
         } else {//Prepara para um novo abastecimento
             String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-            mEtQtde_litros.setHint(simbolo);
-            mEtVlr_litro.setHint(simbolo);
-            mEtVlr_total.setHint(simbolo);
+            mQuantidadeLitroEditText.setHint(simbolo);
+            mValorLitroEditText.setHint(simbolo);
+            mValorTotalEditText.setHint(simbolo);
 
-            mEtVlr_total.requestFocus();
+            mValorTotalEditText.requestFocus();
             mEtData.setText(mDf.format(Calendar.getInstance().getTime()));
-            mCalculaTerceiro = new CalculaTerceiro(this);
         }
+
+        CalculaTerceiro calculaTerceiro = new CalculaTerceiro(this);
+        calculaTerceiro.setValorTotal(mValorTotalEditText, R.id.valorTatalImageButtoId);
+        calculaTerceiro.setValorLitro(mValorLitroEditText, R.id.valorLitroImageButtoId);
+        calculaTerceiro.setQuantidadeLitro(mQuantidadeLitroEditText, R.id.quantidadeLitroImageButtonId);
+
     }
 
     @Override
@@ -154,9 +146,9 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
 
     public void salva() {
         Abastecimento abastecimento = AdaptadorAbastecimento.getAbastecimento(mPosicao);
-        abastecimento.setQtdelitros(Util.deStringParaFloat(mEtQtde_litros.getText().toString()));
-        abastecimento.setVlrLitro(Util.deStringParaFloat(mEtVlr_litro.getText().toString()));
-        abastecimento.setVlrTotal(Util.deStringParaFloat(mEtVlr_total.getText().toString()));
+        abastecimento.setQtdelitros(Dinheiro.deDinheiroParaFloat(mQuantidadeLitroEditText.getText().toString()));
+        abastecimento.setVlrLitro(Dinheiro.deDinheiroParaFloat(mValorLitroEditText.getText().toString()));
+        abastecimento.setVlrTotal(Dinheiro.deDinheiroParaFloat(mValorTotalEditText.getText().toString()));
         abastecimento.setCombustivel(mSpCombustivel.getSelectedItem().toString());
         abastecimento.setData(mEtData.getText().toString());
 
@@ -188,160 +180,6 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        mEstaNoEditText = v.getId();
-        if (hasFocus) {
-            switch (mEstaNoEditText) {
-                case R.id.etVlr_total:
-                    mEtVlr_total.addTextChangedListener(this);
-                    break;
-                case R.id.etVlr_litro:
-                    mEtVlr_litro.addTextChangedListener(this);
-                    break;
-                case R.id.etQtde_litros:
-                    mEtQtde_litros.addTextChangedListener(this);
-                    break;
-            }
-        } else {
-            switch (mEstaNoEditText) {
-                case R.id.etVlr_total:
-                    mEtVlr_total.removeTextChangedListener(this);
-                    break;
-                case R.id.etVlr_litro:
-                    mEtVlr_litro.removeTextChangedListener(this);
-                    break;
-                case R.id.etQtde_litros:
-                    mEtQtde_litros.removeTextChangedListener(this);
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
-
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        EditText editText = null;
-
-        switch (mEstaNoEditText) {
-            case R.id.etVlr_total:
-                editText = mEtVlr_total;
-                mCalculaTerceiro.setVlrTotal(Util.deStringParaFloat(s.toString()));
-                break;
-            case R.id.etVlr_litro:
-                editText = mEtVlr_litro;
-                mCalculaTerceiro.setVlrLitro(Util.deStringParaFloat(s.toString()));
-                break;
-            case R.id.etQtde_litros:
-                editText = mEtQtde_litros;
-                mCalculaTerceiro.setQtdeLitros(Util.deStringParaFloat(s.toString()));
-        }
-
-        editText.removeTextChangedListener(this);
-        editText.setText(Util.floatDeStringParaString(s.toString()));
-        editText.setSelection(editText.length());
-
-        if (mCalculaTerceiro.isCalculadoVlrTotal()) {
-            mEtVlr_total.setText(Util.deFloatParaString(mCalculaTerceiro.getVlrTotal()));
-            mEtVlr_total.setSelection(mEtVlr_total.length());
-        }
-
-        if (mCalculaTerceiro.isCalculadoQtdeLitros()) {
-            mEtQtde_litros.setText(Util.deFloatParaString(mCalculaTerceiro.getQtdeLitros()));
-            mEtQtde_litros.setSelection(mEtQtde_litros.length());
-        }
-
-        if (mCalculaTerceiro.isCalculadoVlrLitro()) {
-            mEtVlr_litro.setText(Util.deFloatParaString(mCalculaTerceiro.getVlrLitro()));
-            mEtVlr_litro.setSelection(mEtVlr_litro.length());
-        }
-
-        editText.addTextChangedListener(this);
-    }
-
-    @Override
-    public void onCalculoPorEscolhaListener(boolean ativado) {
-        Log.d("MEUAPP", "onCalculoPorEscolhaListener");
-        ImageButton ibVlrTotal = (ImageButton) findViewById(R.id.ibValorTotal);
-        ImageButton ibVlrLitro = (ImageButton) findViewById(R.id.ibValorLitro);
-        ImageButton ibQtdeLitro = (ImageButton) findViewById(R.id.ibQtdeLitro);
-        ImageButton ibCombustivel = (ImageButton) findViewById(R.id.ibCombustivel);
-        ImageButton ibData = (ImageButton) findViewById(R.id.ibData);
-
-        if (ativado) {
-            mEtVlr_total.removeTextChangedListener(this);
-            mEtQtde_litros.removeTextChangedListener(this);
-            mEtVlr_litro.removeTextChangedListener(this);
-
-            mSalvar = false;
-            invalidateOptionsMenu();
-
-            ibVlrLitro.setOnClickListener(this);
-            ibVlrLitro.setVisibility(View.VISIBLE);
-
-            ibVlrTotal.setOnClickListener(this);
-            ibVlrTotal.setVisibility(View.VISIBLE);
-
-            ibQtdeLitro.setOnClickListener(this);
-            ibQtdeLitro.setVisibility(View.VISIBLE);
-
-            ibCombustivel.setVisibility(View.VISIBLE);
-            ibData.setVisibility(View.VISIBLE);
-
-
-
-        } else {
-            mSalvar = true;
-            invalidateOptionsMenu();
-            ibVlrLitro.setVisibility(View.GONE);
-            ibVlrTotal.setVisibility(View.GONE);
-            ibQtdeLitro.setVisibility(View.GONE);
-            ibCombustivel.setVisibility(View.GONE);
-            ibData.setVisibility(View.GONE);
-            mCalculaTerceiro.setTiraDeCalculoPorEscolha();
-        }
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        EditText editText = (EditText) findViewById(mEstaNoEditText);
-        editText.removeTextChangedListener(this);
-        int id = v.getId();
-        switch (id) {
-            case R.id.ibValorTotal:
-                mEtVlr_total.setText(Util.deFloatParaString(mCalculaTerceiro.calculaVlrTotal()));
-                mEtVlr_total.setSelection(mEtVlr_total.length());
-                mEtVlr_total.requestFocus();
-                mEtVlr_total.addTextChangedListener(this);
-                mEstaNoEditText = mEtVlr_total.getId();
-                break;
-            case R.id.ibValorLitro:
-                mEtVlr_litro.setText(Util.deFloatParaString(mCalculaTerceiro.calculaVlrLitro()));
-                mEtVlr_litro.setSelection(mEtVlr_litro.length());
-                mEtVlr_litro.requestFocus();
-                mEtVlr_litro.addTextChangedListener(this);
-                mEstaNoEditText = mEtVlr_litro.getId();
-                break;
-            case R.id.ibQtdeLitro:
-                mEtQtde_litros.setText(Util.deFloatParaString(mCalculaTerceiro.calculaQtdeLitros()));
-                mEtQtde_litros.setSelection(mEtQtde_litros.length());
-                mEtQtde_litros.requestFocus();
-                mEtQtde_litros.addTextChangedListener(this);
-                mEstaNoEditText = mEtQtde_litros.getId();
-                break;
-        }
-        onCalculoPorEscolhaListener(false);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("OPERACAO", mOperacao);
@@ -350,12 +188,8 @@ public class AbastecerActivity extends AppCompatActivity implements View.OnFocus
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mCalculaTerceiro != null) {
-            mCalculaTerceiro.onDetach();
-        }
+    public void onMudaEstadoSalvar(boolean salvar) {
+        mSalvar = salvar;
+        invalidateOptionsMenu();
     }
-
-
 }
