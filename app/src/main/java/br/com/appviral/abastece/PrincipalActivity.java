@@ -76,7 +76,6 @@ public class PrincipalActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-
         switch (tag){
             case "AbastecimentosFragment":
                 AbastecimentosFragment abastecimentosFragment = AbastecimentosFragment.newInstance();
@@ -111,9 +110,10 @@ public class PrincipalActivity extends AppCompatActivity
 
     public void abreRegistraAbastecimento(View view) {
         Intent intent = new Intent(this, AbastecerActivity.class);
-        intent.putExtra("OPERACAO", Abastecimento.INSERIR);
+        intent.putExtra("ID", 0);
         startActivity(intent);
     }
+
 
     @Override
     public void onBackPressed() {

@@ -3,6 +3,7 @@ package br.com.appviral.abastece.Adaptador;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
-import java.util.List;
 
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
@@ -24,18 +24,19 @@ import br.com.appviral.abastece.AbastecerActivity;
  */
 public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbastecimento.OViewHolder> {
 
-    private static List<Abastecimento> mListaMostrar;
     private LayoutInflater mLayoutInflater;
     private final Context mContext;
-    private NumberFormat mNF;
+    private NumberFormat mNumberFormat;
+    private AbastecimentoDAO mAbastecimentoDAO;
 
 
-    public AdaptadorAbastecimento(Context context, List<Abastecimento> lista) {
-        this.mListaMostrar = lista;
+    public AdaptadorAbastecimento(Context context) {
         this.mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mNF = NumberFormat.getInstance();
-        mNF.setMinimumFractionDigits(2);
+        mNumberFormat = NumberFormat.getInstance();
+        mNumberFormat.setMinimumFractionDigits(2);
+
+        mAbastecimentoDAO = new AbastecimentoDAO(context);
     }
 
     @Override
@@ -47,39 +48,40 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
 
     @Override
     public void onBindViewHolder(OViewHolder holder, int position) {
-        Abastecimento abastecimento = mListaMostrar.get(position);
+        Abastecimento abastecimento = mAbastecimentoDAO.getRegistroPosicao(position);
 
-        holder.tvData.setText(abastecimento.getData());
-        holder.tvQtdeLitros.setText(mNF.format(abastecimento.getQtdelitros()) + " litros");
-        holder.tvVlrLitro.setText(mNF.format(abastecimento.getVlrLitro()) + " /litro");
-        holder.tvVlrTotal.setText(mNF.format(abastecimento.getVlrTotal()));
+        holder.id = abastecimento.getId();
+        holder.mDataTextView.setText(abastecimento.getData());
+        holder.mQuatidadeLitrosTextView.setText(mNumberFormat.format(abastecimento.getQuatidadelitros()) + " litros");
+        holder.mValorLitroTextView.setText(mNumberFormat.format(abastecimento.getValorLitro()) + " /litro");
+        holder.mValorTotalTextView.setText(mNumberFormat.format(abastecimento.getValorTotal()));
 
     }
 
     @Override
     public int getItemCount() {
-        return mListaMostrar.size();
+        return mAbastecimentoDAO.getQuantidadeRegistros();
     }
 
 
     public class OViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvData, tvQtdeLitros, tvVlrTotal, tvVlrLitro;
+        private TextView mDataTextView, mQuatidadeLitrosTextView, mValorTotalTextView, mValorLitroTextView;
+        private long id;
 
         public OViewHolder(View itemView) {
             super(itemView);
 
-            tvData = (TextView) itemView.findViewById(R.id.tv_data_abastecimento);
-            tvQtdeLitros = (TextView) itemView.findViewById(R.id.tv_qtde_litros);
-            tvVlrTotal = (TextView) itemView.findViewById(R.id.tv_vlt_total);
-            tvVlrLitro = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
+            mDataTextView = (TextView) itemView.findViewById(R.id.tv_data_abastecimento);
+            mQuatidadeLitrosTextView = (TextView) itemView.findViewById(R.id.tv_qtde_litros);
+            mValorTotalTextView = (TextView) itemView.findViewById(R.id.tv_vlt_total);
+            mValorLitroTextView = (TextView) itemView.findViewById(R.id.tv_vlt_litro);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, AbastecerActivity.class);
-                    intent.putExtra("OPERACAO", Abastecimento.ALTERAR);
-                    intent.putExtra("POSICAO", getAdapterPosition());
+                    intent.putExtra("ID", id);
                     mContext.startActivity(intent);
                 }
             });
@@ -93,16 +95,10 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                     menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(mContext);
-                            Abastecimento umAbastecimento = mListaMostrar.get(getAdapterPosition());
-                            if (umAbastecimento != null) {
-                                if (abastecimentoDAO.excluir(umAbastecimento)) {
-                                    mListaMostrar.remove(umAbastecimento);
-                                    notifyItemRemoved(getAdapterPosition());
-                                    Toast.makeText(mContext, "Excluído!!!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                                }
+                            if (mAbastecimentoDAO.excluir(getAdapterPosition())) {
+                                notifyItemRemoved(getAdapterPosition());
+                            } else {
+                                Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
                             }
                             return true;
                         }
@@ -111,21 +107,4 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
             });
         }
     }
-
-
-    // TODO Faz chamadas direto ao Banco. Não faz estes métodos.
-    public static void adicionaAbastecimento(Abastecimento abastecimento) {
-        mListaMostrar.add(0, abastecimento);
-    }
-
-    public static void alteraAbastecimento(int posicao, Abastecimento umAbastecimento) {
-        mListaMostrar.remove(posicao);
-        mListaMostrar.add(posicao, umAbastecimento);
-    }
-
-    public static Abastecimento getAbastecimento(int posicao) {
-        return mListaMostrar.get(posicao);
-    }
-
-
 }

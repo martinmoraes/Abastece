@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +28,11 @@ import br.com.appviral.abastece.Util.Dinheiro;
 public class AbastecerActivity extends AppCompatActivity implements CalculaTerceiro.OnMudaEstadoSalvarListner {
 
     private String mOperacao;
-    private int mPosicao;
+    private long mId;
     private EditText mValorTotalEditText, mValorLitroEditText, mQuantidadeLitroEditText, mEtData;
-    private Spinner mSpCombustivel;
-    private DateFormat mDf;
+    private Spinner mCombustivelSpinner;
+    private DateFormat mDateFormat;
+    private AbastecimentoDAO mAbastecimentoDAO;
 
     private boolean mSalvar = true;
 
@@ -40,8 +42,11 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abastecer);
 
+        Log.d("MEUAPP", "onCreate");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mAbastecimentoDAO = new AbastecimentoDAO(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -53,57 +58,52 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
         mValorLitroEditText = (EditText) findViewById(R.id.valorLitroEditTextId);
         mQuantidadeLitroEditText = (EditText) findViewById(R.id.quantidadeLitroEditTextId);
 
-        
-        mDf = DateFormat.getDateInstance();
+
+        mDateFormat = DateFormat.getDateInstance();
         mEtData = (EditText) findViewById(R.id.etData);
-        mSpCombustivel = (Spinner) findViewById(R.id.spCombustivel);
+        mCombustivelSpinner = (Spinner) findViewById(R.id.spCombustivel);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combustivel, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpCombustivel.setAdapter(adapter);
+        mCombustivelSpinner.setAdapter(adapter);
 
-        if (savedInstanceState != null) {
-            mOperacao = savedInstanceState.getString("OPERACAO");
-            mPosicao = savedInstanceState.getInt("POSICAO", 0);
-        } else {
-            mOperacao = getIntent().getStringExtra("OPERACAO");
-            mPosicao = getIntent().getIntExtra("POSICAO", 0);
-        }
+        if (savedInstanceState == null) {
+            mId = getIntent().getLongExtra("ID", 0);
+            if (mId > 0) { //ALTERAÇÃO
+                Abastecimento abastecimento = mAbastecimentoDAO.getRegistroId(mId);
+                mQuantidadeLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getQuatidadelitros()));
+                mValorLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getValorLitro()));
+                mValorTotalEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getValorTotal()));
+                mEtData.setText(abastecimento.getData());
+                switch (abastecimento.getCombustiviel()) {
+                    case "Gasolina":
+                        mCombustivelSpinner.setSelection(0);
+                        break;
+                    case "Alcool":
+                        mCombustivelSpinner.setSelection(1);
+                        break;
+                    case "Diesel":
+                        mCombustivelSpinner.setSelection(2);
+                        break;
+                }
+                mQuantidadeLitroEditText.requestFocus();
 
-        if (mOperacao.equals(Abastecimento.ALTERAR)) {
-            Abastecimento abastecimento = AdaptadorAbastecimento.getAbastecimento(mPosicao);
-            mQuantidadeLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getQtdelitros()));
-            mValorLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getVlrLitro()));
-            mValorTotalEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getVlrTotal()));
-            mEtData.setText(abastecimento.getData());
-            switch (abastecimento.getCombustiviel()) {
-                case "Gasolina":
-                    mSpCombustivel.setSelection(0);
-                    break;
-                case "Alcool":
-                    mSpCombustivel.setSelection(1);
-                    break;
-                case "Diesel":
-                    mSpCombustivel.setSelection(2);
-                    break;
+            } else {//INSERÇÃO - Prepara para um novo abastecimento
+                String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
+                mQuantidadeLitroEditText.setHint(simbolo);
+                mValorLitroEditText.setHint(simbolo);
+                mValorTotalEditText.setHint(simbolo);
+
+                mValorTotalEditText.requestFocus();
+                mEtData.setText(mDateFormat.format(Calendar.getInstance().getTime()));
             }
-            mQuantidadeLitroEditText.requestFocus();
-
-        } else {//Prepara para um novo abastecimento
-            String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-            mQuantidadeLitroEditText.setHint(simbolo);
-            mValorLitroEditText.setHint(simbolo);
-            mValorTotalEditText.setHint(simbolo);
-
-            mValorTotalEditText.requestFocus();
-            mEtData.setText(mDf.format(Calendar.getInstance().getTime()));
         }
+    }
 
-        CalculaTerceiro calculaTerceiro = new CalculaTerceiro(this);
-        calculaTerceiro.setValorTotal(mValorTotalEditText, R.id.valorTatalImageButtoId);
-        calculaTerceiro.setValorLitro(mValorLitroEditText, R.id.valorLitroImageButtoId);
-        calculaTerceiro.setQuantidadeLitro(mQuantidadeLitroEditText, R.id.quantidadeLitroImageButtonId);
-
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mId = savedInstanceState.getLong("ID", 0);
     }
 
     @Override
@@ -133,8 +133,7 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
                 new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         data.set(year, monthOfYear, dayOfMonth);
-                        mEtData.setText(mDf.format(data.getTime()));
-
+                        mEtData.setText(mDateFormat.format(data.getTime()));
                     }
                 },
                 data.get(Calendar.YEAR),
@@ -145,47 +144,40 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
     }
 
     public void salva() {
-        Abastecimento abastecimento = AdaptadorAbastecimento.getAbastecimento(mPosicao);
+        Abastecimento abastecimento = new Abastecimento();
+        abastecimento.setId(mId);
         abastecimento.setQtdelitros(Dinheiro.deDinheiroParaFloat(mQuantidadeLitroEditText.getText().toString()));
         abastecimento.setVlrLitro(Dinheiro.deDinheiroParaFloat(mValorLitroEditText.getText().toString()));
         abastecimento.setVlrTotal(Dinheiro.deDinheiroParaFloat(mValorTotalEditText.getText().toString()));
-        abastecimento.setCombustivel(mSpCombustivel.getSelectedItem().toString());
+        abastecimento.setCombustivel(mCombustivelSpinner.getSelectedItem().toString());
         abastecimento.setData(mEtData.getText().toString());
 
-        AbastecimentoDAO abastecimentoDAO = new AbastecimentoDAO(this);
 
-        switch (mOperacao) {
-            case Abastecimento.INSERIR:
-                long id = abastecimentoDAO.inserir(abastecimento);
-                if (id > 0) {
-                    abastecimento.setId(id);
-                    Toast.makeText(this, "Salvo!!!", Toast.LENGTH_SHORT).show();
-                    //TODO Como eleimitar este atalho
-                    AdaptadorAbastecimento.adicionaAbastecimento(abastecimento);
-                } else {
-                    Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case Abastecimento.ALTERAR:
-                if (abastecimentoDAO.alterar(abastecimento)) {
-                    Toast.makeText(this, "Salvo!!!", Toast.LENGTH_SHORT).show();
-                    //TODO Como eleimitar este atalho
-                    AdaptadorAbastecimento.alteraAbastecimento(mPosicao, abastecimento);
-                } else {
-                    Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
+        if (mId == 0) { //ALTERAÇÃO
+            if (!mAbastecimentoDAO.inserir(abastecimento))
+                Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
+        } else if (!mAbastecimentoDAO.alterar(abastecimento)) //INSERÇÃO
+            Toast.makeText(this, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("OPERACAO", mOperacao);
-        outState.putInt("POSICAO", mPosicao);
+        outState.putLong("ID", mId);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("MEUAPP", "onResume" + this);
+        CalculaTerceiro calculaTerceiro = new CalculaTerceiro(this);
+        calculaTerceiro.setValorTotal(mValorTotalEditText, R.id.valorTatalImageButtoId);
+        calculaTerceiro.setValorLitro(mValorLitroEditText, R.id.valorLitroImageButtoId);
+        calculaTerceiro.setQuantidadeLitro(mQuantidadeLitroEditText, R.id.quantidadeLitroImageButtonId);
+    }
 
     @Override
     public void onMudaEstadoSalvar(boolean salvar) {

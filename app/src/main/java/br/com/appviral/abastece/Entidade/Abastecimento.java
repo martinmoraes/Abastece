@@ -19,10 +19,6 @@ public class Abastecimento {
     public static final String CAMPO_DATA = "data";
     public static final String CAMPO_COMBUSTIVEL = "combustivel";
 
-    public static final String INSERIR = "inserir";
-    public static final String ALTERAR = "alterar";
-
-
     private Long mId;
     private float mQtdeLitros;
     private float mVlrLitro;
@@ -39,7 +35,7 @@ public class Abastecimento {
         this.mId = id;
     }
 
-    public float getQtdelitros() {
+    public float getQuatidadelitros() {
         return mQtdeLitros;
     }
 
@@ -47,7 +43,7 @@ public class Abastecimento {
         mQtdeLitros = QtdeLitros;
     }
 
-    public float getVlrLitro() {
+    public float getValorLitro() {
         return mVlrLitro;
     }
 
@@ -55,7 +51,7 @@ public class Abastecimento {
         mVlrLitro = vlrLitro;
     }
 
-    public float getVlrTotal() {
+    public float getValorTotal() {
         return mVlrTotal;
     }
 

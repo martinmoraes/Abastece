@@ -20,28 +20,24 @@ import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 
 public class AbastecimentosFragment extends Fragment {
     private RecyclerView mRecyclerView;
+    private AdaptadorAbastecimento mAdaptadorAbastecimento;
 
     public AbastecimentosFragment() {
-        Log.d("MEUAPP", "Constructor AbastecimentosFragment");
     }
 
 
     public static AbastecimentosFragment newInstance() {
-        Log.d("MEUAPP", "newInstance AbastecimentosFragment");
         return new AbastecimentosFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MEUAPP", "onCreate AbastecimentosFragment");
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("MEUAPP", "onCreateView AbastecimentosFragment");
         View view = inflater.inflate(R.layout.fragment_abastecimentos, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
 
@@ -50,9 +46,8 @@ public class AbastecimentosFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<Abastecimento> listaApresentar = (new AbastecimentoDAO(getActivity())).listarAbastecimentos();
-        AdaptadorAbastecimento adaptadorAbastecimento = new AdaptadorAbastecimento(getActivity(), listaApresentar);
-        mRecyclerView.setAdapter(adaptadorAbastecimento);
+        mAdaptadorAbastecimento = new AdaptadorAbastecimento(getActivity());
+        mRecyclerView.setAdapter(mAdaptadorAbastecimento);
 
         return view;
     }
@@ -60,8 +55,12 @@ public class AbastecimentosFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("MEUAPP", "onResume AbastecimentosFragment");
-        //TODO Necesário pelo inserir e alterar
-        ((AdaptadorAbastecimento) mRecyclerView.getAdapter()).notifyDataSetChanged();
+        /*try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+//        mAdaptadorAbastecimento.notifyDataSetChanged();
+        mAdaptadorAbastecimento.notifyItemChanged(4);
     }
 }
