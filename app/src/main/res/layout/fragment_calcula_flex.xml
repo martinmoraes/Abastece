@@ -41,7 +41,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/etVlr_Alcool"
+                android:id="@+id/valorAlcoolEditText"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/vlr_alcool"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/etVlr_Gasolina"
+                android:id="@+id/valorGasolinaEditText"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/vlr_gasolina"
@@ -85,7 +85,7 @@
 
     <!-- Reposta -->
     <TextView
-        android:id="@+id/tvResposta"
+        android:id="@+id/respostaTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

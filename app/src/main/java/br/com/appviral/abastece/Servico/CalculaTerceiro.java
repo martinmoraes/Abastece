@@ -76,7 +76,7 @@ public class CalculaTerceiro implements TextWatcher, View.OnFocusChangeListener,
     public void afterTextChanged(Editable s) {
         EditText editTextAtual = getEditTextAtual(s);
 
-        povoaEditTextSemListner(editTextAtual, Dinheiro.deDinheiroParaDinheiro(s.toString()));
+        povoaEditTextSemListner(editTextAtual, s.toString());
 
         List<EditText> editTextsVazios = pegaEditTextsVazios(editTextAtual);
 
@@ -93,10 +93,7 @@ public class CalculaTerceiro implements TextWatcher, View.OnFocusChangeListener,
     }
 
     private void chamaOnMudaEstadoSalvarListner(boolean salvar) {
-        if (mActivity instanceof OnMudaEstadoSalvarListner) {
-            ((OnMudaEstadoSalvarListner) mActivity).onMudaEstadoSalvar(salvar);
-        }
-
+        ((OnMudaEstadoSalvarListner) mActivity).onMudaEstadoSalvar(salvar);
     }
 
     private void valoresInconsistentes() {
@@ -155,11 +152,11 @@ public class CalculaTerceiro implements TextWatcher, View.OnFocusChangeListener,
     }
 
     private EditText getEditTextAtual(CharSequence s) {
-        if (mValorTotalEditText.getText() == s)
+        if (s == mValorTotalEditText.getText())
             return mValorTotalEditText;
-        if (mValorLitroEditText.getText() == s)
+        else if (s == mValorLitroEditText.getText())
             return mValorLitroEditText;
-        if (mQuantidadeLitroEditText.getText() == s)
+        else if (s == mQuantidadeLitroEditText.getText())
             return mQuantidadeLitroEditText;
         return null;
     }

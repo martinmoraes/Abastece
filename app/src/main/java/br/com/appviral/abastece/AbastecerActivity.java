@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 
-import br.com.appviral.abastece.Adaptador.AdaptadorAbastecimento;
 import br.com.appviral.abastece.Entidade.Abastecimento;
 import br.com.appviral.abastece.Persistencia.AbastecimentoDAO;
 import br.com.appviral.abastece.Servico.CalculaTerceiro;
@@ -27,7 +25,6 @@ import br.com.appviral.abastece.Util.Dinheiro;
 
 public class AbastecerActivity extends AppCompatActivity implements CalculaTerceiro.OnMudaEstadoSalvarListner {
 
-    private String mOperacao;
     private long mId;
     private EditText mValorTotalEditText, mValorLitroEditText, mQuantidadeLitroEditText, mEtData;
     private Spinner mCombustivelSpinner;
@@ -42,7 +39,6 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abastecer);
 
-        Log.d("MEUAPP", "onCreate");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,7 +71,7 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
                 mValorLitroEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getValorLitro()));
                 mValorTotalEditText.setText(Dinheiro.deDinheiroParaString(abastecimento.getValorTotal()));
                 mEtData.setText(abastecimento.getData());
-                switch (abastecimento.getCombustiviel()) {
+                switch (abastecimento.getCombustivel()) {
                     case "Gasolina":
                         mCombustivelSpinner.setSelection(0);
                         break;
@@ -90,7 +86,6 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
 
             } else {//INSERÇÃO - Prepara para um novo abastecimento
                 String simbolo = NumberFormat.getCurrencyInstance().getCurrency().getSymbol();
-                mQuantidadeLitroEditText.setHint(simbolo);
                 mValorLitroEditText.setHint(simbolo);
                 mValorTotalEditText.setHint(simbolo);
 
@@ -171,8 +166,6 @@ public class AbastecerActivity extends AppCompatActivity implements CalculaTerce
     @Override
     protected void onResume() {
         super.onResume();
-
-        Log.d("MEUAPP", "onResume" + this);
         CalculaTerceiro calculaTerceiro = new CalculaTerceiro(this);
         calculaTerceiro.setValorTotal(mValorTotalEditText, R.id.valorTatalImageButtoId);
         calculaTerceiro.setValorLitro(mValorLitroEditText, R.id.valorLitroImageButtoId);

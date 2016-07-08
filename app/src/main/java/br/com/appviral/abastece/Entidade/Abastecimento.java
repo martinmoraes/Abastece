@@ -24,7 +24,7 @@ public class Abastecimento {
     private float mVlrLitro;
     private float mVlrTotal;
     private String mData;
-    private tipo_combustivel mCombustivel;
+    private String mCombustivel;
 
 
     public Long getId() {
@@ -97,40 +97,14 @@ public class Abastecimento {
         this.mData = data;
     }
 
-    public void setCombustivel(tipo_combustivel combustivel) {
+    public void setCombustivel(String combustivel) {
         mCombustivel = combustivel;
     }
 
-    public void setCombustivel(String combustivel) {
-        switch (combustivel) {
-            case "gasolina":
-            case "Gasolina":
-                mCombustivel = tipo_combustivel.Gasolina;
-                break;
-            case "alcool":
-            case "Alcool":
-                mCombustivel = tipo_combustivel.Alcool;
-                break;
-            case "diesel":
-            case "Diesel":
-                mCombustivel = tipo_combustivel.Diesel;
-                break;
-        }
-    }
-
-    public String getCombustiviel() {
-        return mCombustivel.toString();
-    }
-
-    public tipo_combustivel getCombustivel() {
+    public String getCombustivel() {
         return mCombustivel;
     }
 
-
-    public enum tipo_combustivel {
-        //TODO passar para StringArray em string.xml
-        Gasolina, Alcool, Diesel;
-    }
 
     @Override
     public String toString() {

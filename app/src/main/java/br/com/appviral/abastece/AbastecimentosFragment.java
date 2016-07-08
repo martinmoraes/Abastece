@@ -55,12 +55,6 @@ public class AbastecimentosFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        /*try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-//        mAdaptadorAbastecimento.notifyDataSetChanged();
-        mAdaptadorAbastecimento.notifyItemChanged(4);
+          mAdaptadorAbastecimento.notifyDataSetChanged();
     }
 }

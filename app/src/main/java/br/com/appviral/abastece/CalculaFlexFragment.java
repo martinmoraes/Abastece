@@ -11,14 +11,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import br.com.appviral.abastece.Servico.CalculaFlex;
 import br.com.appviral.abastece.Util.Dinheiro;
 
 
 public class CalculaFlexFragment extends Fragment {
-    EditText etVlrGasolina, etVlrAlcool;
-    TextView tvResposta;
-    boolean emOperacao = false;
-
 
     public CalculaFlexFragment() {
     }
@@ -41,71 +38,12 @@ public class CalculaFlexFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calcula_flex, container, false);
 
-        etVlrGasolina = (EditText) view.findViewById(R.id.etVlr_Gasolina);
-        etVlrAlcool = (EditText) view.findViewById(R.id.etVlr_Alcool);
-        tvResposta = (TextView) view.findViewById(R.id.tvResposta);
+        EditText valorGasolinaEditText = (EditText) view.findViewById(R.id.valorGasolinaEditText);
+        EditText valorAlcoolEditText = (EditText) view.findViewById(R.id.valorAlcoolEditText);
+        TextView respostaTextView = (TextView) view.findViewById(R.id.respostaTextView);
 
-        etVlrAlcool.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!emOperacao) {
-                    emOperacao = true;
-                    String str = Dinheiro.deDinheiroParaDinheiro(etVlrAlcool.getText().toString(), 2);
-                    if (!str.equals(Dinheiro.deDinheiroParaString(0f)))
-                        etVlrAlcool.setText(str);
-                    etVlrAlcool.setSelection(etVlrAlcool.length());
-                    calculaFlex();
-                    emOperacao = false;
-                }
-            }
-        });
-
-        etVlrGasolina.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!emOperacao) {
-                    emOperacao = true;
-                    String str = Dinheiro.deDinheiroParaDinheiro(etVlrGasolina.getText().toString(), 2);
-                    if (!str.equals(Dinheiro.deDinheiroParaString(0f)))
-                        etVlrGasolina.setText(str);
-                    etVlrGasolina.setSelection(etVlrGasolina.length());
-                    calculaFlex();
-                    emOperacao = false;
-                }
-            }
-        });
+        new CalculaFlex(valorGasolinaEditText, valorAlcoolEditText, respostaTextView);
 
         return view;
-    }
-
-    private void calculaFlex() {
-        float vlrAlcool = Dinheiro.deDinheiroParaFloat(etVlrAlcool.getText().toString());
-        float vlrGasolina = Dinheiro.deDinheiroParaFloat(etVlrGasolina.getText().toString());
-
-        if (vlrAlcool > 0 & vlrGasolina > 0) {
-            float resultado = vlrAlcool / vlrGasolina;
-            if (resultado > 0.7) {
-                tvResposta.setText("ALCOOL");
-            } else {
-                tvResposta.setText("GASOLINA");
-            }
-        }
-
     }
 }

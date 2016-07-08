@@ -13,17 +13,10 @@ import br.com.appviral.abastece.Entidade.Abastecimento;
  */
 public class AbastecimentoDAO {
 
-    public static final int DIREITO_DE_ESCRITA = 1;
-    public static final int DIREITO_DE_LEITURA = 2;
-
-
     private DBSQLite mDBSqLite = null;
-    private static AbastecimentoDAO sAbastecimentoDAO = null;
     private String mColunas[] = {Abastecimento.CAMPO_ID, Abastecimento.CAMPO_QTDE_LITROS,
             Abastecimento.CAMPO_VLR_LITRO, Abastecimento.CAMPO_VLR_TOTAL, Abastecimento.CAMPO_DATA,
             Abastecimento.CAMPO_COMBUSTIVEL};
-
-    private final String SQL_CONTAGEM = "select count(*) from abastecimento";
 
 
     public AbastecimentoDAO(Context context) {
@@ -38,7 +31,7 @@ public class AbastecimentoDAO {
         values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.getValorLitro());
         values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.getValorTotal());
         values.put(Abastecimento.CAMPO_DATA, abastecimento.getDataParaPersistir());
-        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
+        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustivel());
         Long id = db.insert(Abastecimento.TABELA, null, values);
         db.close();
         return id > 0;
@@ -52,7 +45,7 @@ public class AbastecimentoDAO {
         values.put(Abastecimento.CAMPO_VLR_LITRO, abastecimento.getValorLitro());
         values.put(Abastecimento.CAMPO_VLR_TOTAL, abastecimento.getValorTotal());
         values.put(Abastecimento.CAMPO_DATA, abastecimento.getDataParaPersistir());
-        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustiviel());
+        values.put(Abastecimento.CAMPO_COMBUSTIVEL, abastecimento.getCombustivel());
         String whare = Abastecimento.CAMPO_ID + " = ?";
 
         int retorno = db.update(Abastecimento.TABELA, values, whare, new String[]{String.valueOf(abastecimento.getId())});
@@ -60,41 +53,29 @@ public class AbastecimentoDAO {
         return retorno > 0;
     }
 
-    public boolean excluir(int posicao) {
-        long id = getRegistroPosicao(posicao).getId();
+
+    public boolean excluir(long id) {
         SQLiteDatabase db = mDBSqLite.getWritableDatabase();
         String whare = Abastecimento.CAMPO_ID + " = ?";
-        int ret = db.delete(Abastecimento.TABELA, whare, new String[]{String.valueOf(id)});
+        int retorno = db.delete(Abastecimento.TABELA, whare, new String[]{String.valueOf(id)});
         db.close();
-        return ret > 0 ? true : false;
+        return retorno > 0;
     }
 
-    public boolean excluirTudo() {
-        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
-        int ret = db.delete(Abastecimento.TABELA, null, null);
-        db.close();
-        return ret > 0 ? true : false;
-    }
 
     public int getQuantidadeRegistros() {
         SQLiteDatabase db = mDBSqLite.getReadableDatabase();
+        String SQL_CONTAGEM = "select count(*) from abastecimento";
         Cursor cursor = db.rawQuery(SQL_CONTAGEM, null);
         int quantidade = -1;
         cursor.moveToFirst();
         quantidade = cursor.getInt(0);
+        cursor.close();
         db.close();
         return quantidade;
     }
 
     public Abastecimento getRegistroId(long id) {
-
-        /*
-        SQLiteDatabase db = mDBSqLite.getWritableDatabase();
-        String whare = Abastecimento.CAMPO_ID + " = ?";
-        int ret = db.delete(Abastecimento.TABELA, whare, new String[]{String.valueOf(id)});
-        db.close();
-        return ret > 0 ? true : false;
-         */
 
         SQLiteDatabase db = mDBSqLite.getReadableDatabase();
         String where = Abastecimento.CAMPO_ID + " = ?";

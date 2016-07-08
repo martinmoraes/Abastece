@@ -80,16 +80,6 @@ public class PrincipalActivity extends AppCompatActivity
             case "AbastecimentosFragment":
                 AbastecimentosFragment abastecimentosFragment = AbastecimentosFragment.newInstance();
                 ft.replace(R.id.rl_fragment_container, abastecimentosFragment, tag);
-                /*AbastecimentosFragment abastecimentosFragment = (AbastecimentosFragment) fragmentManager.findFragmentByTag(tag);
-                if(abastecimentosFragment == null) {
-                    Log.d("MEUAPP", "Criando AbastecimentosFragment");
-                    abastecimentosFragment = AbastecimentosFragment.newInstance();
-                    ft.add(R.id.rl_fragment_container, abastecimentosFragment, tag);
-                } else {
-                    Log.d("MEUAPP", "Reabrindo AbastecimentosFragment");
-                    ft.remove(fragmentAtivo);
-                    ft.show(abastecimentosFragment);
-                }*/
                 break;
             case "SobreFragment":
                 SobreFragment sobreFragment = SobreFragment.newInstance();

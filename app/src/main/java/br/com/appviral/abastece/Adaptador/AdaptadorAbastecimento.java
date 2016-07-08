@@ -95,7 +95,7 @@ public class AdaptadorAbastecimento extends RecyclerView.Adapter<AdaptadorAbaste
                     menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            if (mAbastecimentoDAO.excluir(getAdapterPosition())) {
+                            if (mAbastecimentoDAO.excluir(id)) {
                                 notifyItemRemoved(getAdapterPosition());
                             } else {
                                 Toast.makeText(mContext, "Operação não realizada!!!", Toast.LENGTH_SHORT).show();

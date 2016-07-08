@@ -25,21 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/pading16"
-                android:text="slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            slkfjsdlfj skjfçlaksjf alksjfçlkasdj flkasjdflasjflkasjfçlaksdjfçlaksjf laçksjflçaksdjf asdklfjsdlkfjaçlsdkjfas dfkljasdçlkfjalçkfjqrqwoiurqwpoieru qwoeir sdlkfjas dçlfkjapoiru opqiw ru
-            "/>
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin mi lectus, volutpat hendrerit quam nec, eleifend mollis orci. Phasellus hendrerit eget mi fermentum semper. Nunc ultrices commodo libero ac elementum. Pellentesque at dui mauris. Aenean hendrerit dolor ante, a pulvinar eros sollicitudin sed. Cras nec dolor non massa sagittis viverra pellentesque ut urna. Nullam accumsan magna et libero pretium elementum. Sed arcu nibh, convallis in finibus vitae, fermentum ac ipsum.\n\n
+
+Vestibulum condimentum pretium molestie. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent tempus magna tempus augue consectetur, in imperdiet risus aliquet. Quisque arcu augue, hendrerit a erat non, laoreet lacinia sapien. Nulla arcu tortor, fringilla vel tempus a, tincidunt sed elit. In at ipsum sed magna posuere ullamcorper. Sed nec varius velit.\n\n
+
+Donec sed ex nulla. Sed a sollicitudin magna, id condimentum quam. Quisque vel enim mattis, gravida nisl eu, scelerisque diam. Nullam in elit convallis, feugiat nisi in, finibus dolor. Donec ultrices sem a metus fermentum, ac convallis tortor sodales. Nulla dapibus fermentum risus, aliquet gravida lectus tincidunt sed. Ut varius nec ante ac sollicitudin. Aenean eget dictum velit. Quisque mauris nisl, elementum at arcu at, feugiat porta ex. Integer a orci eget ligula pretium ultrices eget eget ligula. Donec nunc leo, gravida a odio id, dapibus semper metus. Sed non ipsum maximus lectus varius placerat nec quis diam. Integer condimentum est eu felis efficitur auctor. Morbi a consectetur elit, eget ultricies nisl. Phasellus ac nibh eu orci eleifend condimentum. Curabitur varius elit quam, id bibendum velit molestie ut.\n\n
+
+Aliquam dictum auctor tellus et auctor. Nunc ut tristique dolor. Donec vehicula vel arcu non molestie. Aliquam convallis, ligula eu euismod elementum, eros metus dapibus ante, nec consequat massa dolor sed metus. Nulla scelerisque volutpat metus, at molestie lectus sollicitudin sed. Donec a neque risus. Quisque egestas venenatis faucibus. Curabitur sed lacinia leo. Nullam quis libero fermentum mauris lacinia tristique. Cras vel est feugiat purus mattis sollicitudin. Quisque varius ullamcorper diam et lacinia.\n\n"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
